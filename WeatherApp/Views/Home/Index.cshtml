@@ -1,12 +1,18 @@
 ﻿@{  
     ViewData["Title"] = "Home Page";  
 }  
+@model WeatherApp.Models.Weather
 <link rel="stylesheet" href="~/css/weather.css" />
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262579139378205"
             crossorigin="anonymous"></script>
 </head>
 <div class="weather-container">
+    <!-- Search Form -->
+    <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
+        <input type="text" name="CityName" placeholder="Enter location..." required />
+        <button type="submit">Search</button>
+    </form>
     <div class="weather-card">  
         <div class="location">@Model.CityName</div>  
         <div class="temp">@Model.Temperature &deg;C</div>  
@@ -17,16 +23,3 @@
         </div>  
     </div>  
 </div>  
-
-@* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262579139378205"
-        crossorigin="anonymous"></script> *@
-<!-- Athul ad -->
-@* <ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3262579139378205"
-     data-ad-slot="5788451018"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> *@

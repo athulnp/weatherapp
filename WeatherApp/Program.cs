@@ -1,7 +1,17 @@
+using WeatherApp.IService;
+using WeatherApp.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Register DI Services
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddHttpClient("weatherClient", client =>
+{
+    client.BaseAddress = new Uri("https://api.openweathermap.org/");
+});
 
 var app = builder.Build();
 

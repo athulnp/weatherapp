@@ -15,7 +15,8 @@ namespace WeatherApp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var model = new Weather();
+            return View(model);
         }
 
         public IActionResult Privacy()

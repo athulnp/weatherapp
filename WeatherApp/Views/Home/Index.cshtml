@@ -1,8 +1,16 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@{  
+    ViewData["Title"] = "Home Page";  
+}  
+<link rel="stylesheet" href="~/css/weather.css" />
+<div class="weather-container">  
+    <div class="weather-card">  
+        <div class="location">@Model.CityName</div>  
+        <div class="temp">@Model.Temperature &deg;C</div>  
+        <div class="description">@Model.Description</div>  
+        <div class="meta">  
+            <span>Humidity: @Model.Humidity%</span>  
+            <span>Wind: @Model.WindSpeed km/h</span>  
+        </div>  
+    </div>  
+</div>  
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>

@@ -48,14 +48,19 @@ namespace WeatherApp.Service
 
             var temp = currentWeather.Main?.Temp ?? 0;
 
-
+            var icon = currentWeather.Weather?.FirstOrDefault()?.Icon ?? string.Empty;
+            var IconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
             return new Weather
             {
                 CityName = location,
                 Temperature = currentWeather.Main?.Temp ?? 0,
-                Description = currentWeather.Weather?.FirstOrDefault()?.Main ?? string.Empty, // Example value
+                TempMax = currentWeather.Main?.TempMax ?? 0,
+                TempMin = currentWeather.Main?.TempMin ?? 0,
+                FeelsLike = currentWeather.Main?.FeelsLike ?? 0,
+                Description = currentWeather.Weather?.FirstOrDefault()?.Description ?? string.Empty, // Example value
                 Humidity = currentWeather.Main?.Humidity ?? 0,
-                WindSpeed = currentWeather.Wind?.Speed ?? 0
+                WindSpeed = currentWeather.Wind?.Speed ?? 0,
+                Icon = IconUrl
             };
 
         }

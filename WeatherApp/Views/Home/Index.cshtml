@@ -9,12 +9,8 @@
 </head>
 <div class="weather-container">
     <!-- Search Form -->
-    <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form" role="search" aria-label="Search weather by city">
-        <input type="text"
-               name="CityName"
-               placeholder="Enter location..."
-               required
-               aria-label="City name" />
+    <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
+        <input type="text" name="CityName" placeholder="Enter location..." required />
         <button type="submit">Search</button>
     </form>
 
@@ -23,12 +19,19 @@
         <div class="weather-card">
             <div class="location">@Model.CityName</div>
             <div class="temp">@Model.Temperature &deg;C</div>
+            <div class="meta">
+                <span>Feels Like: @Model.FeelsLike &deg;C</span>
+                <span>Temp Max: @Model.TempMax &deg;C</span>
+                <span>Temp Min: @Model.TempMin &deg;C</span>
+            </div>
             <div class="description">@Model.Description</div>
             <div class="meta">
                 <span>Humidity: @Model.Humidity%</span>
                 <span>Wind: @Model.WindSpeed km/h</span>
             </div>
+            <div>
+                <img src="@Model.Icon" alt="Weather icon">
+            </div>
         </div>
     }
 </div>
-

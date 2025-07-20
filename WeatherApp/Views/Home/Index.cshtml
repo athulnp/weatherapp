@@ -8,21 +8,21 @@
             crossorigin="anonymous"></script>
 </head>
 <div class="weather-container">
-    <!-- Search Form -->
-    <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-        <input type="text" name="CityName" placeholder="Enter location..." required />
-        <button type="submit">Search</button>
-    </form>
-
     @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
     {
         <div class="weather-card">
+            <!-- Search Form moved inside the card -->
+            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
+                <input type="text" name="CityName" placeholder="Enter location..." required />
+                <button type="submit">Search</button>
+            </form>
+
             <div class="location">@Model.CityName</div>
             <div class="temp">@Model.Temperature &deg;C</div>
             <div class="meta">
                 <span>Feels Like: @Model.FeelsLike &deg;C</span>
-                <span>Temp Max: @Model.TempMax &deg;C</span>
-                <span>Temp Min: @Model.TempMin &deg;C</span>
+                <span>Max: @Model.TempMax &deg;C</span>
+                <span>Min: @Model.TempMin &deg;C</span>
             </div>
             <div class="description">@Model.Description</div>
             <div class="meta">
@@ -34,4 +34,15 @@
             </div>
         </div>
     }
+    else
+    {
+        <!-- Show only the form if no model -->
+        <div class="weather-card">
+            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
+                <input type="text" name="CityName" placeholder="Enter location..." required />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    }
 </div>
+

@@ -25,7 +25,7 @@ body {
     gap: 20px; /* Optional: adds space between form and card */
 }
 
-.weather-search-form {
+/*.weather-search-form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -33,7 +33,7 @@ body {
     gap: 10px;
     width: 100%;
     max-width: 400px;
-}
+}*/
 
     .weather-search-form input[type="text"] {
         flex: 1 1 200px;
@@ -143,4 +143,52 @@ body {
     .weather-container {
         flex-direction: column; /* Or keep as column if you prefer vertical even on wide */
     }
+}
+
+
+.weather-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .weather-search-form input[type="text"] {
+        flex: 1 1 200px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+        width: 100%;
+    }
+
+    .weather-search-form button {
+        padding: 10px 16px;
+        font-size: 16px;
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+        .weather-search-form button:hover {
+            background-color: #005fa3;
+        }
+
+.weather-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
 }

@@ -1,97 +1,3 @@
-/*body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #6dd5ed, #2193b0);
-    color: #fff;
-}
-
-.weather-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 20px;
-}
-
-.weather-card {
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px 40px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    max-width: 350px;
-    width: 100%;
-    text-align: center;
-}
-
-.location {
-    font-size: 1.8rem;
-    font-weight: bold;
-}
-
-.temp {
-    font-size: 3.5rem;
-    margin: 15px 0;
-}
-
-.description {
-    font-size: 1.2rem;
-    text-transform: capitalize;
-    margin-bottom: 15px;
-}
-.weather-search-form {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.weather-search-form input[type="text"] {
-    padding: 10px;
-    font-size: 16px;
-    width: 250px;
-    border: 1px solid #ccc;
-    border-radius: 6px 0 0 6px;
-    outline: none;
-}
-
-.weather-search-form button {
-    padding: 10px 16px;
-    font-size: 16px;
-    background-color: #0077cc;
-    color: white;
-    border: none;
-    border-radius: 0 6px 6px 0;
-    cursor: pointer;
-}
-
-.weather-search-form button:hover {
-    background-color: #005fa3;
-}
-.meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    opacity: 0.9;
-}
-
-@media screen and (max-width: 600px) {
-    .weather-card {
-        padding: 20px;
-    }
-
-    .temp {
-        font-size: 2.5rem;
-    }
-
-    .meta {
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-    }
-}
-*/
-
-
 
 body {
     margin: 0;
@@ -100,13 +6,23 @@ body {
     color: #fff;
 }
 
-.weather-container {
+/*.weather-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+}*/
+
+.weather-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    flex-direction: column; /* Add this line to stack form and card vertically */
+    gap: 20px; /* Optional: adds space between form and card */
 }
 
 .weather-search-form {
@@ -219,5 +135,12 @@ body {
 
     .meta {
         font-size: 0.9rem;
+    }
+}
+
+
+@media screen and (min-width: 768px) {
+    .weather-container {
+        flex-direction: column; /* Or keep as column if you prefer vertical even on wide */
     }
 }

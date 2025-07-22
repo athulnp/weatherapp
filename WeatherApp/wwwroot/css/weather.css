@@ -192,3 +192,84 @@ body {
     text-align: center;
     box-sizing: border-box;
 }
+
+.navbar {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.05rem;
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    color: #333 !important;
+    margin-right: 1rem;
+    transition: color 0.3s ease;
+}
+
+    .nav-link:hover {
+        color: #007BFF !important;
+        text-decoration: underline;
+    }
+header {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.kairos-logo {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff; /* Or #e0f7fa for soft tone */
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    flex: 1;
+    padding: 20px;
+}
+
+header {
+    background: linear-gradient(135deg, #0077b6, #00b4d8);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .navbar nav a {
+        color: white;
+        margin-left: 20px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .navbar nav a:hover {
+            text-decoration: underline;
+        }
+
+.kairos-logo {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.site-footer {
+    background: #013a63; /* Or use matching gradient */
+    color: #e0f7fa;
+    text-align: center;
+    padding: 1rem;
+}

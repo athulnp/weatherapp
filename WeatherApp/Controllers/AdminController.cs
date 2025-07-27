@@ -23,7 +23,7 @@ namespace WeatherApp.Controllers
 
         public IActionResult Login(string returnUrl = "/")
         {
-            return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Auth0");
+           return Challenge(new AuthenticationProperties { RedirectUri = returnUrl }, "Auth0");
         }
 
 
@@ -36,8 +36,16 @@ namespace WeatherApp.Controllers
         }
 
         [Authorize]
-        public ActionResult Dashboard() => View();
-
+        public ActionResult Dashboard()
+        {
+            var user = new User
+            {
+                Name = User.Identity.Name,
+                Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
+                ProfileImage = User.Claims.FirstOrDefault(c => c.Type == "picture")?.Value
+            };
+            return View(user);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Admin Login";
+    Layout = null;
+}
+@model WeatherApp.Models.User
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Admin Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        @using (Html.BeginForm("Login", "Admin", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBox("Username", null, new { required = "required" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.Password("Password", null, new { required = "required" })
+            </div>
+            <button type="submit" class="btn-login">Login</button>
+        }
+    </div>
+</body>
+</html>

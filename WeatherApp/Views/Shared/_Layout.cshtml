@@ -43,6 +43,19 @@
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="PrivacyPolicy">Privacy</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Terms">Terms</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact">Contact</a></li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item text-danger" href="/admin/logout">Logout</a></li>
+                                    </ul>
+                                </li>
+                            }
                         </ul>
                     </div>
                 </div>

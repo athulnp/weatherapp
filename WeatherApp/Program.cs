@@ -19,7 +19,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 {
     options.Domain = builder.Configuration["Auth0:Domain"];
     options.ClientId = builder.Configuration["Auth0:ClientId"];
-    options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+    //options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
 });
 
 // Configure cookie settings separately  

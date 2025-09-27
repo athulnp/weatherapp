@@ -1,10 +1,10 @@
-
-body {
+﻿
+/*body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #6dd5ed, #2193b0);
     color: #fff;
-}
+}*/
 
 /*.weather-container {
     display: flex;
@@ -15,15 +15,15 @@ body {
     padding: 20px;
 }*/
 
-.weather-container {
+/*.weather-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    flex-direction: column; /* Add this line to stack form and card vertically */
-    gap: 20px; /* Optional: adds space between form and card */
-}
+    flex-direction: column;*/ /* Add this line to stack form and card vertically */
+    /*gap: 20px;*/ /* Optional: adds space between form and card */
+/*}*/
 
 /*.weather-search-form {
     display: flex;
@@ -35,7 +35,7 @@ body {
     max-width: 400px;
 }*/
 
-    .weather-search-form input[type="text"] {
+    /*.weather-search-form input[type="text"] {
         flex: 1 1 200px;
         padding: 10px;
         font-size: 16px;
@@ -94,10 +94,10 @@ body {
     font-size: 0.95rem;
     opacity: 0.9;
     gap: 10px;
-}
+}*/
 
 /* Responsiveness */
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
     .weather-card {
         padding: 25px;
     }
@@ -141,8 +141,8 @@ body {
 
 @media screen and (min-width: 768px) {
     .weather-container {
-        flex-direction: column; /* Or keep as column if you prefer vertical even on wide */
-    }
+        flex-direction: column;*/ /* Or keep as column if you prefer vertical even on wide */
+    /*}
 }
 
 
@@ -223,8 +223,8 @@ header {
     font-family: 'Quicksand', sans-serif;
     font-size: 1.8rem;
     font-weight: 700;
-    color: #ffffff; /* Or #e0f7fa for soft tone */
-}
+    color: #ffffff;*/ /* Or #e0f7fa for soft tone */
+/*}
 
 .page-container {
     display: flex;
@@ -268,8 +268,249 @@ header {
 }
 
 .site-footer {
-    background: #013a63; /* Or use matching gradient */
-    color: #e0f7fa;
+    background: #013a63;*/ /* Or use matching gradient */
+    /*color: #e0f7fa;
     text-align: center;
     padding: 1rem;
 }
+
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}*/
+
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+    gap: 30px; /* spacing between sections */
+}
+
+/* About Section */
+.about-section {
+    max-width: 850px;
+    background: cadetblue; /* darker overlay for contrast */
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    text-align: center;
+    color: #fff; /* strong white text */
+}
+
+    .about-section h2 {
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .about-section p {
+        margin-bottom: 12px;
+        line-height: 1.6;
+        font-size: 1rem;
+        color: #f1f1f1; /* soft white text */
+    }
+
+/* Weather Card */
+.weather-card {
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 25px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Search Form */
+.weather-search-form {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+    .weather-search-form input[type="text"] {
+        flex: 1 1 200px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    .weather-search-form button {
+        padding: 10px 16px;
+        font-size: 16px;
+        background-color: #0077cc;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+        .weather-search-form button:hover {
+            background-color: #005fa3;
+        }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-section {
+        padding: 20px;
+    }
+
+        .about-section h2 {
+            font-size: 1.5rem;
+        }
+}
+
+
+.weather-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    max-width: 350px;
+    width: 90%;
+    margin: 20px auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.weather-search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+    .weather-search-form input {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px 0 0 6px;
+        outline: none;
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .weather-search-form button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+        transition: 0.3s;
+        min-width: 80px;
+    }
+
+        .weather-search-form button:hover {
+            background: #0056b3;
+        }
+
+.location {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.temp {
+    font-size: 28px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.meta {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.description {
+    font-size: 16px;
+    font-style: italic;
+    margin: 8px 0;
+    color: #444;
+}
+
+.weather-icon {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+    .weather-icon img {
+        width: 70px;
+        height: 70px;
+    }
+
+/* 📱 Responsive Design */
+@media (max-width: 600px) {
+    .weather-card {
+        padding: 15px;
+        width: 95%;
+    }
+
+    .weather-search-form {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: nowrap; /* prevent wrapping */
+    }
+
+        .weather-search-form input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px 0 0 6px;
+            outline: none;
+            flex: 1;
+            min-width: 150px;
+            max-width: 220px; /* keeps it neat on mobile */
+        }
+
+        .weather-search-form button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: 0.3s;
+            min-width: 80px;
+        }
+
+            .weather-search-form button:hover {
+                background: #0056b3;
+            }
+
+    /* 📱 Mobile adjustments */
+    @media (max-width: 600px) {
+        .weather-card {
+            padding: 15px;
+            width: 95%;
+        }
+
+        .weather-search-form {
+            flex-wrap: nowrap; /* keep inline */
+        }
+
+            .weather-search-form input {
+                max-width: 200px; /* slightly smaller */
+                margin-bottom: 0; /* remove stacking margin */
+            }
+
+            .weather-search-form button {
+                width: auto; /* don’t stretch */
+            }
+    }
+}
+

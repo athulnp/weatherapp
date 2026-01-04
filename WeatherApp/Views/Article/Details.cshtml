@@ -1,0 +1,5 @@
+﻿@model Article
+
+<h1>@Model.Title</h1>
+<p>@Model.PublishDate.ToShortDateString()</p>
+<div>@Html.Raw(Model.Content)</div>

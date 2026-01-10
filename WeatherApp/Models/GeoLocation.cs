@@ -8,10 +8,10 @@ namespace WeatherApp.Models
         public string Name { get; set; }
 
         [JsonPropertyName("lat")]
-        public decimal Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [JsonPropertyName("lon")]
-        public decimal Longitude { get; set; }
+        public double Longitude { get; set; }
 
         [JsonPropertyName("country")]
         public string Country { get; set; }

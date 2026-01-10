@@ -29,7 +29,7 @@ namespace WeatherApp.Controllers
             var weatherData = new Weather();
             try
             {
-                weatherData = await _weatherService.GetWeatherData(weather.CityName);
+                weatherData = await _weatherService.GetWeatherAsync(weather.CityName);
             }
             catch (Exception ex)
             {

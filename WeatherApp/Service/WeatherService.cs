@@ -1,4 +1,5 @@
-﻿using WeatherApp.IService;
+﻿using Newtonsoft.Json;
+using WeatherApp.IService;
 using WeatherApp.Models;
 
 namespace WeatherApp.Service
@@ -6,9 +7,11 @@ namespace WeatherApp.Service
     public class WeatherService : IWeatherService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public WeatherService(IHttpClientFactory httpClientFactory)
+        private readonly IConfiguration _configuration;
+        public WeatherService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory ;
+            _configuration = configuration;
         }
 
         // Implement methods from IWeatherService here
@@ -44,10 +47,31 @@ namespace WeatherApp.Service
             }
             var firstLocation = geoLocationList.FirstOrDefault();
 
-          var currentWeather = await GetWeatherByGeoLocation(firstLocation.Latitude, firstLocation.Longitude);
+            var currentWeather = await GetWeatherByGeoLocation(firstLocation.Latitude, firstLocation.Longitude);
 
+            //var temp = currentWeather.Main?.Temp ?? 0;
+
+            //var icon = currentWeather.Weather?.FirstOrDefault()?.Icon ?? string.Empty;
+            //var IconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
+            //return new Weather
+            //{
+            //    CityName = location,
+            //    Temperature = currentWeather.Main?.Temp ?? 0,
+            //    TempMax = currentWeather.Main?.TempMax ?? 0,
+            //    TempMin = currentWeather.Main?.TempMin ?? 0,
+            //    FeelsLike = currentWeather.Main?.FeelsLike ?? 0,
+            //    Description = currentWeather.Weather?.FirstOrDefault()?.Description ?? string.Empty, // Example value
+            //    Humidity = currentWeather.Main?.Humidity ?? 0,
+            //    WindSpeed = currentWeather.Wind?.Speed ?? 0,
+            //    Icon = IconUrl
+            //};
+            return GetWeatherDataFromCurrentWeather(currentWeather, location);
+
+        }
+
+        private  Weather GetWeatherDataFromCurrentWeather(CurrentWeather currentWeather, string location)
+        {
             var temp = currentWeather.Main?.Temp ?? 0;
-
             var icon = currentWeather.Weather?.FirstOrDefault()?.Icon ?? string.Empty;
             var IconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
             return new Weather
@@ -64,8 +88,14 @@ namespace WeatherApp.Service
             };
 
         }
+        public async Task<Weather> GetWeatherAsync(string location)
+        {
+            var (latitude, longitude) = await GetCoordinates(location);
+            var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
+            return GetWeatherDataFromCurrentWeather(currentWeather, location);
+        }
 
-        private async Task<CurrentWeather> GetWeatherByGeoLocation(decimal latitude, decimal longitude)
+        private async Task<CurrentWeather> GetWeatherByGeoLocation(double latitude, double longitude)
         {
             var currentWeather = new CurrentWeather();
 
@@ -90,9 +120,39 @@ namespace WeatherApp.Service
             {
                 
             }
-
-
             return currentWeather ?? new CurrentWeather();
+        }
+
+        public async Task<(double Latitude, double Longitude)> GetCoordinates(string location)
+        {
+            //Get the coordinates of the location from nominatim API
+            var baseUrl = _configuration["GeoCodingApis:Nominatim:BaseUrl"];
+            if (!string.IsNullOrWhiteSpace(baseUrl))
+            {
+                var qSearch = _configuration["GeoCodingApis:Nominatim:qsearch"];
+                qSearch = qSearch != null ? string.Format(qSearch,location) : qSearch;
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Add(
+                                                "User-Agent",
+                                                "User-Agent (athulonline13@gmail.com)");
+
+                HttpResponseMessage response = await client.GetAsync(qSearch);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var locationData = JsonConvert.DeserializeObject<List<NominatimLocation>>(json);
+                    var defaultLocation = locationData?.FirstOrDefault();
+
+                    if (defaultLocation != null)
+                    {
+                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude));
+                    }
+                }
+            }
+
+            return (0, 0);
 
         }
     }

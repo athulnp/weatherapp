@@ -106,6 +106,7 @@
         {
             <!-- Search Form moved inside the card -->
             <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
+                <label>Enter location or Postal Code or Coordinates(Lat,Long) to get the weather details</label>
                 <input type="text" name="CityName" placeholder="Enter location or Postal Code or Coordinates..." required />
                 <button type="submit">Search</button>
             </form>

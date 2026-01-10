@@ -116,7 +116,7 @@ namespace WeatherApp.Service
                 TempMax = 0,
                 TempMin = 0,
                 FeelsLike = 0,
-                Description = "Location not found", // Example value
+                Description = "Location not found. Please enter postal code or co-ordinates", // Example value
                 Humidity = 0,
                 WindSpeed = 0,
                 Icon = string.Empty

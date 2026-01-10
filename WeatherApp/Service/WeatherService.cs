@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
+using NuGet.Packaging.Licenses;
+using System.Text.RegularExpressions;
 using WeatherApp.IService;
 using WeatherApp.Models;
+using WeatherApp.Helper;
 
 namespace WeatherApp.Service
 {
@@ -49,34 +52,18 @@ namespace WeatherApp.Service
 
             var currentWeather = await GetWeatherByGeoLocation(firstLocation.Latitude, firstLocation.Longitude);
 
-            //var temp = currentWeather.Main?.Temp ?? 0;
-
-            //var icon = currentWeather.Weather?.FirstOrDefault()?.Icon ?? string.Empty;
-            //var IconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
-            //return new Weather
-            //{
-            //    CityName = location,
-            //    Temperature = currentWeather.Main?.Temp ?? 0,
-            //    TempMax = currentWeather.Main?.TempMax ?? 0,
-            //    TempMin = currentWeather.Main?.TempMin ?? 0,
-            //    FeelsLike = currentWeather.Main?.FeelsLike ?? 0,
-            //    Description = currentWeather.Weather?.FirstOrDefault()?.Description ?? string.Empty, // Example value
-            //    Humidity = currentWeather.Main?.Humidity ?? 0,
-            //    WindSpeed = currentWeather.Wind?.Speed ?? 0,
-            //    Icon = IconUrl
-            //};
             return GetWeatherDataFromCurrentWeather(currentWeather, location);
 
         }
 
-        private  Weather GetWeatherDataFromCurrentWeather(CurrentWeather currentWeather, string location)
+        private  Weather GetWeatherDataFromCurrentWeather(CurrentWeather currentWeather, string location, bool isRequireDisplayName = false)
         {
             var temp = currentWeather.Main?.Temp ?? 0;
             var icon = currentWeather.Weather?.FirstOrDefault()?.Icon ?? string.Empty;
             var IconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
             return new Weather
             {
-                CityName = location,
+                CityName = isRequireDisplayName ? currentWeather.Name :location,
                 Temperature = currentWeather.Main?.Temp ?? 0,
                 TempMax = currentWeather.Main?.TempMax ?? 0,
                 TempMin = currentWeather.Main?.TempMin ?? 0,
@@ -84,17 +71,43 @@ namespace WeatherApp.Service
                 Description = currentWeather.Weather?.FirstOrDefault()?.Description ?? string.Empty, // Example value
                 Humidity = currentWeather.Main?.Humidity ?? 0,
                 WindSpeed = currentWeather.Wind?.Speed ?? 0,
-                Icon = IconUrl
+                Icon = IconUrl,
+                IsLocationAvailable = currentWeather.IsLocationAvailable
+
             };
 
         }
         public async Task<Weather> GetWeatherAsync(string location)
         {
-            var (latitude, longitude, isLocationAvailable) = await GetCoordinates(location);
+            //Check wheather the location is Latitude and Longitude or Postal code or City name
+
+            var isCordinates = WeatherHelper.IsLatLongPair(location, out double latitude, out double longitude);
+            bool isLocationAvailable = false;
+            bool isRequireDisplayName = false;
+            string displayName = string.Empty;
+            isRequireDisplayName = WeatherHelper.IsPostalCode(location);
+            (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
+            isRequireDisplayName = isCordinates || WeatherHelper.IsPostalCode(location);
+            //if (!isCordinates)
+            //{
+            //    isRequireDisplayName = WeatherHelper.IsPostalCode(location);
+            //    (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
+            //}
+            //else
+            //{ 
+            //    //var coords = location.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            //    //bool latAvailable = WeatherHelper.TryGetLatitude(coords[0], out latitude);
+            //    //bool longAvailabe = WeatherHelper.TryGetLatitude(coords[1], out longitude);
+            //    isLocationAvailable = isCordinates;
+            //    isRequireDisplayName = true;
+            //}
+
             if (isLocationAvailable)
             {
                 var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
-                return GetWeatherDataFromCurrentWeather(currentWeather, location);
+                currentWeather.IsLocationAvailable = isLocationAvailable;
+                currentWeather.Name = isRequireDisplayName && !string.IsNullOrWhiteSpace(displayName) ? displayName : currentWeather.Name;
+                return GetWeatherDataFromCurrentWeather(currentWeather, location, isRequireDisplayName);
             }
             return new Weather
             {
@@ -138,7 +151,7 @@ namespace WeatherApp.Service
             return currentWeather ?? new CurrentWeather();
         }
 
-        public async Task<(double Latitude, double Longitude, bool IsLocationAvailabe)> GetCoordinates(string location)
+        public async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinates(string location)
         {
             var islocationAvailable = false;
 
@@ -165,12 +178,12 @@ namespace WeatherApp.Service
                     if (defaultLocation != null)
                     {
                         islocationAvailable = true;
-                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude), islocationAvailable);
+                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude), islocationAvailable, defaultLocation.DisplayName);
                     }
                 }
             }
 
-            return (0, 0, islocationAvailable);
+            return (0, 0, islocationAvailable, string.Empty);
 
         }
     }

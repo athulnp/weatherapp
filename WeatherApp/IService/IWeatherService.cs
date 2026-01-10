@@ -6,6 +6,6 @@ namespace WeatherApp.IService
     {
         Task<Weather> GetWeatherData(string location);
         Task<Weather> GetWeatherAsync(string location);
-        Task<(double Latitude, double Longitude, bool IsLocationAvailabe)> GetCoordinates(string location);
+        Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinates(string location);
     }
 }

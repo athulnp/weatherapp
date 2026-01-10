@@ -90,9 +90,24 @@ namespace WeatherApp.Service
         }
         public async Task<Weather> GetWeatherAsync(string location)
         {
-            var (latitude, longitude) = await GetCoordinates(location);
-            var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
-            return GetWeatherDataFromCurrentWeather(currentWeather, location);
+            var (latitude, longitude, isLocationAvailable) = await GetCoordinates(location);
+            if (isLocationAvailable)
+            {
+                var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
+                return GetWeatherDataFromCurrentWeather(currentWeather, location);
+            }
+            return new Weather
+            {
+                CityName = location,
+                Temperature = 0,
+                TempMax = 0,
+                TempMin = 0,
+                FeelsLike = 0,
+                Description = "Location not found", // Example value
+                Humidity = 0,
+                WindSpeed = 0,
+                Icon = string.Empty
+            };
         }
 
         private async Task<CurrentWeather> GetWeatherByGeoLocation(double latitude, double longitude)
@@ -123,8 +138,10 @@ namespace WeatherApp.Service
             return currentWeather ?? new CurrentWeather();
         }
 
-        public async Task<(double Latitude, double Longitude)> GetCoordinates(string location)
+        public async Task<(double Latitude, double Longitude, bool IsLocationAvailabe)> GetCoordinates(string location)
         {
+            var islocationAvailable = false;
+
             //Get the coordinates of the location from nominatim API
             var baseUrl = _configuration["GeoCodingApis:Nominatim:BaseUrl"];
             if (!string.IsNullOrWhiteSpace(baseUrl))
@@ -147,12 +164,13 @@ namespace WeatherApp.Service
 
                     if (defaultLocation != null)
                     {
-                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude));
+                        islocationAvailable = true;
+                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude), islocationAvailable);
                     }
                 }
             }
 
-            return (0, 0);
+            return (0, 0, islocationAvailable);
 
         }
     }

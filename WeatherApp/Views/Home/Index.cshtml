@@ -111,20 +111,29 @@
             </form>
 
             <div class="location">@Model.CityName</div>
-            <div class="temp">@Model.Temperature &deg;C</div>
-            <div class="meta">
-                <span>Feels Like: @Model.FeelsLike &deg;C</span>
-                <span>Max: @Model.TempMax &deg;C</span>
-                <span>Min: @Model.TempMin &deg;C</span>
-            </div>
-            <div class="description">@Model.Description</div>
-            <div class="meta">
-                <span>Humidity: @Model.Humidity%</span>
-                <span>Wind: @Model.WindSpeed km/h</span>
-            </div>
-            <div>
-                <img src="@Model.Icon" alt="Weather icon">
-            </div>
+            if (Model.IsLocationAvailable)
+            {
+                <div class="temp">@Model.Temperature &deg;C</div>
+                <div class="meta">
+                    <span>Feels Like: @Model.FeelsLike &deg;C</span>
+                    <span>Max: @Model.TempMax &deg;C</span>
+                    <span>Min: @Model.TempMin &deg;C</span>
+                </div>
+                <div class="description">@Model.Description</div>
+                <div class="meta">
+                    <span>Humidity: @Model.Humidity%</span>
+                    <span>Wind: @Model.WindSpeed km/h</span>
+                </div>
+                <div>
+                    <img src="@Model.Icon" alt="Weather icon">
+                </div>
+            }
+            else
+            {
+                <div class="description">@Model.Description</div>
+            }
+
+            
         }
         else
         {

@@ -13,5 +13,6 @@ namespace WeatherApp.Models
         public int Humidity { get; set; } 
         public double WindSpeed { get; set; }
         public string Icon { get; set; }
+        public bool IsLocationAvailable { get; set; }
     }
 }

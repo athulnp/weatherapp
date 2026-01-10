@@ -42,6 +42,9 @@ public class CurrentWeather
 
     [JsonPropertyName("cod")]
     public int Cod { get; set; }
+
+    public bool IsLocationAvailable { get; set; }
+
 }
 
 public class Coord

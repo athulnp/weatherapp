@@ -26,16 +26,7 @@ namespace WeatherApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Weather weather)
         {
-            var weatherData = new Weather();
-            try
-            {
-                weatherData = await _weatherService.GetWeatherAsync(weather.CityName);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Failed to fetch weather data: {Message}", ex.Message);
-            }
-
+            var weatherData = await _weatherService.GetWeatherAsync(weather.CityName);
             return View(weatherData);
         }
 

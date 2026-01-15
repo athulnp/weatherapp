@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using NuGet.Packaging.Licenses;
 using System.Text.RegularExpressions;
+using WeatherApp.Helper;
 using WeatherApp.IService;
 using WeatherApp.Models;
-using WeatherApp.Helper;
 
 namespace WeatherApp.Service
 {
@@ -11,10 +12,14 @@ namespace WeatherApp.Service
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IConfiguration _configuration;
-        public WeatherService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        private readonly ICacheService _cacheService;
+        private readonly ILogger<WeatherService> _logger;
+        public WeatherService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ICacheService cacheService, ILogger<WeatherService> logger)
         {
             _httpClientFactory = httpClientFactory ;
             _configuration = configuration;
+            _cacheService = cacheService;
+            _logger = logger;
         }
 
         // Implement methods from IWeatherService here
@@ -80,7 +85,16 @@ namespace WeatherApp.Service
         public async Task<Weather> GetWeatherAsync(string location)
         {
             //Check wheather the location is Latitude and Longitude or Postal code or City name
+            if (string.IsNullOrWhiteSpace(location))
+                return null;
 
+            var cachedWeather = await _cacheService.GetAsync<Weather>(location);
+            if (cachedWeather != null)
+            {
+                _logger.LogInformation("Cached data available for key: {Key}", location);
+                return cachedWeather;
+            }
+            _logger.LogInformation("Cached data not available for key: {Key}. Get weather data from api", location);
             var isCordinates = WeatherHelper.IsLatLongPair(location, out double latitude, out double longitude);
             bool isLocationAvailable = false;
             bool isRequireDisplayName = false;
@@ -88,27 +102,18 @@ namespace WeatherApp.Service
             isRequireDisplayName = WeatherHelper.IsPostalCode(location);
             (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
             isRequireDisplayName = isCordinates || WeatherHelper.IsPostalCode(location);
-            //if (!isCordinates)
-            //{
-            //    isRequireDisplayName = WeatherHelper.IsPostalCode(location);
-            //    (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
-            //}
-            //else
-            //{ 
-            //    //var coords = location.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            //    //bool latAvailable = WeatherHelper.TryGetLatitude(coords[0], out latitude);
-            //    //bool longAvailabe = WeatherHelper.TryGetLatitude(coords[1], out longitude);
-            //    isLocationAvailable = isCordinates;
-            //    isRequireDisplayName = true;
-            //}
 
             if (isLocationAvailable)
             {
                 var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
                 currentWeather.IsLocationAvailable = isLocationAvailable;
                 currentWeather.Name = isRequireDisplayName && !string.IsNullOrWhiteSpace(displayName) ? displayName : currentWeather.Name;
-                return GetWeatherDataFromCurrentWeather(currentWeather, location, isRequireDisplayName);
+                var weatherData = GetWeatherDataFromCurrentWeather(currentWeather, location, isRequireDisplayName);
+                await _cacheService.SetAsync(location, weatherData, TimeSpan.FromMinutes(30));
+                return weatherData;
             }
+
+            _logger.LogInformation("Weather data not available for the key :{location}", location);
             return new Weather
             {
                 CityName = location,

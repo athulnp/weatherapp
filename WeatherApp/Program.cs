@@ -1,5 +1,6 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Serilog;
 using WeatherApp.IService;
 using WeatherApp.Service;
 
@@ -10,6 +11,15 @@ builder.Services.AddControllersWithViews();
 
 // Register DI Services  
 builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
+
+
+// Configure Serilog for logging
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/app-.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 builder.Services.AddHttpClient("weatherClient", client =>
 {
     client.BaseAddress = new Uri("https://api.openweathermap.org/");
@@ -29,6 +39,9 @@ builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefa
     options.LoginPath = "/admin/login";
     options.AccessDeniedPath = "/access-denied"; // optional  
 });
+builder.Services.AddMemoryCache();
+
+
 
 var app = builder.Build();
 

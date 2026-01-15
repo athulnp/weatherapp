@@ -1,83 +1,14 @@
-﻿@* @{  
-    ViewData["Title"] = "Home Page";  
-}  
-@model WeatherApp.Models.Weather
-<head>
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="d575bdbd-df71-4a5c-a1fb-cfcd93636824" type="text/javascript" async></script> 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262579139378205"
-            crossorigin="anonymous"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VC1P19E5S1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-VC1P19E5S1');
-    </script>
-</head>
-<div class="weather-container">
-    <div>
-        <header>
-            About Kairos Weather
-        </header>
-        <p>
-            Kairos Weather was created with a simple mission: to make weather information accessible, accurate, and easy to understand.
-            We believe weather plays a key role in daily life – from planning a trip to staying safe during storms. Our platform gathers real-time data from trusted sources and presents it in a clean, user-friendly format.
-
-            At Kairos Weather, we’re constantly improving our services to bring you:
-
-            Accurate forecasts powered by reliable APIs
-
-            Simple navigation across all devices
-
-            Useful tools to help you plan your day better
-
-            Our vision is to become your go-to destination for weather updates, trusted by users worldwide.
-        </p>
-    </div>
-    @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
-    {
-        <div class="weather-card">
-            <!-- Search Form moved inside the card -->
-            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-                <input type="text" name="CityName" placeholder="Enter location..." required />
-                <button type="submit">Search</button>
-            </form>
-
-            <div class="location">@Model.CityName</div>
-            <div class="temp">@Model.Temperature &deg;C</div>
-            <div class="meta">
-                <span>Feels Like: @Model.FeelsLike &deg;C</span>
-                <span>Max: @Model.TempMax &deg;C</span>
-                <span>Min: @Model.TempMin &deg;C</span>
-            </div>
-            <div class="description">@Model.Description</div>
-            <div class="meta">
-                <span>Humidity: @Model.Humidity%</span>
-                <span>Wind: @Model.WindSpeed km/h</span>
-            </div>
-            <div>
-                <img src="@Model.Icon" alt="Weather icon">
-            </div>
-        </div>
-    }
-    else
-    {
-        <!-- Show only the form if no model -->
-        <div class="weather-card">
-            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-                <input type="text" name="CityName" placeholder="Enter location..." required />
-                <button type="submit">Search</button>
-            </form>
-        </div>
-    }
-</div>
-
- *@
-
-
-
+﻿<script>
+    window.addEventListener("load", function () {
+        const result = document.getElementById("weather-result");
+    if (result) {
+        result.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        }
+    });
+</script>
 <div class="weather-container">
     <section class="about-section">
         <h2>About Kairos Weather</h2>
@@ -98,10 +29,6 @@
     </section>
 
     <div class="weather-card">
-        @* <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-            <input type="text" name="CityName" placeholder="Enter location..." required />
-            <button type="submit">Search</button>
-        </form> *@
         @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
         {
             <!-- Search Form moved inside the card -->
@@ -111,37 +38,41 @@
                 <button type="submit">Search</button>
             </form>
 
-            <div class="location">@Model.CityName</div>
-            if (Model.IsLocationAvailable)
-            {
-                <div class="temp">@Model.Temperature &deg;C</div>
-                <div class="meta">
-                    <span>Feels Like: @Model.FeelsLike &deg;C</span>
-                    <span>Max: @Model.TempMax &deg;C</span>
-                    <span>Min: @Model.TempMin &deg;C</span>
-                </div>
-                <div class="description">@Model.Description</div>
-                <div class="meta">
-                    <span>Humidity: @Model.Humidity%</span>
-                    <span>Wind: @Model.WindSpeed km/h</span>
-                </div>
-                <div>
-                    <img src="@Model.Icon" alt="Weather icon">
-                </div>
-            }
-            else
-            {
-                <div class="description">@Model.Description</div>
-            }
+            <div id="weather-result">
+                <div class="location">@Model.CityName</div>
 
-            
+                @if (Model.IsLocationAvailable)
+                {
+                    <div class="temp">@Model.Temperature &deg;C</div>
+
+                    <div class="meta">
+                        <span>Feels Like: @Model.FeelsLike &deg;C</span>
+                        <span>Max: @Model.TempMax &deg;C</span>
+                        <span>Min: @Model.TempMin &deg;C</span>
+                    </div>
+
+                    <div class="description">@Model.Description</div>
+
+                    <div class="meta">
+                        <span>Humidity: @Model.Humidity%</span>
+                        <span>Wind: @Model.WindSpeed km/h</span>
+                    </div>
+
+                    <img src="@Model.Icon" alt="Weather icon">
+                }
+                else
+                {
+                    <div class="description">@Model.Description</div>
+                }
+            </div>
+
         }
         else
         {
             <!-- Show only the form if no model -->
             <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
                 <label>Enter location or Postal Code or Coordinates(Lat,Long) to get the weather details</label>
-                <input type="text" name="CityName" placeholder="Enter location or Postal Code or Coordinates(Lat,Long)..." required  />
+                <input type="text" name="CityName" placeholder="Enter location or Postal Code or Coordinates(Lat,Long)..." required />
                 <button type="submit">Search</button>
             </form>
         }

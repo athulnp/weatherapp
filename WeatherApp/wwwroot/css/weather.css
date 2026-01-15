@@ -454,7 +454,7 @@ header {
     }
 
 /* 📱 Responsive Design */
-@media (max-width: 600px) {
+/*@media (max-width: 600px) {
     .weather-card {
         padding: 15px;
         width: 95%;
@@ -464,8 +464,8 @@ header {
         display: flex;
         justify-content: center;
         margin-bottom: 15px;
-        flex-wrap: nowrap; /* prevent wrapping */
-    }
+        flex-wrap: nowrap;*/ /* prevent wrapping */
+    /*}
 
         .weather-search-form input {
             padding: 10px 12px;
@@ -474,8 +474,8 @@ header {
             outline: none;
             flex: 1;
             min-width: 150px;
-            max-width: 220px; /* keeps it neat on mobile */
-        }
+            max-width: 220px;*/ /* keeps it neat on mobile */
+        /*}
 
         .weather-search-form button {
             background: #007bff;
@@ -490,27 +490,190 @@ header {
 
             .weather-search-form button:hover {
                 background: #0056b3;
-            }
+            }*/
 
     /* 📱 Mobile adjustments */
-    @media (max-width: 600px) {
+    /*@media (max-width: 600px) {
         .weather-card {
             padding: 15px;
             width: 95%;
         }
 
         .weather-search-form {
-            flex-wrap: nowrap; /* keep inline */
-        }
+            flex-wrap: nowrap;*/ /* keep inline */
+        /*}
 
             .weather-search-form input {
-                max-width: 200px; /* slightly smaller */
-                margin-bottom: 0; /* remove stacking margin */
+                max-width: 200px;*/ /* slightly smaller */
+                /*margin-bottom: 0;*/ /* remove stacking margin */
+            /*}
+
+            .weather-search-form button {
+                width: auto;*/ /* don’t stretch */
+            /*}
+    }*/
+
+
+
+    /* Reset & base */
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        margin: 0;
+        padding: 16px;
+        background: #f4f6f8;
+    }
+
+    /* Weather Card */
+.weather-card {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 32px 40px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+    /* Search Form */
+.weather-search-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 12px 12px;
+    align-items: center;
+}
+
+    .weather-search-form label {
+        grid-column: 1 / -1;
+        font-size: 14px;
+        color: #555;
+        text-align: left;
+    }
+
+    .weather-search-form input {
+        height: 48px;
+        padding: 0 14px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #dcdcdc;
+    }
+
+
+    .weather-search-form button {
+        height: 48px;
+        padding: 0 28px;
+        font-size: 16px;
+        border-radius: 8px;
+        background: #0d6efd;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+            .weather-search-form button:hover {
+                background-color: #005fcc;
+            }
+
+    /* Weather Info */
+.location {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.temp {
+    text-align: center;
+    font-size: 64px;
+    font-weight: 700;
+    color: #0d6efd;
+    line-height: 1;
+}
+.description {
+    text-align: center;
+    font-size: 16px;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+    /* Meta info */
+.meta {
+    display: flex;
+    justify-content: center;
+    gap: 1px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: #555;
+}
+
+    /* Weather icon */
+.weather-card img {
+    display: block;
+    margin: 24px auto 0;
+    width: 80px;
+}
+
+    /* Tablet and above */
+    @media (min-width: 600px) {
+        .weather-card {
+            max-width: 520px;
+            padding: 24px;
+        }
+
+        .weather-search-form {
+            flex-direction: row;
+            align-items: flex-end;
+        }
+
+            .weather-search-form label {
+                flex-basis: 100%;
+            }
+
+            .weather-search-form input {
+                flex: 1;
             }
 
             .weather-search-form button {
-                width: auto; /* don’t stretch */
+                width: 120px;
             }
+
+        .temp {
+            font-size: 56px;
+        }
+    }
+
+.weather-icon {
+    display: flex;
+    justify-content: center;
+}
+
+    /* Desktop */
+    @media (min-width: 1024px) {
+        .weather-card {
+            max-width: 640px;
+        }
+    }
+
+@media (max-width: 600px) {
+    .weather-card {
+        padding: 24px 16px;
+    }
+
+    .weather-search-form {
+        grid-template-columns: 1fr;
+    }
+
+        .weather-search-form button {
+            width: 100%;
+        }
+
+    .temp {
+        font-size: 52px;
     }
 }
+
 

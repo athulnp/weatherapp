@@ -25,20 +25,27 @@ builder.Services.AddHttpClient("weatherClient", client =>
     client.BaseAddress = new Uri("https://api.openweathermap.org/");
 });
 
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
-    options.Domain = builder.Configuration["Auth0:Domain"];
-    options.ClientId = builder.Configuration["Auth0:ClientId"];
-    options.CallbackPath = new PathString("/callback");
-    //options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
-});
+// Add Auth0 authentication only if configuration is present
+var auth0Domain = builder.Configuration["Auth0:Domain"];
+var auth0ClientId = builder.Configuration["Auth0:ClientId"];
 
-// Configure cookie settings separately  
-builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+if (!string.IsNullOrEmpty(auth0Domain) && !string.IsNullOrEmpty(auth0ClientId))
 {
-    options.LoginPath = "/admin/login";
-    options.AccessDeniedPath = "/access-denied"; // optional  
-});
+    builder.Services.AddAuth0WebAppAuthentication(options =>
+    {
+        options.Domain = auth0Domain;
+        options.ClientId = auth0ClientId;
+        options.CallbackPath = new PathString("/callback");
+    });
+
+    // Configure cookie settings separately  
+    builder.Services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+    {
+        options.LoginPath = "/admin/login";
+        options.AccessDeniedPath = "/access-denied";
+    });
+}
+
 builder.Services.AddMemoryCache();
 
 
@@ -59,8 +66,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
+// Use authentication and authorization only if Auth0 is configured
+if (!string.IsNullOrEmpty(auth0Domain) && !string.IsNullOrEmpty(auth0ClientId))
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+}
 
 app.MapControllerRoute(
     name: "default",

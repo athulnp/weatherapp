@@ -2,38 +2,117 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WCBGDMDM96"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-WCBGDMDM96');
     </script>
+    
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WeatherApp</title>
-    <meta name="description" content="Get live weather updates, temperature, humidity, and wind speed for your city." />
-    <meta name="keywords" content="weather, forecast, live weather, temperature, humidity, wind speed" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- Primary Meta Tags -->
+    <title>@ViewData["Title"] - Kairos Weather | Live Weather Updates & Forecast</title>
+    <meta name="title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates & Forecast" />
+    <meta name="description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with clean, user-friendly interface." />
+    <meta name="keywords" content="weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data" />
     <meta name="author" content="Kairos Weather" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="canonical" href="https://kairosweather.info" />
-    <!-- Open Graph Meta Tags for social sharing -->
-    <meta property="og:title" content="Live Weather App" />
-    <meta property="og:description" content="Accurate weather updates for your city." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="theme-color" content="#667eea" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    
+    <!-- Alternate Language Links -->
+    <link rel="alternate" hreflang="en" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <link rel="alternate" hreflang="x-default" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kairosweather.info" />
-    @* <meta property="og:image" content="https://kairosweather.info/assets/weather-preview.png" /> *@
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Live Weather App" />
-    <meta name="twitter:description" content="Accurate weather updates for your city." />
-    @* <meta name="twitter:image" content="https://www.yourdomain.com/assets/weather-preview.png" /> *@
+    <meta property="og:url" content="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <meta property="og:title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates" />
+    <meta property="og:description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide." />
+    <meta property="og:image" content="https://kairosweather.info/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kairos Weather App - Live Weather Updates" />
+    <meta property="og:site_name" content="Kairos Weather" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <meta property="twitter:title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates" />
+    <meta property="twitter:description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide." />
+    <meta property="twitter:image" content="https://kairosweather.info/assets/twitter-image.png" />
+    <meta property="twitter:site" content="@@KairosWeather" />
+    <meta property="twitter:creator" content="@@KairosWeather" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/weather.css" asp-append-version="true" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WebSite",
+        "name": "Kairos Weather",
+        "url": "https://kairosweather.info",
+        "description": "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide.",
+        "potentialAction": {
+            "@@type": "SearchAction",
+            "target": "https://kairosweather.info/?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+            "@@type": "Organization",
+            "name": "Kairos Weather",
+            "url": "https://kairosweather.info",
+            "logo": {
+                "@@type": "ImageObject",
+                "url": "https://kairosweather.info/assets/logo.png",
+                "width": 512,
+                "height": 512
+            }
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "Organization",
+        "name": "Kairos Weather",
+        "url": "https://kairosweather.info",
+        "logo": "https://kairosweather.info/assets/logo.png",
+        "description": "Providing accurate and reliable weather information worldwide.",
+        "sameAs": [
+            "https://twitter.com/KairosWeather",
+            "https://facebook.com/KairosWeather",
+            "https://linkedin.com/company/kairosweather"
+        ],
+        "contactPoint": {
+            "@@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "contact@kairosweather.info",
+            "availableLanguage": "English"
+        }
+    }
+    </script>
 </head>
 <body>
     <div class="page-container">
@@ -50,8 +129,6 @@
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About">About</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="PrivacyPolicy">Privacy</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Terms">Terms</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact">Contact</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
@@ -80,9 +157,45 @@
 
         <footer class="border-top footer text-muted site-footer">
             <div class="container">
-                &copy; 2025 - KairosWeather | <a href="/Static/PrivacyPolicy">Privacy</a>
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Kairos Weather</h4>
+                        <p>Accurate weather information for locations worldwide.</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="/">Home</a></li>
+                            <li><a href="/Static/About">About</a></li>
+                            <li><a href="/Static/Contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <ul>
+                            <li><a href="/Static/PrivacyPolicy">Privacy Policy</a></li>
+                            <li><a href="/Static/Terms">Terms of Service</a></li>
+                            <li><a href="/Static/PrivacyPolicy#cookies">Cookie Policy</a></li>
+                        </ul>
+                    </div>AdDisclosure">Ad Disclosure</a></li>
+                            <li><a href="/Static/
+                </div>
+                <div class="footer-bottom">
+                    &copy; 2025 Kairos Weather. All rights reserved.
+                </div>
             </div>
         </footer>
+        
+        <!-- Cookie Consent Banner -->
+        <div id="cookie-consent" class="cookie-consent-banner">
+            <div class="cookie-consent-content">
+                <p>We use cookies to enhance your experience and serve personalized ads. By continuing to use this site, you consent to our use of cookies. <a href="/Static/PrivacyPolicy#cookies" target="_blank">Learn more</a></p>
+                <div class="cookie-buttons">
+                    <button id="accept-cookies" class="btn btn-primary">Accept</button>
+                    <button id="decline-cookies" class="btn btn-secondary">Decline</button>
+                </div>
+            </div>
+        </div>
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,29 @@
+# robots.txt for Kairos Weather
+# https://kairosweather.info
+
+User-agent: *
+Allow: /
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /Account/
+Disallow: /Identity/
+
+# Disallow development files
+Disallow: /bin/
+Disallow: /obj/
+Disallow: /Properties/
+Disallow: /.vs/
+Disallow: /.github/
+
+# Allow specific important files
+Allow: /css/
+Allow: /js/
+Allow: /lib/
+Allow: /images/
+
+# Sitemap location
+Sitemap: https://kairosweather.info/sitemap.xml
+
+# Crawl delay (optional, adjust based on server capacity)
+Crawl-delay: 1

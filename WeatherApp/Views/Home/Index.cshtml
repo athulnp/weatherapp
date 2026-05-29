@@ -1,89 +1,250 @@
-﻿<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VC1P19E5S1"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+﻿@{
+    ViewData["Title"] = "Home";
+}
 
-    gtag('config', 'G-VC1P19E5S1');
-</script>
-<script>
-    window.addEventListener("load", function () {
-        const result = document.getElementById("weather-result");
-    if (result) {
-        result.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+<!-- JSON-LD Structured Data for Weather -->
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WeatherForecast",
+        "name": "@Model.CityName",
+        "description": "@Model.Description",
+        "temperature": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.Temperature",
+            "unitCode": "CEL"
+        },
+        "feelsLike": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.FeelsLike",
+            "unitCode": "CEL"
+        },
+        "tempMax": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.TempMax",
+            "unitCode": "CEL"
+        },
+        "tempMin": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.TempMin",
+            "unitCode": "CEL"
+        },
+        "humidity": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.Humidity",
+            "unitCode": "PCT"
+        },
+        "windSpeed": {
+            "@@type": "QuantitativeValue",
+            "value": "@Model.WindSpeed",
+            "unitCode": "KMH"
+        },
+        "weatherCondition": "@Model.Description",
+        "dateIssued": "@DateTime.UtcNow.ToString("o")",
+        "location": {
+            "@@type": "Place",
+            "name": "@Model.CityName"
         }
-    });
+    }
+    </script>
+}
+
+<!-- BreadcrumbList Structured Data -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "BreadcrumbList",
+    "itemListElement": [{
+        "@@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://kairosweather.info"
+    }]
+}
 </script>
-<div class="weather-container">
-    <section class="about-section">
-        <h2>About Kairos Weather</h2>
-        <p>
-            Kairos Weather was created with a simple mission: to make weather information accessible, accurate, and easy to understand.
-            We believe weather plays a key role in daily life – from planning a trip to staying safe during storms. Our platform gathers
-            real-time data from trusted sources and presents it in a clean, user-friendly format.
-        </p>
-        <p>
-            At Kairos Weather, we’re constantly improving our services to bring you:<br />
-            • Accurate forecasts powered by reliable APIs<br />
-            • Simple navigation across all devices<br />
-            • Useful tools to help you plan your day better
-        </p>
-        <p>
-            Our vision is to become your go-to destination for weather updates, trusted by users worldwide.
-        </p>
-    </section>
 
-    <div class="weather-card">
-        @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
-        {
-            <!-- Search Form moved inside the card -->
-            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-                <label>Enter location or Postal Code or Coordinates(Lat,Long) to get the weather details</label>
-                <input type="text" name="CityName" placeholder="Enter location or Postal Code or Coordinates..." required />
-                <button type="submit">Search</button>
-            </form>
-
-            <div id="weather-result">
-                <div class="location">@Model.CityName</div>
-
-                @if (Model.IsLocationAvailable)
-                {
-                    <div class="temp">@Model.Temperature &deg;C</div>
-
-                    <div class="meta">
-                        <span>Feels Like: @Model.FeelsLike &deg;C</span>
-                        <span>Max: @Model.TempMax &deg;C</span>
-                        <span>Min: @Model.TempMin &deg;C</span>
-                    </div>
-
-                    <div class="description">@Model.Description</div>
-
-                    <div class="meta">
-                        <span>Humidity: @Model.Humidity%</span>
-                        <span>Wind: @Model.WindSpeed km/h</span>
-                    </div>
-
-                    <img src="@Model.Icon" alt="Weather icon">
-                }
-                else
-                {
-                    <div class="description">@Model.Description</div>
-                }
+<!-- Hero Section with Search -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <span class="hero-icon">🌤️</span>
+            Kairos Weather
+        </h1>
+        <p class="hero-subtitle">Real-time weather updates for any location worldwide</p>
+        
+        <!-- Search Form -->
+        <form method="post" asp-controller="Home" asp-action="Index" class="hero-search-form" role="search" aria-label="Weather search">
+            <div class="search-input-wrapper">
+                <input type="text" name="CityName" placeholder="Search city, postal code, or coordinates..." required aria-required="true" autocomplete="off" class="search-input" />
+                <button type="submit" class="search-button" aria-label="Search weather">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                </button>
             </div>
-
-        }
-        else
-        {
-            <!-- Show only the form if no model -->
-            <form method="post" asp-controller="Home" asp-action="Index" class="weather-search-form">
-                <label>Enter location or Postal Code or Coordinates(Lat,Long) to get the weather details</label>
-                <input type="text" name="CityName" placeholder="Enter location or Postal Code or Coordinates(Lat,Long)..." required />
-                <button type="submit">Search</button>
-            </form>
-        }
+            <p class="search-hint">Try: "Kochi", "682001", or "9.9312,76.2673"</p>
+        </form>
     </div>
-</div>
+</section>
+
+<!-- Search Results Section (Priority - Just below search bar) -->
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName))
+{
+    <section class="weather-display-section search-results-section">
+        <div class="weather-display-container">
+            <div class="section-header">
+                <h2 class="section-title">🔍 Search Results</h2>
+                <span class="section-subtitle">@Model.CityName</span>
+            </div>
+            
+            @if (Model.IsLocationAvailable)
+            {
+                <div class="weather-card search-result-card">
+                    <div class="weather-card-content">
+                        <div class="weather-card-left">
+                            <div class="weather-main-info">
+                                <h3 class="weather-location">@Model.CityName</h3>
+                                <p class="weather-description">@Model.Description</p>
+                            </div>
+                            
+                            <div class="weather-temperature">
+                                <span class="temperature-value">@Math.Round(Model.Temperature)</span>
+                                <span class="temperature-unit">°C</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-card-right">
+                            <img src="@Model.Icon" alt="@Model.Description weather icon" class="weather-icon" />
+                        </div>
+                    </div>
+                    
+                    <div class="weather-details-grid">
+                        <div class="weather-detail-item">
+                            <span class="detail-icon">🌡️</span>
+                            <div class="detail-info">
+                                <span class="detail-label">Feels Like</span>
+                                <span class="detail-value">@Math.Round(Model.FeelsLike)°C</span>
+                            </div>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="detail-icon">⬆️</span>
+                            <div class="detail-info">
+                                <span class="detail-label">High</span>
+                                <span class="detail-value">@Math.Round(Model.TempMax)°C</span>
+                            </div>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="detail-icon">⬇️</span>
+                            <div class="detail-info">
+                                <span class="detail-label">Low</span>
+                                <span class="detail-value">@Math.Round(Model.TempMin)°C</span>
+                            </div>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="detail-icon">💧</span>
+                            <div class="detail-info">
+                                <span class="detail-label">Humidity</span>
+                                <span class="detail-value">@Model.Humidity%</span>
+                            </div>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="detail-icon">💨</span>
+                            <div class="detail-info">
+                                <span class="detail-label">Wind</span>
+                                <span class="detail-value">@Model.WindSpeed km/h</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="weather-error-card">
+                    <div class="error-icon">❌</div>
+                    <h3>Location Not Found</h3>
+                    <p>@Model.Description</p>
+                    <button onclick="window.location.reload()" class="retry-button">Try Again</button>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- Current Location Weather Section (Secondary - Below search results) -->
+<section class="weather-display-section current-location-section">
+    <div class="weather-display-container">
+        <div class="section-header">
+            <h2 class="section-title">📍 Your Location</h2>
+        </div>
+        
+        <!-- Location Loading -->
+        <div id="location-loading" class="weather-loading-card" style="display: none;">
+            <div class="spinner"></div>
+            <p>Getting your location...</p>
+        </div>
+        
+        <!-- Location Error -->
+        <div id="location-error" class="weather-error-card" style="display: none;"></div>
+        
+        <!-- Current Location Weather -->
+        <div id="current-location-weather" class="weather-card" style="display: none;"></div>
+        
+        <!-- Empty State -->
+        <div id="current-location-empty" class="weather-empty-card">
+            <div class="empty-icon">📍</div>
+            <p>Get weather for your current location</p>
+            <button id="get-current-location" class="location-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Use My Location
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<article class="about-section">
+    <div class="about-container">
+        <div class="about-content">
+            <h2 class="section-title">About Kairos Weather</h2>
+            <p>
+                Kairos Weather was created with a simple mission: to make weather information accessible, accurate, and easy to understand.
+                We believe weather plays a key role in daily life – from planning a trip to staying safe during storms.
+            </p>
+            <p>
+                Our platform gathers real-time data from trusted sources and presents it in a clean, user-friendly format.
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Coverage</h3>
+                <p>Weather data for locations worldwide</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Updates</h3>
+                <p>Instant weather information</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Accurate Data</h3>
+                <p>Powered by reliable APIs</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobile Friendly</h3>
+                <p>Works perfectly on all devices</p>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+

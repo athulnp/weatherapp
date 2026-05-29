@@ -55,9 +55,15 @@ namespace WeatherApp.Service
             }
             var firstLocation = geoLocationList.FirstOrDefault();
 
-            var currentWeather = await GetWeatherByGeoLocation(firstLocation.Latitude, firstLocation.Longitude);
+            var weatherData = await GetWeatherByGeoLocation(firstLocation.Latitude, firstLocation.Longitude);
+            
+            // Set city name from the location parameter if it's not already set
+            if (string.IsNullOrWhiteSpace(weatherData.CityName))
+            {
+                weatherData.CityName = location;
+            }
 
-            return GetWeatherDataFromCurrentWeather(currentWeather, location);
+            return weatherData;
 
         }
 
@@ -99,16 +105,45 @@ namespace WeatherApp.Service
             bool isLocationAvailable = false;
             bool isRequireDisplayName = false;
             string displayName = string.Empty;
-            isRequireDisplayName = WeatherHelper.IsPostalCode(location);
-            (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
-            isRequireDisplayName = isCordinates || WeatherHelper.IsPostalCode(location);
+            
+            if (isCordinates)
+            {
+                // If coordinates are provided, skip geocoding and directly fetch weather
+                isLocationAvailable = true;
+                isRequireDisplayName = true;
+            }
+            else
+            {
+                isRequireDisplayName = WeatherHelper.IsPostalCode(location);
+                (latitude, longitude, isLocationAvailable, displayName) = await GetCoordinates(location);
+                isRequireDisplayName = isRequireDisplayName || WeatherHelper.IsPostalCode(location);
+            }
 
             if (isLocationAvailable)
             {
-                var currentWeather = await GetWeatherByGeoLocation(latitude, longitude);
-                currentWeather.IsLocationAvailable = isLocationAvailable;
-                currentWeather.Name = isRequireDisplayName && !string.IsNullOrWhiteSpace(displayName) ? displayName : currentWeather.Name;
-                var weatherData = GetWeatherDataFromCurrentWeather(currentWeather, location, isRequireDisplayName);
+                var weatherData = await GetWeatherByGeoLocation(latitude, longitude);
+                weatherData.IsLocationAvailable = isLocationAvailable;
+                
+                // Set city name based on search type
+                if (isCordinates)
+                {
+                    // For coordinates, use the API's returned city name
+                    weatherData.CityName = weatherData.CityName;
+                }
+                else if (WeatherHelper.IsPostalCode(location))
+                {
+                    // For postal codes, use the displayName from geocoding
+                    if (!string.IsNullOrWhiteSpace(displayName))
+                    {
+                        weatherData.CityName = displayName;
+                    }
+                }
+                else
+                {
+                    // For city name searches, use the original search input with first letter capitalized
+                    weatherData.CityName = char.ToUpper(location[0]) + location.Substring(1);
+                }
+                
                 await _cacheService.SetAsync(location, weatherData, TimeSpan.FromMinutes(30));
                 return weatherData;
             }
@@ -128,7 +163,7 @@ namespace WeatherApp.Service
             };
         }
 
-        private async Task<CurrentWeather> GetWeatherByGeoLocation(double latitude, double longitude)
+        private async Task<Weather> GetWeatherByGeoLocation(double latitude, double longitude)
         {
             var currentWeather = new CurrentWeather();
 
@@ -153,37 +188,74 @@ namespace WeatherApp.Service
             {
                 
             }
-            return currentWeather ?? new CurrentWeather();
+            
+            // Convert CurrentWeather to Weather object
+            if (currentWeather != null && currentWeather.Main != null && currentWeather.Weather != null && currentWeather.Weather.Count > 0)
+            {
+                var icon = currentWeather.Weather.FirstOrDefault()?.Icon ?? string.Empty;
+                var iconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
+                
+                return new Weather
+                {
+                    CityName = currentWeather.Name ?? string.Empty,
+                    Temperature = currentWeather.Main.Temp,
+                    TempMax = currentWeather.Main.TempMax,
+                    TempMin = currentWeather.Main.TempMin,
+                    FeelsLike = currentWeather.Main.FeelsLike,
+                    Description = currentWeather.Weather.FirstOrDefault()?.Description ?? string.Empty,
+                    Humidity = currentWeather.Main.Humidity,
+                    WindSpeed = currentWeather.Wind?.Speed ?? 0.0,
+                    Icon = iconUrl,
+                    IsLocationAvailable = true
+                };
+            }
+            
+            return new Weather
+            {
+                CityName = string.Empty,
+                Temperature = 0,
+                TempMax = 0,
+                TempMin = 0,
+                FeelsLike = 0,
+                Description = "Weather data not available",
+                Humidity = 0,
+                WindSpeed = 0,
+                Icon = string.Empty,
+                IsLocationAvailable = false
+            };
         }
 
         public async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinates(string location)
         {
             var islocationAvailable = false;
 
-            //Get the coordinates of the location from nominatim API
-            var baseUrl = _configuration["GeoCodingApis:Nominatim:BaseUrl"];
-            if (!string.IsNullOrWhiteSpace(baseUrl))
+            // Use OpenWeatherMap geocoding API for more accurate location results
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://api.openweathermap.org/");
+            
+            // Use OpenWeatherMap geocoding API with limit and country filter for better accuracy
+            string url = $"geo/1.0/direct?q={Uri.EscapeDataString(location)}&limit=5&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
             {
-                var qSearch = _configuration["GeoCodingApis:Nominatim:qsearch"];
-                qSearch = qSearch != null ? string.Format(qSearch,location) : qSearch;
-                var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri(baseUrl);
-                client.DefaultRequestHeaders.Add(
-                                                "User-Agent",
-                                                "User-Agent (athulonline13@gmail.com)");
-
-                HttpResponseMessage response = await client.GetAsync(qSearch);
-
-                if (response.IsSuccessStatusCode)
+                string json = await response.Content.ReadAsStringAsync();
+                var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
+                
+                if (locationData != null && locationData.Count > 0)
                 {
-                    string json = await response.Content.ReadAsStringAsync();
-                    var locationData = JsonConvert.DeserializeObject<List<NominatimLocation>>(json);
-                    var defaultLocation = locationData?.FirstOrDefault();
-
-                    if (defaultLocation != null)
+                    // Try to find the most relevant match
+                    var bestMatch = locationData.FirstOrDefault();
+                    
+                    if (bestMatch != null)
                     {
                         islocationAvailable = true;
-                        return (Convert.ToDouble(defaultLocation.Latitude), Convert.ToDouble(defaultLocation.Longitude), islocationAvailable, defaultLocation.DisplayName);
+                        var displayName = !string.IsNullOrEmpty(bestMatch.State) 
+                            ? $"{bestMatch.Name}, {bestMatch.State}, {bestMatch.Country}"
+                            : $"{bestMatch.Name}, {bestMatch.Country}";
+                            
+                        return (bestMatch.Latitude, bestMatch.Longitude, islocationAvailable, displayName);
                     }
                 }
             }

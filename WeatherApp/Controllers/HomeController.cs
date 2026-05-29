@@ -30,6 +30,22 @@ namespace WeatherApp.Controllers
             return View(weatherData);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetWeatherByCoordinates(double lat, double lon)
+        {
+            try
+            {
+                var coordinates = $"{lat},{lon}";
+                var weatherData = await _weatherService.GetWeatherAsync(coordinates);
+                return Json(new { success = true, data = weatherData });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting weather by coordinates");
+                return Json(new { success = false, error = "Failed to get weather data" });
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

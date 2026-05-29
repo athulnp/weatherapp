@@ -1,8 +1,10 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.ResponseCompression;
 using Serilog;
 using WeatherApp.IService;
 using WeatherApp.Service;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,30 @@ builder.Services.AddControllersWithViews();
 // Register DI Services  
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
+
+// Add Response Compression
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+    options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[]
+    {
+        "text/css",
+        "application/javascript",
+        "image/svg+xml"
+    });
+});
+
+builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Optimal;
+});
+
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+{
+    options.Level = CompressionLevel.Optimal;
+});
 
 
 // Configure Serilog for logging
@@ -71,7 +97,23 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStaticFiles();
+// Add Response Compression
+app.UseResponseCompression();
+
+// Add Static Files with Caching
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // Cache static assets for 1 year
+        var headers = ctx.Context.Response.GetTypedHeaders();
+        headers.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+        {
+            Public = true,
+            MaxAge = TimeSpan.FromDays(365)
+        };
+    }
+});
 
 app.UseRouting();
 

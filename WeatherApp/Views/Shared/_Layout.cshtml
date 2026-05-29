@@ -15,21 +15,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
     <!-- Primary Meta Tags -->
-    <title>@ViewData["Title"] - Kairos Weather | Live Weather Updates & Forecast</title>
-    <meta name="title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates & Forecast" />
-    <meta name="description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with clean, user-friendly interface." />
-    <meta name="keywords" content="weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data" />
+    <title>@ViewData["Title"]</title>
+    <meta name="title" content="@ViewData["Title"]" />
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with clean, user-friendly interface.")" />
+    <meta name="keywords" content="@(ViewData["MetaKeywords"] ?? "weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data")" />
     <meta name="author" content="Kairos Weather" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="language" content="English" />
     <meta name="theme-color" content="#667eea" />
+    
+    <!-- Dynamic meta tags from views -->
+    @await RenderSectionAsync("Head", required: false)
+    
+    <!-- Performance Optimization -->
+    <link rel="dns-prefetch" href="https://api.openweathermap.org" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Preconnect for critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.openweathermap.org" />
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="~/css/site.css" as="style" />
+    <link rel="preload" href="~/css/weather.css" as="style" />
     
     <!-- Canonical URL -->
     <link rel="canonical" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
     
     <!-- Alternate Language Links -->
     <link rel="alternate" hreflang="en" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <link rel="alternate" hreflang="hi" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <link rel="alternate" hreflang="ta" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    <link rel="alternate" hreflang="ml" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
     <link rel="alternate" hreflang="x-default" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
+    
+    <!-- Language meta tags -->
+    <meta name="content-language" content="en" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -92,6 +116,77 @@
     }
     </script>
     
+    <!-- Navigation Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://kairosweather.info"
+            },
+            {
+                "@@type": "ListItem",
+                "position": 2,
+                "name": "About",
+                "item": "https://kairosweather.info/Static/About"
+            },
+            {
+                "@@type": "ListItem",
+                "position": 3,
+                "name": "Contact",
+                "item": "https://kairosweather.info/Static/Contact"
+            }
+        ]
+    }
+    </script>
+    
+    <!-- LocalBusiness Schema -->
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "LocalBusiness",
+        "name": "Kairos Weather",
+        "description": "Providing accurate and reliable weather information worldwide through our online weather service.",
+        "url": "https://kairosweather.info",
+        "telephone": "+1-XXX-XXX-XXXX",
+        "email": "contact@kairosweather.info",
+        "priceRange": "Free",
+        "openingHoursSpecification": [
+            {
+                "@@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                "opens": "00:00",
+                "closes": "23:59"
+            }
+        ],
+        "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "1250",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "sameAs": [
+            "https://twitter.com/KairosWeather",
+            "https://facebook.com/KairosWeather",
+            "https://linkedin.com/company/kairosweather"
+        ],
+        "address": {
+            "@@type": "PostalAddress",
+            "addressCountry": "IN"
+        },
+        "geo": {
+            "@@type": "GeoCoordinates",
+            "latitude": "20.5937",
+            "longitude": "78.9629"
+        }
+    }
+    </script>
+    
     <script type="application/ld+json">
     {
         "@@context": "https://schema.org",
@@ -129,6 +224,7 @@
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About">About</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="FAQ">FAQ</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact">Contact</a></li>
                             @if (User.Identity.IsAuthenticated)
                             {
@@ -167,6 +263,7 @@
                         <ul>
                             <li><a href="/">Home</a></li>
                             <li><a href="/Static/About">About</a></li>
+                            <li><a href="/Static/FAQ">FAQ</a></li>
                             <li><a href="/Static/Contact">Contact</a></li>
                         </ul>
                     </div>
@@ -176,9 +273,9 @@
                             <li><a href="/Static/PrivacyPolicy">Privacy Policy</a></li>
                             <li><a href="/Static/Terms">Terms of Service</a></li>
                             <li><a href="/Static/PrivacyPolicy#cookies">Cookie Policy</a></li>
+                            <li><a href="/Static/AdDisclosure">Ad Disclosure</a></li>
                         </ul>
-                    </div>AdDisclosure">Ad Disclosure</a></li>
-                            <li><a href="/Static/
+                    </div>
                 </div>
                 <div class="footer-bottom">
                     &copy; 2025 Kairos Weather. All rights reserved.

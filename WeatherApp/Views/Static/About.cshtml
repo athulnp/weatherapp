@@ -1,7 +1,46 @@
 ﻿
 @{
     ViewData["Title"] = "About Us";
+    ViewData["MetaDescription"] = "Learn about Kairos Weather - your reliable source for accurate, real-time weather information worldwide. Our mission, technology, and commitment to quality.";
+    ViewData["MetaKeywords"] = "Kairos Weather about, weather service mission, weather technology, weather accuracy, global weather coverage";
 }
+
+@section Head {
+    <meta name="description" content="@ViewData["MetaDescription"]" />
+    <meta name="keywords" content="@ViewData["MetaKeywords"]" />
+}
+
+<!-- Article Structured Data -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "Article",
+    "headline": "About Kairos Weather - Your Reliable Weather Information Source",
+    "description": "Learn about Kairos Weather's mission, technology, and commitment to providing accurate weather information worldwide.",
+    "image": "https://kairosweather.info/assets/logo.png",
+    "author": {
+        "@@type": "Organization",
+        "name": "Kairos Weather",
+        "url": "https://kairosweather.info"
+    },
+    "publisher": {
+        "@@type": "Organization",
+        "name": "Kairos Weather",
+        "logo": {
+            "@@type": "ImageObject",
+            "url": "https://kairosweather.info/assets/logo.png",
+            "width": 512,
+            "height": 512
+        }
+    },
+    "datePublished": "2025-01-01",
+    "dateModified": "2025-01-15",
+    "mainEntityOfPage": {
+        "@@type": "WebPage",
+        "@@id": "https://kairosweather.info/Static/About"
+    }
+}
+</script>
 
 <div class="container content-page">
     <h1>About Kairos Weather</h1>

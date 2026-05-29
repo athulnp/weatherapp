@@ -1,0 +1,206 @@
+@{
+    ViewData["Title"] = "Frequently Asked Questions - Kairos Weather";
+    ViewData["MetaDescription"] = "Find answers to common questions about Kairos Weather. Learn how to check weather data, accuracy, supported locations, and more.";
+    ViewData["MetaKeywords"] = "FAQ, weather app questions, Kairos Weather help, weather data accuracy, how to use weather app, weather forecast questions";
+}
+
+@section Head {
+    <meta name="description" content="@ViewData["MetaDescription"]" />
+    <meta name="keywords" content="@ViewData["MetaKeywords"]" />
+}
+
+<!-- FAQ Structured Data for Rich Snippets -->
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "FAQPage",
+    "mainEntity": [
+        {
+            "@@type": "Question",
+            "name": "How do I check the weather for my location?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Simply enter your city name, postal code, or coordinates in the search box on our homepage. You can also use the 'Use My Location' button to automatically detect your current location using GPS."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Is Kairos Weather free to use?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes, Kairos Weather is completely free to use. We provide accurate real-time weather data without any subscription fees or hidden charges."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "How accurate is the weather data?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Our weather data is sourced from OpenWeatherMap API, which provides highly accurate and up-to-date weather information from reliable meteorological sources worldwide. Data is updated in real-time for the most current conditions."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Can I check weather for any location worldwide?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes, Kairos Weather supports weather data for locations worldwide. You can search for cities, postal codes, or coordinates from any country. Our geocoding system supports Indian postal codes, US ZIP codes, and international locations."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "What weather information is provided?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "We provide comprehensive weather data including current temperature, feels-like temperature, humidity percentage, wind speed, weather conditions, and other meteorological data for your selected location."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Why is my postal code not showing the exact location?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "For Indian postal codes, we use multiple geocoding APIs including Nominatim and PostalPincode API to provide the most accurate location data. If you're seeing incorrect results, try searching by city name or coordinates instead."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "How often is the weather data updated?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Weather data is updated in real-time whenever you perform a search. Our data comes from OpenWeatherMap which updates their information every few minutes from thousands of weather stations worldwide."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Can I save my favorite locations?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Currently, we don't have a favorites feature, but we're working on adding this functionality soon. You can bookmark your frequently searched locations using your browser's bookmark feature."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Is my location data private?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes, we respect your privacy. When you use the 'Use My Location' feature, your location data is only used to fetch weather information and is not stored or shared with third parties. Please review our Privacy Policy for more details."
+            }
+        },
+        {
+            "@@type": "Question",
+            "name": "Can I use Kairos Weather on mobile devices?",
+            "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Yes, Kairos Weather is fully responsive and works perfectly on mobile devices, tablets, and desktops. Our design is optimized for all screen sizes for the best user experience."
+            }
+        }
+    ]
+}
+</script>
+
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Frequently Asked Questions</h1>
+        <p class="hero-subtitle">Find answers to common questions about Kairos Weather</p>
+    </div>
+</section>
+
+<section class="about-section">
+    <div class="container">
+        <div class="faq-container">
+            <h2>General Questions</h2>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">How do I check the weather for my location?</h3>
+                <p class="faq-answer">Simply enter your city name, postal code, or coordinates in the search box on our homepage. You can also use the 'Use My Location' button to automatically detect your current location using GPS.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Is Kairos Weather free to use?</h3>
+                <p class="faq-answer">Yes, Kairos Weather is completely free to use. We provide accurate real-time weather data without any subscription fees or hidden charges.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">How accurate is the weather data?</h3>
+                <p class="faq-answer">Our weather data is sourced from OpenWeatherMap API, which provides highly accurate and up-to-date weather information from reliable meteorological sources worldwide. Data is updated in real-time for the most current conditions.</p>
+            </div>
+            
+            <h2>Location Support</h2>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Can I check weather for any location worldwide?</h3>
+                <p class="faq-answer">Yes, Kairos Weather supports weather data for locations worldwide. You can search for cities, postal codes, or coordinates from any country. Our geocoding system supports Indian postal codes, US ZIP codes, and international locations.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Why is my postal code not showing the exact location?</h3>
+                <p class="faq-answer">For Indian postal codes, we use multiple geocoding APIs including Nominatim and PostalPincode API to provide the most accurate location data. If you're seeing incorrect results, try searching by city name or coordinates instead.</p>
+            </div>
+            
+            <h2>Weather Data</h2>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">What weather information is provided?</h3>
+                <p class="faq-answer">We provide comprehensive weather data including current temperature, feels-like temperature, humidity percentage, wind speed, weather conditions, and other meteorological data for your selected location.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">How often is the weather data updated?</h3>
+                <p class="faq-answer">Weather data is updated in real-time whenever you perform a search. Our data comes from OpenWeatherMap which updates their information every few minutes from thousands of weather stations worldwide.</p>
+            </div>
+            
+            <h2>Features & Privacy</h2>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Can I save my favorite locations?</h3>
+                <p class="faq-answer">Currently, we don't have a favorites feature, but we're working on adding this functionality soon. You can bookmark your frequently searched locations using your browser's bookmark feature.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Is my location data private?</h3>
+                <p class="faq-answer">Yes, we respect your privacy. When you use the 'Use My Location' feature, your location data is only used to fetch weather information and is not stored or shared with third parties. Please review our Privacy Policy for more details.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">Can I use Kairos Weather on mobile devices?</h3>
+                <p class="faq-answer">Yes, Kairos Weather is fully responsive and works perfectly on mobile devices, tablets, and desktops. Our design is optimized for all screen sizes for the best user experience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+    
+    .faq-container h2 {
+        color: #667eea;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+    
+    .faq-item {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .faq-question {
+        color: #333;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
+        font-weight: 600;
+    }
+    
+    .faq-answer {
+        color: #666;
+        line-height: 1.6;
+    }
+</style>

@@ -23,6 +23,15 @@ Log.Logger = new LoggerConfiguration()
 builder.Services.AddHttpClient("weatherClient", client =>
 {
     client.BaseAddress = new Uri("https://api.openweathermap.org/");
+}).ConfigureHttpMessageHandlerBuilder(builder =>
+{
+    // Disable SSL certificate validation for development
+    if (!builder.Name.Contains("production"))
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+        builder.PrimaryHandler = handler;
+    }
 });
 
 // Add Auth0 authentication only if configuration is present

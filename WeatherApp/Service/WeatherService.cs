@@ -14,12 +14,16 @@ namespace WeatherApp.Service
         private readonly IConfiguration _configuration;
         private readonly ICacheService _cacheService;
         private readonly ILogger<WeatherService> _logger;
+        private Dictionary<string, (double lat, double lon, string name)> _postalCodeCache;
+
         public WeatherService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ICacheService cacheService, ILogger<WeatherService> logger)
         {
             _httpClientFactory = httpClientFactory ;
             _configuration = configuration;
             _cacheService = cacheService;
             _logger = logger;
+            _postalCodeCache = new Dictionary<string, (double, double, string)>();
+            _ = LoadPostalCodesFromFile(); // Fire and forget
         }
 
         // Implement methods from IWeatherService here
@@ -229,69 +233,272 @@ namespace WeatherApp.Service
         {
             var islocationAvailable = false;
 
-            // Use OpenWeatherMap geocoding API for more accurate location results
-            var client = _httpClientFactory.CreateClient();
-            client.BaseAddress = new Uri("https://api.openweathermap.org/");
-            
             // Check if location is a postal code (numeric, 5-6 digits)
-            string url;
             if (WeatherHelper.IsPostalCode(location))
             {
-                // For postal codes, add country code (IN for India) to improve accuracy
-                url = $"geo/1.0/zip?zip={Uri.EscapeDataString(location)},IN&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+                // For postal codes, use OpenWeatherMap ZIP API
+                return await GetCoordinatesFromOpenWeatherMapZip(location);
             }
             else
             {
-                // For city names, use direct geocoding with limit
-                url = $"geo/1.0/direct?q={Uri.EscapeDataString(location)}&limit=5&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+                // For city names, use OpenWeatherMap geocoding
+                return await GetCoordinatesFromOpenWeatherMap(location);
             }
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromOpenWeatherMapZip(string postalCode)
+        {
+            try
+            {
+                // Try PostalCodeAPI.io (free tier - 100 requests/day)
+                var postalCodeApiResult = await GetCoordinatesFromPostalCodeAPI(postalCode);
+                if (postalCodeApiResult.IsLocationAvailabe)
+                {
+                    return postalCodeApiResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "PostalPincode API failed, trying fallback for postal code: {postalCode}", postalCode);
+            }
+            
+            // Fallback to OpenWeatherMap ZIP API
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri("https://api.openweathermap.org/");
+                
+                // Use OpenWeatherMap ZIP API with India country code
+                string url = $"geo/1.0/zip?zip={Uri.EscapeDataString(postalCode)},IN&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+                
+                HttpResponseMessage response = await client.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var zipData = System.Text.Json.JsonSerializer.Deserialize<GeoLocation>(json);
+                    
+                    if (zipData != null && zipData.Latitude != 0 && zipData.Longitude != 0)
+                    {
+                        // Use reverse geocoding to get exact location name
+                        var exactLocationName = await GetExactLocationNameFromOpenWeatherMap(zipData.Latitude, zipData.Longitude);
+                        
+                        var displayName = !string.IsNullOrEmpty(exactLocationName) 
+                            ? exactLocationName
+                            : (!string.IsNullOrEmpty(zipData.State) 
+                                ? $"{zipData.Name}, {zipData.State}, {zipData.Country}"
+                                : $"{zipData.Name}, {zipData.Country}");
+                        
+                        return (zipData.Latitude, zipData.Longitude, true, displayName);
+                    }
+                }
+                else
+                {
+                    _logger.LogError("OpenWeatherMap ZIP API returned status code: {statusCode} for postal code: {postalCode}", response.StatusCode, postalCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting coordinates from OpenWeatherMap ZIP API for postal code: {postalCode}", postalCode);
+            }
+            
+            return (0, 0, false, string.Empty);
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromPostalCodeAPI(string postalCode)
+        {
+            try
+            {
+                using (var handler = new HttpClientHandler())
+                {
+                    // Disable SSL certificate validation
+                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    
+                    using (var client = new HttpClient(handler))
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(10);
+                        
+                        // Use PostalPincode API - comprehensive postal code database for India
+                        // Uses HTTP (not HTTPS) - free, no API key required
+                        string url = $"http://api.postalpincode.in/postoffice/{Uri.EscapeDataString(postalCode)}";
+                        
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string json = await response.Content.ReadAsStringAsync();
+                            
+                            using (var doc = System.Text.Json.JsonDocument.Parse(json))
+                            {
+                                var root = doc.RootElement;
+                                
+                                // PostalPincode API returns an array
+                                if (root.ValueKind == System.Text.Json.JsonValueKind.Array && root.GetArrayLength() > 0)
+                                {
+                                    var firstResult = root[0];
+                                    
+                                    if (firstResult.TryGetProperty("Status", out var status) && status.GetString() == "Success")
+                                    {
+                                        if (firstResult.TryGetProperty("PostOffice", out var postOffices) && postOffices.GetArrayLength() > 0)
+                                        {
+                                            var postOffice = postOffices[0];
+                                            
+                                            if (postOffice.TryGetProperty("Name", out var name) &&
+                                                postOffice.TryGetProperty("District", out var district) &&
+                                                postOffice.TryGetProperty("State", out var state))
+                                            {
+                                                var placeName = name.GetString() ?? "";
+                                                var districtName = district.GetString() ?? "";
+                                                var stateName = state.GetString() ?? "";
+                                                
+                                                // Get coordinates using reverse geocoding
+                                                var displayName = $"{placeName}, {districtName}, {stateName}, India";
+                                                
+                                                // Use OpenWeatherMap reverse geocoding to get lat/lon from place name
+                                                var coordinates = await GetCoordinatesFromPlaceName(displayName);
+                                                if (coordinates.IsLocationAvailabe)
+                                                {
+                                                    return coordinates;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            _logger.LogError("PostalPincode API returned status code: {statusCode} for postal code: {postalCode}", response.StatusCode, postalCode);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting coordinates from PostalPincode API for postal code: {postalCode}", postalCode);
+            }
+            
+            return (0, 0, false, string.Empty);
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromPlaceName(string placeName)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri("https://api.openweathermap.org/");
+                
+                string url = $"geo/1.0/direct?q={Uri.EscapeDataString(placeName)}&limit=1&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+                
+                HttpResponseMessage response = await client.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
+                    
+                    if (locationData != null && locationData.Count > 0)
+                    {
+                        var location = locationData.FirstOrDefault();
+                        if (location != null)
+                        {
+                            return (location.Latitude, location.Longitude, true, placeName);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error getting coordinates from place name: {placeName}. Will use fallback.", placeName);
+                // Return empty to trigger fallback
+            }
+            
+            return (0, 0, false, string.Empty);
+        }
+
+        private async Task LoadPostalCodesFromFile()
+        {
+            // No longer needed - using APIs instead
+            return;
+        }
+
+        private (double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName) GetKnownPostalCodeLocation(string postalCode)
+        {
+            // No longer used - using APIs for all postal codes
+            return (0, 0, false, string.Empty);
+        }
+
+        private async Task<string> GetExactLocationNameFromOpenWeatherMap(double latitude, double longitude)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                client.BaseAddress = new Uri("https://api.openweathermap.org/");
+                
+                // Use reverse geocoding to get exact location details
+                string url = $"geo/1.0/reverse?lat={latitude}&lon={longitude}&limit=1&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+                
+                HttpResponseMessage response = await client.GetAsync(url);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
+                    
+                    if (locationData != null && locationData.Count > 0)
+                    {
+                        var location = locationData.FirstOrDefault();
+                        if (location != null)
+                        {
+                            return !string.IsNullOrEmpty(location.State)
+                                ? $"{location.Name}, {location.State}, {location.Country}"
+                                : $"{location.Name}, {location.Country}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting exact location name from OpenWeatherMap reverse geocoding");
+            }
+            
+            return string.Empty;
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromOpenWeatherMap(string location)
+        {
+            var islocationAvailable = false;
+
+            // Use OpenWeatherMap geocoding API for city names
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri("https://api.openweathermap.org/");
+            
+            string url = $"geo/1.0/direct?q={Uri.EscapeDataString(location)}&limit=5&appid=8c3a7a1fedef1ca1d1261de353d2698f";
 
             HttpResponseMessage response = await client.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
+                var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
                 
-                if (WeatherHelper.IsPostalCode(location))
+                if (locationData != null && locationData.Count > 0)
                 {
-                    // For postal code, response is a single object
-                    var zipData = System.Text.Json.JsonSerializer.Deserialize<GeoLocation>(json);
+                    var bestMatch = locationData.FirstOrDefault();
                     
-                    if (zipData != null && zipData.Latitude != 0 && zipData.Longitude != 0)
+                    if (bestMatch != null)
                     {
                         islocationAvailable = true;
-                        var displayName = !string.IsNullOrEmpty(zipData.State) 
-                            ? $"{zipData.Name}, {zipData.State}, {zipData.Country}"
-                            : $"{zipData.Name}, {zipData.Country}";
+                        var displayName = !string.IsNullOrEmpty(bestMatch.State) 
+                            ? $"{bestMatch.Name}, {bestMatch.State}, {bestMatch.Country}"
+                            : $"{bestMatch.Name}, {bestMatch.Country}";
                             
-                        return (zipData.Latitude, zipData.Longitude, islocationAvailable, displayName);
-                    }
-                }
-                else
-                {
-                    // For city name, response is an array
-                    var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
-                    
-                    if (locationData != null && locationData.Count > 0)
-                    {
-                        // Try to find the most relevant match
-                        var bestMatch = locationData.FirstOrDefault();
-                        
-                        if (bestMatch != null)
-                        {
-                            islocationAvailable = true;
-                            var displayName = !string.IsNullOrEmpty(bestMatch.State) 
-                                ? $"{bestMatch.Name}, {bestMatch.State}, {bestMatch.Country}"
-                                : $"{bestMatch.Name}, {bestMatch.Country}";
-                                
-                            return (bestMatch.Latitude, bestMatch.Longitude, islocationAvailable, displayName);
-                        }
+                        return (bestMatch.Latitude, bestMatch.Longitude, islocationAvailable, displayName);
                     }
                 }
             }
 
             return (0, 0, islocationAvailable, string.Empty);
-
         }
     }
 }

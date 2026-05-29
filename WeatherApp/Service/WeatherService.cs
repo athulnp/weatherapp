@@ -233,29 +233,59 @@ namespace WeatherApp.Service
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://api.openweathermap.org/");
             
-            // Use OpenWeatherMap geocoding API with limit and country filter for better accuracy
-            string url = $"geo/1.0/direct?q={Uri.EscapeDataString(location)}&limit=5&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+            // Check if location is a postal code (numeric, 5-6 digits)
+            string url;
+            if (WeatherHelper.IsPostalCode(location))
+            {
+                // For postal codes, add country code (IN for India) to improve accuracy
+                url = $"geo/1.0/zip?zip={Uri.EscapeDataString(location)},IN&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+            }
+            else
+            {
+                // For city names, use direct geocoding with limit
+                url = $"geo/1.0/direct?q={Uri.EscapeDataString(location)}&limit=5&appid=8c3a7a1fedef1ca1d1261de353d2698f";
+            }
 
             HttpResponseMessage response = await client.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
                 
-                if (locationData != null && locationData.Count > 0)
+                if (WeatherHelper.IsPostalCode(location))
                 {
-                    // Try to find the most relevant match
-                    var bestMatch = locationData.FirstOrDefault();
+                    // For postal code, response is a single object
+                    var zipData = System.Text.Json.JsonSerializer.Deserialize<GeoLocation>(json);
                     
-                    if (bestMatch != null)
+                    if (zipData != null && zipData.Latitude != 0 && zipData.Longitude != 0)
                     {
                         islocationAvailable = true;
-                        var displayName = !string.IsNullOrEmpty(bestMatch.State) 
-                            ? $"{bestMatch.Name}, {bestMatch.State}, {bestMatch.Country}"
-                            : $"{bestMatch.Name}, {bestMatch.Country}";
+                        var displayName = !string.IsNullOrEmpty(zipData.State) 
+                            ? $"{zipData.Name}, {zipData.State}, {zipData.Country}"
+                            : $"{zipData.Name}, {zipData.Country}";
                             
-                        return (bestMatch.Latitude, bestMatch.Longitude, islocationAvailable, displayName);
+                        return (zipData.Latitude, zipData.Longitude, islocationAvailable, displayName);
+                    }
+                }
+                else
+                {
+                    // For city name, response is an array
+                    var locationData = System.Text.Json.JsonSerializer.Deserialize<List<GeoLocation>>(json);
+                    
+                    if (locationData != null && locationData.Count > 0)
+                    {
+                        // Try to find the most relevant match
+                        var bestMatch = locationData.FirstOrDefault();
+                        
+                        if (bestMatch != null)
+                        {
+                            islocationAvailable = true;
+                            var displayName = !string.IsNullOrEmpty(bestMatch.State) 
+                                ? $"{bestMatch.Name}, {bestMatch.State}, {bestMatch.Country}"
+                                : $"{bestMatch.Name}, {bestMatch.Country}";
+                                
+                            return (bestMatch.Latitude, bestMatch.Longitude, islocationAvailable, displayName);
+                        }
                     }
                 }
             }

@@ -1,34 +1,31 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace WeatherApp.Models
 {
     public class NominatimLocation
     {
-        [JsonProperty("place_id")]
+        [JsonPropertyName("place_id")]
         public int PlaceId { get; set; }
 
-        [JsonProperty("licence")]
+        [JsonPropertyName("licence")]
         public string Licence { get; set; }
 
-
-        [JsonProperty("lat")]
+        [JsonPropertyName("lat")]
         public string Latitude { get; set; }
 
-        [JsonProperty("lon")]
+        [JsonPropertyName("lon")]
         public string Longitude { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-
-        [JsonProperty("addresstype")]
+        [JsonPropertyName("addresstype")]
         public string AddressType { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("display_name")]
+        [JsonPropertyName("display_name")]
         public string DisplayName { get; set; }
     }
 }

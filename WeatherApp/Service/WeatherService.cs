@@ -250,7 +250,21 @@ namespace WeatherApp.Service
         {
             try
             {
-                // Try PostalCodeAPI.io (free tier - 100 requests/day)
+                // Try Nominatim first for postal codes (better accuracy for India)
+                var nominatimResult = await GetCoordinatesFromNominatimPostalCode(postalCode);
+                if (nominatimResult.IsLocationAvailabe)
+                {
+                    return nominatimResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Nominatim postal code search failed, trying fallback for postal code: {postalCode}", postalCode);
+            }
+            
+            try
+            {
+                // Try PostalPincode API (Indian postal codes)
                 var postalCodeApiResult = await GetCoordinatesFromPostalCodeAPI(postalCode);
                 if (postalCodeApiResult.IsLocationAvailabe)
                 {
@@ -300,6 +314,56 @@ namespace WeatherApp.Service
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error getting coordinates from OpenWeatherMap ZIP API for postal code: {postalCode}", postalCode);
+            }
+            
+            return (0, 0, false, string.Empty);
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromNominatimPostalCode(string postalCode)
+        {
+            try
+            {
+                using (var handler = new HttpClientHandler())
+                {
+                    // Disable SSL certificate validation
+                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    
+                    using (var client = new HttpClient(handler))
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(10);
+                        
+                        // Add required User-Agent header for Nominatim
+                        client.DefaultRequestHeaders.Add("User-Agent", "WeatherApp/1.0 (contact: info@weatherapp.com)");
+                        
+                        // Search for postal code in India using Nominatim
+                        string url = $"https://nominatim.openstreetmap.org/search?postalcode={Uri.EscapeDataString(postalCode)}&country=India&format=json&limit=1";
+                        
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string json = await response.Content.ReadAsStringAsync();
+                            var locationData = System.Text.Json.JsonSerializer.Deserialize<List<NominatimLocation>>(json);
+                            
+                            if (locationData != null && locationData.Count > 0)
+                            {
+                                var location = locationData.FirstOrDefault();
+                                if (location != null && !string.IsNullOrEmpty(location.Latitude) && !string.IsNullOrEmpty(location.Longitude))
+                                {
+                                    if (double.TryParse(location.Latitude, out double lat) && double.TryParse(location.Longitude, out double lon))
+                                    {
+                                        var displayName = location.DisplayName ?? $"{location.Name}, India";
+                                        return (lat, lon, true, displayName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Error getting coordinates from Nominatim for postal code: {postalCode}", postalCode);
             }
             
             return (0, 0, false, string.Empty);
@@ -469,7 +533,14 @@ namespace WeatherApp.Service
         {
             var islocationAvailable = false;
 
-            // Use OpenWeatherMap geocoding API for city names
+            // Try Nominatim first (better for villages and small places)
+            var nominatimResult = await GetCoordinatesFromNominatim(location);
+            if (nominatimResult.IsLocationAvailabe)
+            {
+                return nominatimResult;
+            }
+
+            // Fallback to OpenWeatherMap geocoding API for city names
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri("https://api.openweathermap.org/");
             
@@ -499,6 +570,56 @@ namespace WeatherApp.Service
             }
 
             return (0, 0, islocationAvailable, string.Empty);
+        }
+
+        private async Task<(double Latitude, double Longitude, bool IsLocationAvailabe, string DisplayName)> GetCoordinatesFromNominatim(string location)
+        {
+            try
+            {
+                using (var handler = new HttpClientHandler())
+                {
+                    // Disable SSL certificate validation
+                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    
+                    using (var client = new HttpClient(handler))
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(10);
+                        
+                        // Add required User-Agent header for Nominatim
+                        client.DefaultRequestHeaders.Add("User-Agent", "WeatherApp/1.0 (contact: info@weatherapp.com)");
+                        
+                        // Search for place in India using Nominatim
+                        string url = $"https://nominatim.openstreetmap.org/search?q={Uri.EscapeDataString(location)},India&format=json&limit=1";
+                        
+                        HttpResponseMessage response = await client.GetAsync(url);
+                        
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string json = await response.Content.ReadAsStringAsync();
+                            var locationData = System.Text.Json.JsonSerializer.Deserialize<List<NominatimLocation>>(json);
+                            
+                            if (locationData != null && locationData.Count > 0)
+                            {
+                                var location_item = locationData.FirstOrDefault();
+                                if (location_item != null && !string.IsNullOrEmpty(location_item.Latitude) && !string.IsNullOrEmpty(location_item.Longitude))
+                                {
+                                    if (double.TryParse(location_item.Latitude, out double lat) && double.TryParse(location_item.Longitude, out double lon))
+                                    {
+                                        var displayName = location_item.DisplayName ?? $"{location_item.Name}, India";
+                                        return (lat, lon, true, displayName);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Nominatim API failed for location: {location}. Trying fallback.", location);
+            }
+            
+            return (0, 0, false, string.Empty);
         }
     }
 }

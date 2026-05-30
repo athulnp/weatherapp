@@ -279,17 +279,15 @@
 </section>
 
 <!-- Search Results Section (Priority - Just below search bar) -->
-@if (Model != null && !string.IsNullOrEmpty(Model.CityName))
-{
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName)) {
     <section class="weather-display-section search-results-section">
         <div class="weather-display-container">
             <div class="section-header">
                 <h2 class="section-title">@Model.CityName</h2>
                 <span class="section-subtitle">Weather Report</span>
             </div>
-            
-            @if (Model.IsLocationAvailable)
-            {
+
+            @if (Model.IsLocationAvailable) {
                 <div class="weather-card search-result-card">
                     <div class="weather-card-content">
                         <div class="weather-card-left">
@@ -299,12 +297,12 @@
                             </div>
                             <p class="weather-description">@Model.Description</p>
                         </div>
-                        
+
                         <div class="weather-card-right">
                             <img src="@Model.Icon" alt="@Model.Description weather icon" class="weather-icon" loading="lazy" width="100" height="100" />
                         </div>
                     </div>
-                    
+
                     <div class="weather-details-grid">
                         <div class="weather-detail-item">
                             <span class="detail-icon">🌡️</span>
@@ -343,9 +341,7 @@
                         </div>
                     </div>
                 </div>
-            }
-            else
-            {
+            } else {
                 <div class="weather-error-card">
                     <div class="error-icon">❌</div>
                     <h3>Location Not Found</h3>
@@ -358,9 +354,8 @@
 }
 
 <!-- 5-Day Forecast Section -->
-@if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
-{
-    <section class="forecast-section">
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable) {
+    <section class="forecast-section" data-lat="@Model?.Latitude" data-lon="@Model?.Longitude">
         <div class="forecast-container">
             <div class="section-header">
                 <h2 class="section-title">@Model.CityName</h2>
@@ -387,7 +382,6 @@
             </div>
         </div>
     </section>
-}
 }
 
 <!-- Current Location Weather Section (Secondary - Below search results) -->
@@ -872,9 +866,10 @@
 
 <script>
     function loadForecast() {
-        const lat = @(Model?.Latitude ?? 0);
-        const lon = @(Model?.Longitude ?? 0);
-        
+        var forecastSection = document.querySelector('.forecast-section');
+        var lat = parseFloat(forecastSection ? forecastSection.dataset.lat : 0);
+        var lon = parseFloat(forecastSection ? forecastSection.dataset.lon : 0);
+
         if (lat === 0 || lon === 0) {
             alert('Location coordinates not available');
             return;

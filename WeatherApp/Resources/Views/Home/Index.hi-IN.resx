@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>मौसम खोजें</value>
+  </data>
+  <data name="SearchPlaceholder" xml:space="preserve">
+    <value>शहर का नाम, पिन कोड, या निर्देशांक दर्ज करें...</value>
+  </data>
+  <data name="SearchButton" xml:space="preserve">
+    <value>खोजें</value>
+  </data>
+  <data name="CurrentLocation" xml:space="preserve">
+    <value>मेरा स्थान उपयोग करें</value>
+  </data>
+  <data name="WeatherReport" xml:space="preserve">
+    <value>मौसम रिपोर्ट</value>
+  </data>
+  <data name="FiveDayForecast" xml:space="preserve">
+    <value>5-दिन का पूर्वानुमान</value>
+  </data>
+  <data name="LoadForecast" xml:space="preserve">
+    <value>पूर्वानुमान लोड करें</value>
+  </data>
+  <data name="FeelsLike" xml:space="preserve">
+    <value>महसूस होता है</value>
+  </data>
+  <data name="Humidity" xml:space="preserve">
+    <value>नमी</value>
+  </data>
+  <data name="Wind" xml:space="preserve">
+    <value>हवा</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>उच्च</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>निम्न</value>
+  </data>
+</root>

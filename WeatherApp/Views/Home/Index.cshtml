@@ -1,4 +1,6 @@
-﻿@{
+﻿@model WeatherApp.Models.Weather
+
+@{
     // Dynamic meta tags based on weather data
     if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
     {
@@ -19,138 +21,141 @@
     {
         <meta name="description" content="@ViewData["MetaDescription"]" />
         <meta name="keywords" content="@ViewData["MetaKeywords"]" />
-        
+
         <!-- Dynamic Open Graph tags -->
         <meta property="og:title" content="@ViewData["Title"]" />
         <meta property="og:description" content="@ViewData["MetaDescription"]" />
         <meta property="og:url" content="@("https://kairosweather.info/?search=" + System.Web.HttpUtility.UrlEncode(Model.CityName))" />
-        
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="@Model.Icon" />
+
         <!-- Dynamic Twitter tags -->
         <meta property="twitter:title" content="@ViewData["Title"]" />
         <meta property="twitter:description" content="@ViewData["MetaDescription"]" />
-    }
-}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:image" content="@Model.Icon" />
 
-<!-- WeatherForecast Structured Data -->
-@if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
-{
-    <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "WeatherForecast",
-        "name": "@Model.CityName",
-        "description": "@Model.Description",
-        "temperature": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.Temperature",
-            "unitCode": "CEL"
-        },
-        "feelsLike": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.FeelsLike",
-            "unitCode": "CEL"
-        },
-        "tempMax": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.TempMax",
-            "unitCode": "CEL"
-        },
-        "tempMin": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.TempMin",
-            "unitCode": "CEL"
-        },
-        "humidity": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.Humidity",
-            "unitCode": "PCT"
-        },
-        "windSpeed": {
-            "@@type": "QuantitativeValue",
-            "value": "@Model.WindSpeed",
-            "unitCode": "KMH"
-        },
-        "weatherCondition": "@Model.Description",
-        "dateIssued": "@DateTime.UtcNow.ToString("o")",
-        "location": {
-            "@@type": "Place",
-            "name": "@Model.CityName"
-        }
-    }
-    </script>
-}
-
-<!-- 7-Day Forecast Structured Data -->
-@if (Model != null && Model.Forecast != null && Model.Forecast.Count > 0)
-{
-    <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "WeatherForecast",
-        "name": "@Model.CityName 7-Day Forecast",
-        "description": "7-day weather forecast for @Model.CityName",
-        "location": {
-            "@@type": "Place",
-            "name": "@Model.CityName"
-        },
-        "forecast": [
-            @for (int i = 0; i < Model.Forecast.Count; i++)
-            {
-                var day = Model.Forecast[i];
-                var date = DateTimeOffset.FromUnixTimeSeconds(day.Dt).DateTime.ToString("o");
-                if (i > 0) { <text>,</text> }
-                <text>
-                {
-                    "@@type": "WeatherForecast",
-                    "name": "@date",
-                    "temperature": {
-                        "@@type": "QuantitativeValue",
-                        "value": "@day.Temp.Day",
-                        "unitCode": "CEL"
-                    },
-                    "tempMax": {
-                        "@@type": "QuantitativeValue",
-                        "value": "@day.Temp.Max",
-                        "unitCode": "CEL"
-                    },
-                    "tempMin": {
-                        "@@type": "QuantitativeValue",
-                        "value": "@day.Temp.Min",
-                        "unitCode": "CEL"
-                    },
-                    "humidity": {
-                        "@@type": "QuantitativeValue",
-                        "value": "@day.Humidity",
-                        "unitCode": "PCT"
-                    },
-                    "windSpeed": {
-                        "@@type": "QuantitativeValue",
-                        "value": "@day.WindSpeed",
-                        "unitCode": "KMH"
-                    },
-                    "weatherCondition": "@(day.Weather?.FirstOrDefault()?.Description ?? "")",
-                    "dateIssued": "@date"
+        <!-- Structured Data (Schema.org) JSON-LD for Weather -->
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "WeatherForecast",
+            "location": {
+                "@@type": "Place",
+                "name": "@Model.CityName",
+                "geo": {
+                    "@@type": "GeoCoordinates",
+                    "latitude": @Model?.Latitude ?? 0,
+                    "longitude": @Model?.Longitude ?? 0
                 }
-                </text>
+            },
+            "temperature": {
+                "@@type": "Temperature",
+                "value": @Model?.Temperature ?? 0,
+                "unitCode": "CEL"
+            },
+            "weatherCondition": "@Model?.Description ?? """,
+            "humidity": {
+                "@@type": "QuantitativeValue",
+                "value": @Model?.Humidity ?? 0,
+                "unitCode": "PCT"
+            },
+            "windSpeed": {
+                "@@type": "QuantitativeValue",
+                "value": @Model?.WindSpeed ?? 0,
+                "unitCode": "KMH"
+            },
+            "feelsLikeTemperature": {
+                "@@type": "Temperature",
+                "value": @Model?.FeelsLike ?? 0,
+                "unitCode": "CEL"
+            },
+            "tempMax": {
+                "@@type": "Temperature",
+                "value": @Model?.TempMax ?? 0,
+                "unitCode": "CEL"
+            },
+            "tempMin": {
+                "@@type": "Temperature",
+                "value": @Model?.TempMin ?? 0,
+                "unitCode": "CEL"
+            }
+        }
+        </script>
+    }
+    else
+    {
+        <meta name="description" content="@ViewData["MetaDescription"]" />
+        <meta name="keywords" content="@ViewData["MetaKeywords"]" />
+
+        <!-- Default Open Graph tags -->
+        <meta property="og:title" content="@ViewData["Title"]" />
+        <meta property="og:description" content="@ViewData["MetaDescription"]" />
+        <meta property="og:url" content="https://kairosweather.info/" />
+        <meta property="og:type" content="website" />
+
+        <!-- Default Twitter tags -->
+        <meta property="twitter:title" content="@ViewData["Title"]" />
+        <meta property="twitter:description" content="@ViewData["MetaDescription"]" />
+        <meta property="twitter:card" content="summary_large_image" />
+
+        <!-- Structured Data (Schema.org) JSON-LD for WebSite -->
+        <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "WebSite",
+            "name": "Kairos Weather",
+            "url": "https://kairosweather.info/",
+            "description": "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide.",
+            "potentialAction": {
+                "@@type": "SearchAction",
+                "target": "https://kairosweather.info/?search={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
+    }
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="/">Home</a>
+        </li>
+        @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
+        {
+            <li class="breadcrumb-item active" aria-current="page">
+                @Model.CityName Weather
+            </li>
+        }
+    </ol>
+</nav>
+
+<!-- Breadcrumb Structured Data -->
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName))
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://kairosweather.info/"
+            },
+            {
+                "@@type": "ListItem",
+                "position": 2,
+                "name": "@Model.CityName Weather",
+                "item": "https://kairosweather.info/?search=@System.Web.HttpUtility.UrlEncode(Model.CityName)"
             }
         ]
     }
     </script>
 }
-
-<!-- BreadcrumbList Structured Data -->
-<script type="application/ld+json">
-{
-    "@@context": "https://schema.org",
-    "@@type": "BreadcrumbList",
-    "itemListElement": [{
-        "@@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://kairosweather.info"
-    }]
-}
-</script>
 
 <!-- FAQ Structured Data for Rich Snippets -->
 <script type="application/ld+json">
@@ -256,24 +261,24 @@
 <!-- Hero Section with Search -->
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-i18n="HeroTitle">
             <span class="hero-icon">🌤️</span>
             Kairos Weather - Live Weather Updates & Forecast
         </h1>
-        <p class="hero-subtitle">Real-time weather updates for any location worldwide. Check current temperature, humidity, wind speed, and weather conditions.</p>
-        
+        <p class="hero-subtitle" data-i18n="HeroSubtitle">Real-time weather updates for any location worldwide. Check current temperature, humidity, wind speed, and weather conditions.</p>
+
         <!-- Search Form -->
         <form method="post" asp-controller="Home" asp-action="Index" class="hero-search-form" role="search" aria-label="Weather search">
             <div class="search-input-wrapper">
-                <input type="text" name="CityName" placeholder="Search city, postal code, or coordinates..." required aria-required="true" autocomplete="off" class="search-input" />
-                <button type="submit" class="search-button" aria-label="Search weather">
+                <input type="text" name="CityName" placeholder="Enter city name, postal code, or coordinates..." required aria-required="true" autocomplete="off" class="search-input" />
+                <button type="submit" class="search-button" aria-label="Search weather" data-i18n="SearchButton">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.3-4.3"></path>
                     </svg>
                 </button>
             </div>
-            <p class="search-hint">Try: "Kochi", "682001", or "9.9312,76.2673"</p>
+            <p class="search-hint" data-i18n="SearchHint">Try: "Kochi", "682001", or "9.9312,76.2673"</p>
         </form>
     </div>
 </section>
@@ -284,7 +289,7 @@
         <div class="weather-display-container">
             <div class="section-header">
                 <h2 class="section-title">@Model.CityName</h2>
-                <span class="section-subtitle">Weather Report</span>
+                <span class="section-subtitle" data-i18n="WeatherReport">Weather Report</span>
             </div>
 
             @if (Model.IsLocationAvailable) {
@@ -359,7 +364,7 @@
         <div class="forecast-container">
             <div class="section-header">
                 <h2 class="section-title">@Model.CityName</h2>
-                <span class="section-subtitle">5-Day Forecast</span>
+                <span class="section-subtitle" data-i18n="FiveDayForecast">5-Day Forecast</span>
                 <button id="load-forecast-btn" class="load-forecast-button" onclick="loadForecast()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
@@ -367,7 +372,7 @@
                         <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
                         <path d="M16 21h5v-5"></path>
                     </svg>
-                    Load Forecast
+                    <span data-i18n="LoadForecast">Load Forecast</span>
                 </button>
             </div>
             
@@ -388,13 +393,13 @@
 <section class="weather-display-section current-location-section">
     <div class="weather-display-container">
         <div class="section-header">
-            <h2 class="section-title">📍 Your Location</h2>
+            <h2 class="section-title" data-i18n="YourLocation">📍 Your Location</h2>
         </div>
         
         <!-- Location Loading -->
         <div id="location-loading" class="weather-loading-card" style="display: none;">
             <div class="spinner"></div>
-            <p>Getting your location...</p>
+            <p data-i18n="GettingLocation">Getting your location...</p>
         </div>
         
         <!-- Location Error -->
@@ -406,13 +411,13 @@
         <!-- Empty State -->
         <div id="current-location-empty" class="weather-empty-card">
             <div class="empty-icon">📍</div>
-            <p>Get weather for your current location</p>
+            <p data-i18n="GetWeatherCurrentLocation">Get weather for your current location</p>
             <button id="get-current-location" class="location-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                Use My Location
+                <span data-i18n="UseMyLocation">Use My Location</span>
             </button>
         </div>
     </div>
@@ -422,12 +427,12 @@
 <article class="about-section">
     <div class="about-container">
         <div class="about-content">
-            <h2 class="section-title">About Kairos Weather</h2>
-            <p>
+            <h2 class="section-title" data-i18n="AboutKairosWeather">About Kairos Weather</h2>
+            <p data-i18n="AboutKairosWeatherDesc1">
                 Kairos Weather was created with a simple mission: to make weather information accessible, accurate, and easy to understand.
                 We believe weather plays a key role in daily life – from planning a trip to staying safe during storms.
             </p>
-            <p>
+            <p data-i18n="AboutKairosWeatherDesc2">
                 Our platform gathers real-time data from trusted sources and presents it in a clean, user-friendly format.
             </p>
         </div>
@@ -435,18 +440,18 @@
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">🌍</div>
-                <h3>Global Coverage</h3>
-                <p>Weather data for locations worldwide</p>
+                <h3 data-i18n="GlobalCoverage">Global Coverage</h3>
+                <p data-i18n="GlobalCoverageDesc">Weather data for locations worldwide</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
-                <h3>Real-Time Updates</h3>
-                <p>Instant weather information</p>
+                <h3 data-i18n="RealTimeUpdates">Real-Time Updates</h3>
+                <p data-i18n="RealTimeUpdatesDesc">Instant weather information</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🎯</div>
-                <h3>Accurate Data</h3>
-                <p>Powered by reliable APIs</p>
+                <h3 data-i18n="AccurateData">Accurate Data</h3>
+                <p data-i18n="AccurateDataDesc">Powered by reliable APIs</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📱</div>
@@ -460,27 +465,27 @@
 <!-- Related Links Section for Internal Linking -->
 <section class="related-links-section">
     <div class="related-links-container">
-        <h2 class="section-title">Related Resources</h2>
+        <h2 class="section-title" data-i18n="RelatedResources">Related Resources</h2>
         <div class="related-links-grid">
             <a href="/Static/FAQ" class="related-link-card">
                 <div class="link-icon">❓</div>
-                <h3>FAQ</h3>
-                <p>Frequently asked questions about Kairos Weather</p>
+                <h3 data-i18n="FAQ">FAQ</h3>
+                <p data-i18n="FAQDesc">Frequently asked questions about Kairos Weather</p>
             </a>
             <a href="/Static/About" class="related-link-card">
                 <div class="link-icon">ℹ️</div>
-                <h3>About Us</h3>
-                <p>Learn more about our weather service</p>
+                <h3 data-i18n="AboutUs">About Us</h3>
+                <p data-i18n="AboutUsDesc">Learn more about our weather service</p>
             </a>
             <a href="/Static/Contact" class="related-link-card">
                 <div class="link-icon">📧</div>
-                <h3>Contact</h3>
-                <p>Get in touch with our team</p>
+                <h3 data-i18n="Contact">Contact</h3>
+                <p data-i18n="ContactDesc">Get in touch with our team</p>
             </a>
             <a href="/Static/PrivacyPolicy" class="related-link-card">
                 <div class="link-icon">🔒</div>
-                <h3>Privacy Policy</h3>
-                <p>How we protect your data</p>
+                <h3 data-i18n="PrivacyPolicy">Privacy Policy</h3>
+                <p data-i18n="PrivacyPolicyDesc">How we protect your data</p>
             </a>
         </div>
     </div>
@@ -539,43 +544,43 @@
 <!-- Weather Tips Section -->
 <section class="weather-tips-section">
     <div class="weather-tips-container">
-        <h2 class="section-title">💡 Weather Tips</h2>
+        <h2 class="section-title" data-i18n="WeatherTips">💡 Weather Tips</h2>
         <div class="tips-grid">
             <div class="tip-card">
-                <h3>☀️ Hot Weather</h3>
+                <h3 data-i18n="HotWeather">☀️ Hot Weather</h3>
                 <ul>
-                    <li>Stay hydrated - drink plenty of water</li>
-                    <li>Wear light-colored, loose-fitting clothing</li>
-                    <li>Avoid direct sunlight during peak hours (10 AM - 4 PM)</li>
-                    <li>Use sunscreen with SPF 30 or higher</li>
-                    <li>Check on elderly neighbors and pets</li>
+                    <li data-i18n="HotWeatherTip1">Stay hydrated - drink plenty of water</li>
+                    <li data-i18n="HotWeatherTip2">Wear light-colored, loose-fitting clothing</li>
+                    <li data-i18n="HotWeatherTip3">Avoid direct sunlight during peak hours (10 AM - 4 PM)</li>
+                    <li data-i18n="HotWeatherTip4">Use sunscreen with SPF 30 or higher</li>
+                    <li data-i18n="HotWeatherTip5">Check on elderly neighbors and pets</li>
                 </ul>
             </div>
             <div class="tip-card">
-                <h3>🌧️ Rainy Weather</h3>
+                <h3 data-i18n="RainyWeather">🌧️ Rainy Weather</h3>
                 <ul>
-                    <li>Carry an umbrella or raincoat</li>
-                    <li>Wear waterproof footwear</li>
-                    <li>Drive slowly and maintain safe distance</li>
-                    <li>Avoid walking through flooded areas</li>
-                    <li>Keep emergency numbers handy</li>
+                    <li data-i18n="RainyWeatherTip1">Carry an umbrella or raincoat</li>
+                    <li data-i18n="RainyWeatherTip2">Wear waterproof footwear</li>
+                    <li data-i18n="RainyWeatherTip3">Drive slowly and maintain safe distance</li>
+                    <li data-i18n="RainyWeatherTip4">Avoid walking through flooded areas</li>
+                    <li data-i18n="RainyWeatherTip5">Keep emergency numbers handy</li>
                 </ul>
             </div>
             <div class="tip-card">
-                <h3>❄️ Cold Weather</h3>
+                <h3 data-i18n="ColdWeather">❄️ Cold Weather</h3>
                 <ul>
-                    <li>Layer your clothing for warmth</li>
-                    <li>Wear a hat, gloves, and scarf</li>
-                    <li>Stay dry to prevent hypothermia</li>
-                    <li>Keep your home heated safely</li>
-                    <li>Check weather forecasts before traveling</li>
+                    <li data-i18n="ColdWeatherTip1">Layer your clothing for warmth</li>
+                    <li data-i18n="ColdWeatherTip2">Wear a hat, gloves, and scarf</li>
+                    <li data-i18n="ColdWeatherTip3">Stay dry to prevent hypothermia</li>
+                    <li data-i18n="ColdWeatherTip4">Keep your home heated safely</li>
+                    <li data-i18n="ColdWeatherTip5">Check weather forecasts before traveling</li>
                 </ul>
             </div>
             <div class="tip-card">
-                <h3>🌪️ Stormy Weather</h3>
+                <h3 data-i18n="StormyWeather">🌪️ Stormy Weather</h3>
                 <ul>
-                    <li>Stay indoors during storms</li>
-                    <li>Avoid windows and doors</li>
+                    <li data-i18n="StormyWeatherTip1">Stay indoors during storms</li>
+                    <li data-i18n="StormyWeatherTip2">Avoid windows and doors</li>
                     <li>Unplug electronic devices</li>
                     <li>Have an emergency kit ready</li>
                     <li>Follow local weather alerts</li>
@@ -588,23 +593,23 @@
 <!-- Weather Safety Section -->
 <section class="weather-safety-section">
     <div class="weather-safety-container">
-        <h2 class="section-title">🛡️ Weather Safety</h2>
+        <h2 class="section-title" data-i18n="WeatherSafety">🛡️ Weather Safety</h2>
         <div class="safety-content">
             <div class="safety-item">
-                <h3>Heat Wave Safety</h3>
-                <p>During extreme heat, stay in air-conditioned buildings, limit outdoor activities, and recognize signs of heat exhaustion like heavy sweating, weakness, and dizziness.</p>
+                <h3 data-i18n="HeatWaveSafety">Heat Wave Safety</h3>
+                <p data-i18n="HeatWaveSafetyDesc">During extreme heat, stay in air-conditioned buildings, limit outdoor activities, and recognize signs of heat exhaustion like heavy sweating, weakness, and dizziness.</p>
             </div>
             <div class="safety-item">
-                <h3>Flood Safety</h3>
-                <p>Never walk or drive through floodwaters. Just 6 inches of moving water can knock you down, and 1 foot of water can sweep your vehicle away. Move to higher ground immediately.</p>
+                <h3 data-i18n="FloodSafety">Flood Safety</h3>
+                <p data-i18n="FloodSafetyDesc">Never walk or drive through floodwaters. Just 6 inches of moving water can knock you down, and 1 foot of water can sweep your vehicle away. Move to higher ground immediately.</p>
             </div>
             <div class="safety-item">
-                <h3>Thunderstorm Safety</h3>
-                <p>When thunder roars, go indoors! Avoid using electrical appliances and plumbing during storms. If you're outside, avoid open fields, tall trees, and water bodies.</p>
+                <h3 data-i18n="ThunderstormSafety">Thunderstorm Safety</h3>
+                <p data-i18n="ThunderstormSafetyDesc">When thunder roars, go indoors! Avoid using electrical appliances and plumbing during storms. If you're outside, avoid open fields, tall trees, and water bodies.</p>
             </div>
             <div class="safety-item">
-                <h3>Cold Wave Safety</h3>
-                <p>Stay indoors during extreme cold. If you must go outside, dress in layers and cover exposed skin. Watch for signs of frostbite and hypothermia.</p>
+                <h3 data-i18n="ColdWaveSafety">Cold Wave Safety</h3>
+                <p data-i18n="ColdWaveSafetyDesc">Stay indoors during extreme cold. If you must go outside, dress in layers and cover exposed skin. Watch for signs of frostbite and hypothermia.</p>
             </div>
         </div>
     </div>
@@ -613,23 +618,23 @@
 <!-- Seasonal Weather Information -->
 <section class="seasonal-weather-section">
     <div class="seasonal-weather-container">
-        <h2 class="section-title">📅 Seasonal Weather Guide</h2>
+        <h2 class="section-title" data-i18n="SeasonalWeatherGuide">📅 Seasonal Weather Guide</h2>
         <div class="seasonal-grid">
             <div class="season-card">
-                <h3>🌸 Spring (March-May)</h3>
-                <p>Mild temperatures with occasional rain. Perfect for outdoor activities. Carry a light jacket for cool evenings.</p>
+                <h3 data-i18n="SpringSeason">🌸 Spring (March-May)</h3>
+                <p data-i18n="SpringSeasonDesc">Mild temperatures with occasional rain. Perfect for outdoor activities. Carry a light jacket for cool evenings.</p>
             </div>
             <div class="season-card">
-                <h3>☀️ Summer (June-August)</h3>
-                <p>Hot and humid with temperatures reaching 35°C+. Stay hydrated, use sunscreen, and avoid peak sun hours.</p>
+                <h3 data-i18n="SummerSeason">☀️ Summer (June-August)</h3>
+                <p data-i18n="SummerSeasonDesc">Hot and humid with temperatures reaching 35°C+. Stay hydrated, use sunscreen, and avoid peak sun hours.</p>
             </div>
             <div class="season-card">
-                <h3>🍂 Autumn (September-November)</h3>
-                <p>Pleasant weather with cooler temperatures. Ideal for travel and outdoor events. Light layers work best.</p>
+                <h3 data-i18n="AutumnSeason">🍂 Autumn (September-November)</h3>
+                <p data-i18n="AutumnSeasonDesc">Pleasant weather with cooler temperatures. Ideal for travel and outdoor events. Light layers work best.</p>
             </div>
             <div class="season-card">
-                <h3>❄️ Winter (December-February)</h3>
-                <p>Cold temperatures with possible frost. Wear warm clothing, use heating, and protect exposed skin from cold winds.</p>
+                <h3 data-i18n="WinterSeason">❄️ Winter (December-February)</h3>
+                <p data-i18n="WinterSeasonDesc">Cold temperatures with possible frost. Wear warm clothing, use heating, and protect exposed skin from cold winds.</p>
             </div>
         </div>
     </div>
@@ -936,6 +941,7 @@
             });
     }
 </script>
+
 
 
 

@@ -184,6 +184,58 @@ body {
     }
 }
 
+/* ============================================
+   BREADCRUMB NAVIGATION
+   ============================================ */
+.breadcrumb-nav {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto var(--spacing-md);
+    padding: 0 var(--spacing-md);
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-sm) 0;
+    font-size: var(--font-sm);
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    margin: 0 var(--spacing-sm);
+    color: var(--color-neutral-400);
+}
+
+.breadcrumb-item a {
+    color: var(--color-primary-500);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.breadcrumb-item a:hover {
+    color: var(--color-primary-700);
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: var(--color-neutral-600);
+    font-weight: var(--font-medium);
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        font-size: var(--font-xs);
+    }
+}
+
 /* Weather Container */
 .weather-container {
     display: flex;

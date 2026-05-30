@@ -242,20 +242,31 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About">About</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="FAQ">FAQ</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" data-i18n="Home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About" data-i18n="About">About</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="FAQ" data-i18n="FAQ">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact" data-i18n="Contact">Contact</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    🌐 Language
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li><a class="dropdown-item language-switcher" href="#" data-lang="en-US">🇺🇸 English</a></li>
+                                    <li><a class="dropdown-item language-switcher" href="#" data-lang="hi-IN">🇮🇳 हिंदी</a></li>
+                                    <li><a class="dropdown-item language-switcher" href="#" data-lang="ta-IN">🇮🇳 தமிழ்</a></li>
+                                    <li><a class="dropdown-item language-switcher" href="#" data-lang="ml-IN">🇮🇳 മലയാളം</a></li>
+                                </ul>
+                            </li>
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Admin
+                                        <span data-i18n="Admin">Admin</span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
-                                        <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="/admin/dashboard" data-i18n="Dashboard">Dashboard</a></li>
                                         <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item text-danger" href="/admin/logout">Logout</a></li>
+                                        <li><a class="dropdown-item text-danger" href="/admin/logout" data-i18n="Logout">Logout</a></li>
                                     </ul>
                                 </li>
                             }
@@ -320,7 +331,7 @@
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    &copy; 2025 Kairos Weather. All rights reserved.
+                    <span data-i18n="FooterCopyright">&copy; 2025 Kairos Weather. All rights reserved.</span>
                 </div>
             </div>
         </footer>
@@ -328,10 +339,10 @@
         <!-- Cookie Consent Banner -->
         <div id="cookie-consent" class="cookie-consent-banner">
             <div class="cookie-consent-content">
-                <p>We use cookies to enhance your experience, analyze traffic, and serve personalized ads. By continuing to use this site, you consent to our use of cookies. <a href="/Static/PrivacyPolicy#cookies" target="_blank">Learn more</a></p>
+                <p><span data-i18n="CookieConsent">We use cookies to enhance your experience, analyze traffic, and serve personalized ads. By continuing to use this site, you consent to our use of cookies.</span> <a href="/Static/PrivacyPolicy#cookies" target="_blank" data-i18n="LearnMore">Learn more</a></p>
                 <div class="cookie-buttons">
-                    <button id="accept-cookies" class="btn btn-primary">Accept</button>
-                    <button id="decline-cookies" class="btn btn-secondary">Decline</button>
+                    <button id="accept-cookies" class="btn btn-primary" data-i18n="Accept">Accept</button>
+                    <button id="decline-cookies" class="btn btn-secondary" data-i18n="Decline">Decline</button>
                 </div>
             </div>
         </div>
@@ -339,6 +350,414 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
         @await RenderSectionAsync("Scripts", required: false)
+
+        <!-- Translation Script -->
+        <script>
+            const translations = {
+                'en-US': {
+                    'Home': 'Home',
+                    'About': 'About',
+                    'FAQ': 'FAQ',
+                    'Contact': 'Contact',
+                    'Admin': 'Admin',
+                    'Dashboard': 'Dashboard',
+                    'Logout': 'Logout',
+                    'Language': 'Language',
+                    'FooterCopyright': '© 2025 Kairos Weather. All rights reserved.',
+                    'CookieConsent': 'We use cookies to enhance your experience, analyze traffic, and serve personalized ads. By continuing to use this site, you consent to our use of cookies.',
+                    'LearnMore': 'Learn more',
+                    'Accept': 'Accept',
+                    'Decline': 'Decline',
+                    'SearchPlaceholder': 'Enter city name, postal code, or coordinates...',
+                    'SearchButton': 'Search',
+                    'CurrentLocation': 'Use My Location',
+                    'WeatherReport': 'Weather Report',
+                    'FiveDayForecast': '5-Day Forecast',
+                    'LoadForecast': 'Load Forecast',
+                    'FeelsLike': 'Feels Like',
+                    'Humidity': 'Humidity',
+                    'Wind': 'Wind',
+                    'High': 'High',
+                    'Low': 'Low',
+                    'HeroTitle': 'Kairos Weather - Live Weather Updates & Forecast',
+                    'HeroSubtitle': 'Real-time weather updates for any location worldwide. Check current temperature, humidity, wind speed, and weather conditions.',
+                    'SearchHint': 'Try: "Kochi", "682001", or "9.9312,76.2673"',
+                    'YourLocation': '📍 Your Location',
+                    'GettingLocation': 'Getting your location...',
+                    'GetWeatherCurrentLocation': 'Get weather for your current location',
+                    'UseMyLocation': 'Use My Location',
+                    'AboutKairosWeather': 'About Kairos Weather',
+                    'AboutKairosWeatherDesc1': 'Kairos Weather was created with a simple mission: to make weather information accessible, accurate, and easy to understand. We believe weather plays a key role in daily life – from planning a trip to staying safe during storms.',
+                    'AboutKairosWeatherDesc2': 'Our platform gathers real-time data from trusted sources and presents it in a clean, user-friendly format.',
+                    'GlobalCoverage': 'Global Coverage',
+                    'GlobalCoverageDesc': 'Weather data for locations worldwide',
+                    'RealTimeUpdates': 'Real-Time Updates',
+                    'RealTimeUpdatesDesc': 'Instant weather information',
+                    'AccurateData': 'Accurate Data',
+                    'AccurateDataDesc': 'Powered by reliable APIs',
+                    'RelatedResources': 'Related Resources',
+                    'FAQDesc': 'Frequently asked questions about Kairos Weather',
+                    'AboutUs': 'About Us',
+                    'AboutUsDesc': 'Learn more about our weather service',
+                    'ContactDesc': 'Get in touch with our team',
+                    'PrivacyPolicy': 'Privacy Policy',
+                    'PrivacyPolicyDesc': 'How we protect your data',
+                    'WeatherTips': '💡 Weather Tips',
+                    'HotWeather': '☀️ Hot Weather',
+                    'HotWeatherTip1': 'Stay hydrated - drink plenty of water',
+                    'HotWeatherTip2': 'Wear light-colored, loose-fitting clothing',
+                    'HotWeatherTip3': 'Avoid direct sunlight during peak hours (10 AM - 4 PM)',
+                    'HotWeatherTip4': 'Use sunscreen with SPF 30 or higher',
+                    'HotWeatherTip5': 'Check on elderly neighbors and pets',
+                    'RainyWeather': '🌧️ Rainy Weather',
+                    'RainyWeatherTip1': 'Carry an umbrella or raincoat',
+                    'RainyWeatherTip2': 'Wear waterproof footwear',
+                    'RainyWeatherTip3': 'Drive slowly and maintain safe distance',
+                    'RainyWeatherTip4': 'Avoid walking through flooded areas',
+                    'RainyWeatherTip5': 'Keep emergency numbers handy',
+                    'ColdWeather': '❄️ Cold Weather',
+                    'ColdWeatherTip1': 'Layer your clothing for warmth',
+                    'ColdWeatherTip2': 'Wear a hat, gloves, and scarf',
+                    'ColdWeatherTip3': 'Stay dry to prevent hypothermia',
+                    'ColdWeatherTip4': 'Keep your home heated safely',
+                    'ColdWeatherTip5': 'Check weather forecasts before traveling',
+                    'StormyWeather': '🌪️ Stormy Weather',
+                    'StormyWeatherTip1': 'Stay indoors during storms',
+                    'StormyWeatherTip2': 'Avoid windows and doors',
+                    'StormyWeatherTip3': 'Unplug electronic devices',
+                    'StormyWeatherTip4': 'Have an emergency kit ready',
+                    'StormyWeatherTip5': 'Follow local weather alerts',
+                    'WeatherSafety': '🛡️ Weather Safety',
+                    'HeatWaveSafety': 'Heat Wave Safety',
+                    'HeatWaveSafetyDesc': 'During extreme heat, stay in air-conditioned buildings, limit outdoor activities, and recognize signs of heat exhaustion like heavy sweating, weakness, and dizziness.',
+                    'FloodSafety': 'Flood Safety',
+                    'FloodSafetyDesc': 'Never walk or drive through floodwaters. Just 6 inches of moving water can knock you down, and 1 foot of water can sweep your vehicle away. Move to higher ground immediately.',
+                    'ThunderstormSafety': 'Thunderstorm Safety',
+                    'ThunderstormSafetyDesc': 'When thunder roars, go indoors! Avoid using electrical appliances and plumbing during storms. If you\'re outside, avoid open fields, tall trees, and water bodies.',
+                    'ColdWaveSafety': 'Cold Wave Safety',
+                    'ColdWaveSafetyDesc': 'Stay indoors during extreme cold. If you must go outside, dress in layers and cover exposed skin. Watch for signs of frostbite and hypothermia.',
+                    'SeasonalWeatherGuide': '📅 Seasonal Weather Guide',
+                    'SpringSeason': '🌸 Spring (March-May)',
+                    'SpringSeasonDesc': 'Mild temperatures with occasional rain. Perfect for outdoor activities. Carry a light jacket for cool evenings.',
+                    'SummerSeason': '☀️ Summer (June-August)',
+                    'SummerSeasonDesc': 'Hot and humid with temperatures reaching 35°C+. Stay hydrated, use sunscreen, and avoid peak sun hours.',
+                    'AutumnSeason': '🍂 Autumn (September-November)',
+                    'AutumnSeasonDesc': 'Pleasant weather with cooler temperatures. Ideal for travel and outdoor events. Light layers work best.',
+                    'WinterSeason': '❄️ Winter (December-February)',
+                    'WinterSeasonDesc': 'Cold temperatures with possible frost. Wear warm clothing, use heating, and protect exposed skin from cold winds.'
+                },
+                'hi-IN': {
+                    'Home': 'होम',
+                    'About': 'हमारे बारे में',
+                    'FAQ': 'सामान्य प्रश्न',
+                    'Contact': 'संपर्क',
+                    'Admin': 'व्यवस्थापक',
+                    'Dashboard': 'डैशबोर्ड',
+                    'Logout': 'लॉग आउट',
+                    'Language': 'भाषा',
+                    'FooterCopyright': '© 2025 Kairos Weather. सर्वाधिकार सुरक्षित।',
+                    'CookieConsent': 'हम आपके अनुभव को बेहतर बनाने, ट्रैफ़िक का विश्लेषण करने और व्यक्तिगत विज्ञापन परोसने के लिए कुकीज़ का उपयोग करते हैं। इस साइट का उपयोग करना जारी रखकर, आप हमारी कुकीज़ के उपयोग के लिए सहमत होते हैं।',
+                    'LearnMore': 'और जानें',
+                    'Accept': 'स्वीकार करें',
+                    'Decline': 'अस्वीकार करें',
+                    'SearchPlaceholder': 'शहर का नाम, पिन कोड, या निर्देशांक दर्ज करें...',
+                    'SearchButton': 'खोजें',
+                    'CurrentLocation': 'मेरा स्थान उपयोग करें',
+                    'WeatherReport': 'मौसम रिपोर्ट',
+                    'FiveDayForecast': '5-दिन का पूर्वानुमान',
+                    'LoadForecast': 'पूर्वानुमान लोड करें',
+                    'FeelsLike': 'महसूस होता है',
+                    'Humidity': 'नमी',
+                    'Wind': 'हवा',
+                    'High': 'उच्च',
+                    'Low': 'निम्न',
+                    'HeroTitle': 'Kairos Weather - लाइव मौसम अपडेट और पूर्वानुमान',
+                    'HeroSubtitle': 'दुनिया भर में किसी भी स्थान के लिए रियल-टाइम मौसम अपडेट। वर्तमान तापमान, नमी, हवा की गति और मौसम की स्थिति की जांच करें।',
+                    'SearchHint': 'आज़माएँ: "Kochi", "682001", या "9.9312,76.2673"',
+                    'YourLocation': '📍 आपका स्थान',
+                    'GettingLocation': 'आपका स्थान प्राप्त हो रहा है...',
+                    'GetWeatherCurrentLocation': 'अपने वर्तमान स्थान के लिए मौसम प्राप्त करें',
+                    'UseMyLocation': 'मेरा स्थान उपयोग करें',
+                    'AboutKairosWeather': 'Kairos Weather के बारे में',
+                    'AboutKairosWeatherDesc1': 'Kairos Weather एक सरल मिशन के साथ बनाया गया था: मौसम की जानकारी को सुलभ, सटीक और समझने में आसान बनाना। हम मानते हैं कि मौसम दैनिक जीवन में महत्वपूर्ण भूमिका निभाता है – यात्रा की योजना से लेकर तूफान के दौरान सुरक्षित रहने तक।',
+                    'AboutKairosWeatherDesc2': 'हमारा प्लेटफ़ॉर्म विश्वसनीय स्रोतों से रियल-टाइम डेटा एकत्र करता है और इसे एक साफ, उपयोगकर्ता-अनुकूल प्रारूप में प्रस्तुत करता है।',
+                    'GlobalCoverage': 'वैश्विक कवरेज',
+                    'GlobalCoverageDesc': 'दुनिया भर के स्थानों के लिए मौसम डेटा',
+                    'RealTimeUpdates': 'रियल-टाइम अपडेट',
+                    'RealTimeUpdatesDesc': 'तत्काल मौसम जानकारी',
+                    'AccurateData': 'सटीक डेटा',
+                    'AccurateDataDesc': 'विश्वसनीय API द्वारा संचालित',
+                    'RelatedResources': 'संबंधित संसाधन',
+                    'FAQDesc': 'Kairos Weather के बारे में अक्सर पूछे जाने वाले प्रश्न',
+                    'AboutUs': 'हमारे बारे में',
+                    'AboutUsDesc': 'हमारी मौसम सेवा के बारे में और जानें',
+                    'ContactDesc': 'हमारी टीम से संपर्क करें',
+                    'PrivacyPolicy': 'गोपनीयता नीति',
+                    'PrivacyPolicyDesc': 'हम आपके डेटा की रक्षा कैसे करते हैं',
+                    'WeatherTips': '💡 मौसम टिप्स',
+                    'HotWeather': '☀️ गर्म मौसम',
+                    'HotWeatherTip1': 'हाइड्रेटेड रहें - खूब पानी पिएं',
+                    'HotWeatherTip2': 'हल्के रंग के, ढीले कपड़े पहनें',
+                    'HotWeatherTip3': 'पीक घंटों (सुबह 10 बजे - शाम 4 बजे) के दौरान प्रत्यक्ष धूप से बचें',
+                    'HotWeatherTip4': 'SPF 30 या उच्चतर सनस्क्रीन का उपयोग करें',
+                    'HotWeatherTip5': 'बुजुर्ग पड़ोसियों और पालतू जानवरों की जांच करें',
+                    'RainyWeather': '🌧️ बारिश का मौसम',
+                    'RainyWeatherTip1': 'छाता या रेनकोट ले जाएं',
+                    'RainyWeatherTip2': 'वाटरप्रूफ जूते पहनें',
+                    'RainyWeatherTip3': 'धीरे से ड्राइव करें और सुरक्षित दूरी बनाए रखें',
+                    'RainyWeatherTip4': 'बाढ़ वाले क्षेत्रों से चलने से बचें',
+                    'RainyWeatherTip5': 'आपातकालीन नंबर हाथ में रखें',
+                    'ColdWeather': '❄️ ठंडा मौसम',
+                    'ColdWeatherTip1': 'गर्मी के लिए कपड़ों की परतें पहनें',
+                    'ColdWeatherTip2': 'टोपी, दस्ताने और दुपट्टा पहनें',
+                    'ColdWeatherTip3': 'हाइपोथर्मिया से बचने के लिए सूखे रहें',
+                    'ColdWeatherTip4': 'अपने घर को सुरक्षित रूप से गर्म रखें',
+                    'ColdWeatherTip5': 'यात्रा करने से पहले मौसम पूर्वानुमान जांचें',
+                    'StormyWeather': '🌪️ तूफानी मौसम',
+                    'StormyWeatherTip1': 'तूफान के दौरान अंदर रहें',
+                    'StormyWeatherTip2': 'खिड़कियों और दरवाजों से बचें',
+                    'StormyWeatherTip3': 'इलेक्ट्रॉनिक उपकरणों को अनप्लग करें',
+                    'StormyWeatherTip4': 'आपातकालीन किट तैयार रखें',
+                    'StormyWeatherTip5': 'स्थानीय मौसम चेतावनियों का पालन करें',
+                    'WeatherSafety': '🛡️ मौसम सुरक्षा',
+                    'HeatWaveSafety': 'हीट वेव सुरक्षा',
+                    'HeatWaveSafetyDesc': 'चरम गर्मी के दौरान, एयर-कंडीशन वाली इमारतों में रहें, आउटडोर गतिविधियों को सीमित करें, और भारी पसीना, कमजोरी और चक्कर आने जैसे हीट एक्सहॉस्टन के संकेतों को पहचानें।',
+                    'FloodSafety': 'बाढ़ सुरक्षा',
+                    'FloodSafetyDesc': 'बाढ़ के पानी से कभी भी न चलें या ड्राइव न करें। बहते हुए 6 इंच पानी आपको गिरा सकता है, और 1 फीट पानी आपके वाहन को बहा ले जा सकता है। तुरंत ऊंची जगह पर जाएं।',
+                    'ThunderstormSafety': 'बिजली गिरने की सुरक्षा',
+                    'ThunderstormSafetyDesc': 'जब बिजली गरजे, अंदर चले जाएं! तूफान के दौरान इलेक्ट्रिकल उपकरणों और प्लंबिंग का उपयोग करने से बचें। यदि आप बाहर हैं, तो खुले मैदानों, लंबे पेड़ों और जल निकायों से बचें।',
+                    'ColdWaveSafety': 'कोल्ड वेव सुरक्षा',
+                    'ColdWaveSafetyDesc': 'चरम ठंड के दौरान अंदर रहें। यदि आपको बाहर जाना होगा, तो परतों में कपड़े पहनें और खुली त्वचा को कवर करें। जमने और हाइपोथर्मिया के संकेतों के लिए देखें।',
+                    'SeasonalWeatherGuide': '📅 मौसमी मौसम गाइड',
+                    'SpringSeason': '🌸 वसंत (मार्च-मई)',
+                    'SpringSeasonDesc': 'सामयिक बारिश के साथ हल्के तापमान। आउटडोर गतिविधियों के लिए बिल्कुल सही। ठंडी शाम के लिए हल्की जैकेट ले जाएं।',
+                    'SummerSeason': '☀️ गर्मी (जून-अगस्त)',
+                    'SummerSeasonDesc': '35°C+ तक पहुंचने वाले तापमान के साथ गर्म और नमी। हाइड्रेटेड रहें, सनस्क्रीन का उपयोग करें, और पीक सूर्य घंटों से बचें।',
+                    'AutumnSeason': '🍂 पतझड़ (सितंबर-नवंबर)',
+                    'AutumnSeasonDesc': 'ठंडे तापमान के साथ सुखद मौसम। यात्रा और आउटडोर कार्यक्रमों के लिए आदर्श। हल्की परतें सबसे अच्छी काम करती हैं।',
+                    'WinterSeason': '❄️ सर्दी (दिसंबर-फरवरी)',
+                    'WinterSeasonDesc': 'संभावित पाला के साथ ठंडे तापमान। गर्म कपड़े पहनें, हीटिंग का उपयोग करें, और ठंडी हवाओं से अपनी खुली त्वचा की रक्षा करें।'
+                },
+                'ta-IN': {
+                    'Home': 'முகப்பு',
+                    'About': 'பற்றி',
+                    'FAQ': 'அடிக்கடை கேள்விகள்',
+                    'Contact': 'தொடர்பு',
+                    'Admin': 'நிர்வாகம்',
+                    'Dashboard': 'டாஷ்போர்டு',
+                    'Logout': 'வெளியேறு',
+                    'Language': 'மொழி',
+                    'FooterCopyright': '© 2025 Kairos Weather. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
+                    'CookieConsent': 'உங்கள் அனுபவத்தை மேம்படுத்த, போக்குவரத்தை பகுப்பாய்வு செய்ய, மற்றும் தனிப்பயனாக்கப்பட்ட விளம்பரங்களை வழங்க நாங்கள் குக்கீகளைப் பயன்படுத்துகிறோம். இந்த தளத்தைத் தொடர்ந்து பயன்படுத்துவதன் மூலம், நீங்கள் எங்கள் குக்கீகளின் பயன்பாட்டிற்கு இணங்குகிறீர்கள்.',
+                    'LearnMore': 'மேலும் அறிய',
+                    'Accept': 'ஏற்றுக்கொள்',
+                    'Decline': 'மறுக்க',
+                    'SearchPlaceholder': 'நகரத்தின் பெயர், அஞ்சல் குறியீடு அல்லது ஆயங்களை உள்ளிடவும்...',
+                    'SearchButton': 'தேடுக',
+                    'CurrentLocation': 'எனது இருப்பிடத்தைப் பயன்படுத்து',
+                    'WeatherReport': 'வானிலை அறிக்கை',
+                    'FiveDayForecast': '5-நாள் காலநிலை கணிப்பு',
+                    'LoadForecast': 'காலநிலை கணிப்பை ஏற்று',
+                    'FeelsLike': 'உணர்வு',
+                    'Humidity': 'ஈரப்பதம்',
+                    'Wind': 'காற்று',
+                    'High': 'அதிகபட்சம்',
+                    'Low': 'குறைந்தபட்சம்',
+                    'HeroTitle': 'Kairos Weather - நேரட்ட வானிலை புதுப்பிப்புகள் மற்றும் கணிப்பு',
+                    'HeroSubtitle': 'உலகளவில் உள்ள எந்த இடத்திற்கும் ரியல்-டைம் வானிலை புதுப்பிப்புகள். தற்போதை வெப்பநிலை, ஈரப்பதம், காற்று வேகம் மற்றும் வானிலை நிலைகளைச் சரிபார்ப்பு செய்யுங்கள்.',
+                    'SearchHint': 'முயற்சிக்கவும்: "Kochi", "682001", அல்லது "9.9312,76.2673"',
+                    'YourLocation': '📍 உங்கள் இருப்பிடம்',
+                    'GettingLocation': 'உங்கள் இருப்பிடம் பெறுகிறது...',
+                    'GetWeatherCurrentLocation': 'உங்கள் தற்போதைய இருப்பிடத்திற்கான வானிலையைப் பெறுங்கள்',
+                    'UseMyLocation': 'எனது இருப்பிடத்தைப் பயன்படுத்து',
+                    'AboutKairosWeather': 'Kairos Weather பற்றி',
+                    'AboutKairosWeatherDesc1': 'Kairos Weather ஒரு எளிய நோக்கத்துடன் உருவாக்கப்பட்டது: வானிலை தகவலை அணுகக்கூடியதாக, துல்லியமானதாக மற்றும் புரிந்துகொள்ள எளிதாக மாற்றுதல். வானிலை அன்றாட வாழ்க்கையில் முக்கிய பங்கு வகிக்கிறது என்பதை நாங்கள் நம்புகிறோம் - பயணத் திட்டமிடுதல் முதல் புயல்களின் போது பாதுகாப்பாக இருத்தல் வரை.',
+                    'AboutKairosWeatherDesc2': 'எங்கள் தளம் நம்பகர்க்கப்பட்ட ஆதாரங்களிலிருந்து நேரட்டு தரவை சேகரிக்கிறது மற்றும் அதை சுத்தமான, பயனர் நட்பு வடிவத்தில் வழங்குகிறது.',
+                    'GlobalCoverage': 'உலகளாவிய கவரேஜ்',
+                    'GlobalCoverageDesc': 'உலகம் முழுவதும் உள்ள இடங்களுக்கான வானிலை தரவு',
+                    'RealTimeUpdates': 'நேரட்டு புதுப்பிப்புகள்',
+                    'RealTimeUpdatesDesc': 'உடனடி வானிலை தகவல்',
+                    'AccurateData': 'துல்லியமான தரவு',
+                    'AccurateDataDesc': 'நம்பகர்க்கப்பட்ட APIகளால் இயக்கப்படுகிறது',
+                    'RelatedResources': 'தொடர்புடைய வளங்கள்',
+                    'FAQDesc': 'Kairos Weather பற்றிய அடிக்கடை கேட்கப்படும் கேள்விகள்',
+                    'AboutUs': 'எங்களைப் பற்றி',
+                    'AboutUsDesc': 'எங்கள் வானிலை சேவை பற்றி மேலும் அறிய',
+                    'ContactDesc': 'எங்கள் குழுவுடன் தொடர்பு கொள்ளுங்கள்',
+                    'PrivacyPolicy': 'தனியுரிமைக் கொள்கை',
+                    'PrivacyPolicyDesc': 'நாங்கள் உங்கள் தரவை எப்படி பாதுகாக்கிறோம்',
+                    'WeatherTips': '💡 வானிலை குறிப்புகள்',
+                    'HotWeather': '☀️ சூடான வானிலை',
+                    'HotWeatherTip1': 'நீர்ப்பதமாக இருங்கள் - நிறைய நீர் குடிக்கவும்',
+                    'HotWeatherTip2': 'இலகுத்த நிறத்திலான, தளர்வான ஆடைகள் அணியவும்',
+                    'HotWeatherTip3': 'உச்ச நேரங்களில் (காலை 10 மணி - மாலை 4 மணி) நேரடி சூரியன் ஒளியிலிருந்து தவிர்க்கவும்',
+                    'HotWeatherTip4': 'SPF 30 அல்லது அதிக சன்ஸ்கிரீன் பயன்படுத்தவும்',
+                    'HotWeatherTip5': 'மூதேரியர் அண்டைவாசிகள் மற்றும் செல்லப்பிராணிகளைச் சரிபார்க்கவும்',
+                    'RainyWeather': '🌧️ மழைக்கால வானிலை',
+                    'RainyWeatherTip1': 'குடை அல்லது மழை அங்கி எடுத்துச் செல்லுங்கள்',
+                    'RainyWeatherTip2': 'நீர்ப்பதமான காலணிகள் அணியவும்',
+                    'RainyWeatherTip3': 'மெதுவாக ஓட்டி பாதுகாப்பான தூரத்தை பராமரிக்கவும்',
+                    'RainyWeatherTip4': 'வெள்ளப்பெருக்கு பகுதிகளில் நடப்பதைத் தவிர்க்கவும்',
+                    'RainyWeatherTip5': 'அவசர எண்களைக் கையில் வைத்திருங்கள்',
+                    'ColdWeather': '❄️ குளிரான வானிலை',
+                    'ColdWeatherTip1': 'வெப்பத்திற்கு ஆடைகளை அடுக்கி அணியவும்',
+                    'ColdWeatherTip2': 'தொப்பி, கையுறைகள் மற்றும் துப்பட்டா அணியவும்',
+                    'ColdWeatherTip3': 'ஹைபோதர்மியாவைத் தடுக்க உலர்ந்திருங்கள்',
+                    'ColdWeatherTip4': 'உங்கள் வீட்டைப் பாதுகாப்பாக சூடாக்கவும்',
+                    'ColdWeatherTip5': 'பயணம் செல்வதற்கு முன் வானிலை முன்னறிவியைச் சரிபார்க்கவும்',
+                    'StormyWeather': '🌪️ புயல் வானிலை',
+                    'StormyWeatherTip1': 'புயல்களின் போது உள்ளே இருங்கள்',
+                    'StormyWeatherTip2': 'சாளரங்கள் மற்றும் கதவுகளிலிருந்து தவிர்க்கவும்',
+                    'StormyWeatherTip3': 'மின்னணு சாதனங்களைத் துண்டிக்கவும்',
+                    'StormyWeatherTip4': 'அவசரக் கிட்டைத் தயாராக வைத்திருங்கள்',
+                    'StormyWeatherTip5': 'உள்ளூர் வானிலை எச்சரிப்புகளைப் பின்பற்றவும்',
+                    'WeatherSafety': '🛡️ வானிலை பாதுகாப்பு',
+                    'HeatWaveSafety': 'வெப்பலை பாதுகாப்பு',
+                    'HeatWaveSafetyDesc': 'அதிகபட்ச வெப்பத்தின் போது, ஏர்-கண்டிஷன் கொண்ட கட்டிடங்களில் இருங்கள், வெளிப்புற செயல்பாடுகளைக் குறைக்கவும், மற்றும் கனமான வியர்வு, பலவீனம் மற்றும் தலைச்சுற்றி போன்ற ஹீட் எக்சாஸ்டன் அறிகுறிகளை அடையாளவும்.',
+                    'FloodSafety': 'வெள்ளப்பெருக்கு பாதுகாப்பு',
+                    'FloodSafetyDesc': 'வெள்ளப்பெருக்கு நீரில் எப்போதும் நடக்க வேண்டாம் அல்லது ஓட்ட வேண்டாம். ஓடும் 6 இன்ச் நீர் உங்களை கீழே தள்ளலாம், மற்றும் 1 அடி நீர் உங்கள் வாகனத்தை கொண்டு செல்லலாம். உடனடி உயரமான இடத்திற்குச் செல்லுங்கள்.',
+                    'ThunderstormSafety': 'மின்னல் பாதுகாப்பு',
+                    'ThunderstormSafetyDesc': 'மின்னல் ஒலிக்கும்போது, உள்ளே செல்லுங்கள்! புயல்களின் போது மின்சாரணு சாதனங்கள் மற்றும் பிளம்பிங்கைப் பயன்படுத்துவதைத் தவிர்க்கவும். நீங்கள் வெளியில் இருந்தால், திறந்த வெளிகள், உயரமான மரங்கள் மற்றும் நீர்நிலைகளிலிருந்து தவிர்க்கவும்.',
+                    'ColdWaveSafety': 'குளிரலை பாதுகாப்பு',
+                    'ColdWaveSafetyDesc': 'அதிகபட்ச குளிரில் உள்ளே இருங்கள். நீங்கள் வெளியே செல்ல வேண்டும் என்றால், அடுக்குகளில் ஆடை அணிந்து திறந்த தோலை மூடவும். மரப்பு மற்றும் ஹைபோதர்மியா அறிகுறிகளுக்கு கவனிக்கவும்.',
+                    'SeasonalWeatherGuide': '📅 பருவ வானிலை வழிகாட்டி',
+                    'SpringSeason': '🌸 வசந்தம் (மார்ச்-மே)',
+                    'SpringSeasonDesc': 'அவ்வப்போது மழையுடன் மிதமான வெப்பநிலை. வெளிப்புற செயல்பாடுகளுக்கு சரியானது. குளிரான மாலைகளுக்கு இலகுத்த ஜாக்கெட் எடுத்துச் செல்லுங்கள்.',
+                    'SummerSeason': '☀️ கோடை (சூன்-ஆகஸ்ட்)',
+                    'SummerSeasonDesc': '35°C+ வரை அடையும் வெப்பநிலையுடன் சூடான மற்றும் ஈரப்பதமானது. நீர்ப்பதமாக இருங்கள், சன்ஸ்கிரீன் பயன்படுத்தவும், மற்றும் உச்ச சூரிய மணிநேரங்களிலிருந்து தவிர்க்கவும்.',
+                    'AutumnSeason': '🍂 இலையுதிர்க்காலம் (செப்டம்பர்-நவம்பர்)',
+                    'AutumnSeasonDesc': 'குளிரான வெப்பநிலையுடன் இனிய வானிலை. பயணம் மற்றும் வெளிப்புற நிகழ்வுகளுக்கு சிறந்தது. இலகுத்த அடுக்குகள் சிறந்து வேலை செய்கின்றன.',
+                    'WinterSeason': '❄️ குளிர்காலம் (டிசம்பர்-பிப்ரவரி)',
+                    'WinterSeasonDesc': 'சாத்தியமான பனிப்பொழிலுடன் குளிரான வெப்பநிலை. சூடான ஆடைகள் அணியவும், ஹீட்டிங் பயன்படுத்தவும், மற்றும் குளிரான காற்றிலிருந்து உங்கள் திறந்த தோலைப் பாதுகாக்கவும்.'
+                },
+                'ml-IN': {
+                    'Home': 'ഹോം',
+                    'About': 'ഞങ്ങളെക്കുറിച്ച്',
+                    'FAQ': 'സാധാരണ ചോദ്യങ്ങൾ',
+                    'Contact': 'ബന്ധപ്പെടുക',
+                    'Admin': 'അഡ്മിൻ',
+                    'Dashboard': 'ഡാഷ്ബോർഡ്',
+                    'Logout': 'ലോഗ്ഔട്ട്',
+                    'Language': 'ഭാഷ',
+                    'FooterCopyright': '© 2025 Kairos Weather. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.',
+                    'CookieConsent': 'നിങ്ങളുടെ അനുഭവം മെച്ചപ്പെടുത്താൻ, ട്രാഫിക് വിശകലനം ചെയ്യാൻ, വ്യക്തിഗത പരസ്യങ്ങൾ നൽകാൻ ഞങ്ങൾ കുക്കികൾ ഉപയോഗിക്കുന്നു. ഈ സൈറ്റ് ഉപയോഗിക്കുന്നത് തുടരുന്നതിലൂടെ, നിങ്ങൾ ഞങ്ങളുടെ കുക്കികളുടെ ഉപയോഗത്തിന് സമ്മതിക്കുന്നു.',
+                    'LearnMore': 'കൂടുതൽ അറിയുക',
+                    'Accept': 'സ്വീകരിക്കുക',
+                    'Decline': 'നിരസിക്കുക',
+                    'SearchPlaceholder': 'നഗരത്തിന്റെ പേര്, പിൻ കോഡ്, അല്ലെങ്കിൽ കോർഡിനേറ്റുകൾ നൽകുക...',
+                    'SearchButton': 'തിരയുക',
+                    'CurrentLocation': 'എന്റെ സ്ഥാനം ഉപയോഗിക്കുക',
+                    'WeatherReport': 'കാലാവസ്ഥാ റിപ്പോർട്ട്',
+                    'FiveDayForecast': '5-ദിവസത്തെ കാലാവസ്ഥാ പ്രവചനം',
+                    'LoadForecast': 'പ്രവചനം ലോഡ് ചെയ്യുക',
+                    'FeelsLike': 'അനുഭവപ്പെടുന്നത്',
+                    'Humidity': 'ഈർപ്പം',
+                    'Wind': 'കാറ്റ്',
+                    'High': 'ഉയർന്ന',
+                    'Low': 'താഴ്ന്ന',
+                    'HeroTitle': 'Kairos Weather - ലൈവ് കാലാവസ്ഥ അപ്‌ഡേറ്റുകളും പ്രവചനങ്ങളും',
+                    'HeroSubtitle': 'ലോകമെമ്പായിലെ ഏതൊരു സ്ഥലത്തേക്കും റിയൽ-ടൈം കാലാവസ്ഥ അപ്‌ഡേറ്റുകൾ. നിലവിലുള്ള താപനില, ഈർപ്പം, കാറ്റ് വേഗത, കാലാവസ്ഥ സാഹചര്യങ്ങൾ എന്നിവ പരിശോധിക്കുക.',
+                    'SearchHint': 'ശ്രമിക്കുക: "Kochi", "682001", അല്ലെങ്കിൽ "9.9312,76.2673"',
+                    'YourLocation': '📍 നിങ്ങളുടെ സ്ഥാനം',
+                    'GettingLocation': 'നിങ്ങളുടെ സ്ഥാനം ലഭിക്കുന്നു...',
+                    'GetWeatherCurrentLocation': 'നിങ്ങളുടെ നിലവിലുള്ള സ്ഥാനത്തിനുള്ള കാലാവസ്ഥ ലഭിക്കുക',
+                    'UseMyLocation': 'എന്റെ സ്ഥാനം ഉപയോഗിക്കുക',
+                    'AboutKairosWeather': 'Kairos Weather കുറിച്ച്',
+                    'AboutKairosWeatherDesc1': 'Kairos Weather ഒരു ലളിതമായ ദൗത്യത്തോടെ സൃഷ്ടിച്ചത്: കാലാവസ്ഥാ വിവരം ലഭ്യമാക്കുക, കൃത്യമായതും മനസ്സിലാക്കുക. ഞങ്ങൾ വിശ്വസിക്കുന്നു കാലാവസ്ഥ ദൈനിക ജീവിത്തിൽ ഒരു പ്രധാന പങ്ക് വഹിക്കുന്നു – യാത്ര ആസൂത്രണം മുതൽ കൊടുങ്ങളുടെ സമയം സുരക്ഷിതമായിരിക്കുക വരെ.',
+                    'AboutKairosWeatherDesc2': 'ഞങ്ങളുടെ പ്ലാറ്റ്ഫോം വിശ്വസനീയമായ ഉറവിടങ്ങളിൽ നിന്നും റിയൽ-ടൈം ഡാറ്റ ശേഖരിക്കുക മറ്റും അത് ഒരു വൃത്തമായ, ഉപയോക്തൃ-സൗഹൃദ രൂപത്തിൽ അവതരിക്കുന്നു.',
+                    'GlobalCoverage': 'ആഗോള കവറേജ്',
+                    'GlobalCoverageDesc': 'ലോകമെമ്പായിലെ ഏതൊരു സ്ഥലത്തേക്കും കാലാവസ്ഥാ ഡാറ്റ',
+                    'RealTimeUpdates': 'റിയൽ-ടൈം അപ്‌ഡേറ്റുകൾ',
+                    'RealTimeUpdatesDesc': 'ഉടൻ കാലാവസ്ഥാ വിവരം',
+                    'AccurateData': 'കൃത്യമായ ഡാറ്റ',
+                    'AccurateDataDesc': 'വിശ്വസനീയമായ APIകൾ വഴി പ്രവർത്തിക്കുന്നു',
+                    'RelatedResources': 'ബന്ധപ്പെട്ട വിഭവങ്ങൾ',
+                    'FAQDesc': 'Kairos Weather ബന്ധമായി സാധാരണമായി ചോദിക്കുന്ന ചോദ്യങ്ങൾ',
+                    'AboutUs': 'ഞങ്ങളെക്കുറിച്ച്',
+                    'AboutUsDesc': 'ഞങ്ങളുടെ കാലാവസ്ഥാ സേവയെക്കുറിച്ച് കൂടുതൽ അറിയുക',
+                    'ContactDesc': 'ഞങ്ങളുടെ സംഘവുമായി ബന്ധപ്പെടുക',
+                    'PrivacyPolicy': 'സ്വകാര്യ നയം',
+                    'PrivacyPolicyDesc': 'ഞങ്ങൾ നിങ്ങളുടെ ഡാറ്റ എങ്ങനെ സംരക്ഷിക്കുന്നു',
+                    'WeatherTips': '💡 കാലാവസ്ഥാ നുറുകൾ',
+                    'HotWeather': '☀️ ചൂടായ കാലാവസ്ഥ',
+                    'HotWeatherTip1': 'ഹൈഡ്രേറ്റഡ് ആയിരിക്കുക - ധാരാളം വെള്ളം കുടിക്കുക',
+                    'HotWeatherTip2': 'ഇളം നിറത്തിലുള്ള, അയഞ്ഞാറിയ വസ്ത്രങ്ങൾ ധരിക്കുക',
+                    'HotWeatherTip3': 'ഉച്ച സമയങ്ങളിൽ (രാവിലെ 10 മണി - വൈകുന്ന് 4 മണി) നേരിട്ട സൂര്യന്റെ ഒളിയിൽ നിന്നും ഒഴിവ് പാലിക്കുക',
+                    'HotWeatherTip4': 'SPF 30 അല്ലെങ്കിൽ കൂടുതൽ സൺസ്ക്രീൻ ഉപയോഗിക്കുക',
+                    'HotWeatherTip5': 'മുതിർന്നവരായ അയൽക്കാരെയും കമ്പാനികളെയും പരിശോധിക്കുക',
+                    'RainyWeather': '🌧️ മഴ കാലാവസ്ഥ',
+                    'RainyWeatherTip1': 'കുട അല്ലെങ്കിൽ മഴക്കുട എടുത്തുക',
+                    'RainyWeatherTip2': 'വാട്ടർപ്രൂഫ് കാലണികൾ ധരിക്കുക',
+                    'RainyWeatherTip3': 'പതുക്കെ ഡ്രൈവ് ചെയ്ത് സുരക്ഷിത ദൂരം പാലിക്കുക',
+                    'RainyWeatherTip4': 'വെള്ളപ്പെരുക്ക് പ്രദേശങ്ങളിലൂടെ നടക്കുന്നതിൽ ഒഴിവ് പാലിക്കുക',
+                    'RainyWeatherTip5': 'ആശുര നമ്പറുകൾ കൈയിൽ സൂക്കുക',
+                    'ColdWeather': '❄️ തണുപ്പ കാലാവസ്ഥ',
+                    'ColdWeatherTip1': 'ചൂടിനുള്ളതിനു വസ്ത്രങ്ങളുടെ ലെയറുകൾ ധരിക്കുക',
+                    'ColdWeatherTip2': 'തൊപ്പി, കൈയുറകൾ, കമ്പാറും ശാലും ധരിക്കുക',
+                    'ColdWeatherTip3': 'ഹൈപ്പോതെർമിയയിൽ നിന്നും ഉണങ്ങാൻ ഇരിക്കുക',
+                    'ColdWeatherTip4': 'നിങ്ങളുടെ വീട് സുരക്ഷിതമായി ചൂടാക്കുക',
+                    'ColdWeatherTip5': 'യാത്ര ചെയ്യുന്നതിനു മുമ്പ് കാലാവസ്ഥാ പ്രവചനം പരിശോധിക്കുക',
+                    'StormyWeather': '🌪️ കൊടുങ്ങൾ കാലാവസ്ഥ',
+                    'StormyWeatherTip1': 'കൊടുങ്ങളുടെ സമയം ഉള്ളിൽ തുങ്ങുക',
+                    'StormyWeatherTip2': 'ജനാലകളിൽ നിന്നും വാതിലുകൾ ഒഴിവ് പാലിക്കുക',
+                    'StormyWeatherTip3': 'ഇലക്ട്രോണിക് ഉപകരണങ്ങൾ അൺപ്ലഗ് ചെയ്യുക',
+                    'StormyWeatherTip4': 'ആശുര കിറ്റ് തയാർ ആത്തൊണിക്കുക',
+                    'StormyWeatherTip5': 'പ്രാദേശിക കാലാവസ്ഥാ മുന്നറിപ്പുകൾ പിന്തുടരുക',
+                    'WeatherSafety': '🛡️ കാലാവസ്ഥാ സുരക്ഷ',
+                    'HeatWaveSafety': 'ഹീറ്റ് വേവ് സുരക്ഷ',
+                    'HeatWaveSafetyDesc': 'കടുത്ത ചൂടിന്റെ സമയം, എയർ-കണ്ടീഷൻ ഉള്ള കെട്ടിടങ്ങളിൽ തുങ്ങുക, ഔട്ട്ഡോർ പ്രവർത്തനങ്ങൾ പരിമിതമാക്കുക, മറ്റും കനതമായ വിയർവ്, ബലഹീനത, തലച്ചുറ്റ് എന്നിവ ഹീറ്റ് എക്സ്ഹോസ്റ്റന്റെ ലക്ഷണങ്ങൾ തിരിച്ചറിയിക്കുക.',
+                    'FloodSafety': 'വെള്ളപ്പാടം സുരക്ഷ',
+                    'FloodSafetyDesc': 'വെള്ളപ്പാടത്തിലൂടെ ഒരിക്കുകയോ ഡ്രൈവ് ചെയ്യോ ചെയ്യരുത്. ഒഴുകുന്ന 6 ഇഞ്ച് വെള്ളം നിങ്ങളെ വീഴ്ത്താൻ സാധിക്കും, ഒരു അടി വെള്ളം നിങ്ങളുടെ വാഹനത്തെ ഒഴുക്കി കൊണ്ടുപോകും. ഉടൻ ഉയർന്ന സ്ഥലത്തേക്ക് പോകുക.',
+                    'ThunderstormSafety': 'ഇടിമിന്നൽ സുരക്ഷ',
+                    'ThunderstormSafetyDesc': 'ഇടി മുഴക്കുമ്പോൾ ഉള്ളിൽ പോകുക! കൊടുങ്ങളുടെ സമയം ഇലക്ട്രിക്കൽ ഉപകരണങ്ങളും പ്ലംബിംഗും ഉപയോഗിക്കുന്നതിൽ ഒഴിവ് പാലിക്കുക. നിങ്ങൾ പുറത്താണെങ്കിൽ, തുറന്ന മൈതാനങ്ങൾ, ഉയർന്ന മരങ്ങൾ, ജല നിക്ഷേപങ്ങൾ എന്നിവയിൽ നിന്നും ഒഴിവ് പാലിക്കുക.',
+                    'ColdWaveSafety': 'കോൾഡ് വേവ് സുരക്ഷ',
+                    'ColdWaveSafetyDesc': 'കടുത്ത തണുപ്പിൽ ഉള്ളിൽ തുങ്ങുക. നിങ്ങൾ പുറത്ത് പോകേണ്ടി വന്നെങ്കിൽ, ലെയറുകളിൽ വസ്ത്രം ധരിക്കുക മറ്റും തുറന്ന തൊലിയെ മൂടുക. തണുപ്പും ഹൈപ്പോതെർമിയയുടെ ലക്ഷണങ്ങൾക്ക് ശ്രദ്ധിക്കുക.',
+                    'SeasonalWeatherGuide': '📅 സീസണൽ കാലാവസ്ഥാ ഗൈഡ്',
+                    'SpringSeason': '🌸 വസന്തം (മാർച്ച്-മെയ്)',
+                    'SpringSeasonDesc': 'അപ്പൂപ്പം മഴയോടെ കൂടെ മിതമായ താപനില. ഔട്ട്ഡോർ പ്രവർത്തനങ്ങൾക്ക് നല്ലകമാണ്. തണുപ്പ വൈകുന്നുകൾക്ക് ഇളം ജാക്കറ്റ് എടുത്തുക.',
+                    'SummerSeason': '☀️ വേന്നം (ജൂൺ-ഓഗസ്റ്റ്)',
+                    'SummerSeasonDesc': '35°C+ വരെ എത്തുന്ന താപനിലയോടെ കൂടെ ചൂടവും ഈർപ്പവും. ഹൈഡ്രേറ്റഡ് ആയിരിക്കുക, സൺസ്ക്രീൻ ഉപയോഗിക്കുക, മറ്റും ഉച്ച സൂര്യ മണിക്കൂറുകളിൽ നിന്നും ഒഴിവ് പാലിക്കുക.',
+                    'AutumnSeason': '🍂 ശരത്കാലം (സെപ്റ്റംബർ-നവംബർ)',
+                    'AutumnSeasonDesc': 'തണുപ്പ താപനിലയോടെ കൂടെ സുഖകരമായ കാലാവസ്ഥ. യാത്രയ്ക്കും ഔട്ട്ഡോർ പരിപാടികൾക്കും ആദർശമാണ്. ഇളം ലെയറുകൾ ഏറ്റവും പ്രവർത്തിക്കുന്നു.',
+                    'WinterSeason': '❄️ ശൈത്കാലം (ഡിസംബർ-ഫെബ്രുവരി)',
+                    'WinterSeasonDesc': 'സാധ്യതമായ മഞ്ഞോടെ കൂടെ തണുപ്പ താപനില. ചൂടുള്ള വസ്ത്രങ്ങൾ ധരിക്കുക, ഹീറ്റിംഗ് ഉപയോഗിക്കുക, മറ്റും തണുപ്പ കാറ്റിൽ നിന്നും നിങ്ങളുടെ തുറന്ന തൊലിയെ സംരക്ഷിക്കുക.'
+                }
+            };
+
+            function setLanguage(lang) {
+                localStorage.setItem('selectedLanguage', lang);
+                applyTranslations(lang);
+            }
+
+            function applyTranslations(lang) {
+                const langTranslations = translations[lang] || translations['en-US'];
+                
+                const searchInput = document.querySelector('input[name="CityName"]');
+                if (searchInput) {
+                    searchInput.placeholder = langTranslations['SearchPlaceholder'];
+                }
+
+                document.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (langTranslations[key]) {
+                        element.textContent = langTranslations[key];
+                    }
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const savedLang = localStorage.getItem('selectedLanguage') || 'en-US';
+                applyTranslations(savedLang);
+
+                document.querySelectorAll('.language-switcher').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const lang = this.getAttribute('data-lang');
+                        setLanguage(lang);
+                    });
+                });
+            });
+        </script>
     </div>
   
 </body>

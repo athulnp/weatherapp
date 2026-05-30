@@ -83,8 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    // Auto-fetch current location weather on page load
-    getCurrentLocationWeather();
+    // Removed auto-fetch - now requires user to click the button
 });
 
 function getCurrentLocationWeather() {
@@ -144,8 +143,8 @@ function fetchWeatherByCoordinates(lat, lon) {
     const cachedData = localStorage.getItem(cacheKey);
     const cacheTime = localStorage.getItem(`${cacheKey}_time`);
     
-    // Cache for 30 minutes (1800000 ms)
-    const CACHE_DURATION = 30 * 60 * 1000;
+    // Cache for 20 minutes (1200000 ms) - current weather can change relatively quickly
+    const CACHE_DURATION = 20 * 60 * 1000;
     
     if (cachedData && cacheTime) {
         const cacheAge = Date.now() - parseInt(cacheTime);

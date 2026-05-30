@@ -46,6 +46,21 @@ namespace WeatherApp.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetForecast(double lat, double lon)
+        {
+            try
+            {
+                var forecast = await _weatherService.GetWeatherForecast(lat, lon);
+                return Json(new { success = true, data = forecast });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting forecast data");
+                return Json(new { success = false, error = "Failed to get forecast data" });
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using NuGet.Packaging.Licenses;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using WeatherApp.Helper;
 using WeatherApp.IService;
@@ -148,7 +149,7 @@ namespace WeatherApp.Service
                     weatherData.CityName = char.ToUpper(location[0]) + location.Substring(1);
                 }
                 
-                await _cacheService.SetAsync(location, weatherData, TimeSpan.FromMinutes(30));
+                await _cacheService.SetAsync(location, weatherData, TimeSpan.FromMinutes(20));
                 return weatherData;
             }
 
@@ -210,7 +211,9 @@ namespace WeatherApp.Service
                     Humidity = currentWeather.Main.Humidity,
                     WindSpeed = currentWeather.Wind?.Speed ?? 0.0,
                     Icon = iconUrl,
-                    IsLocationAvailable = true
+                    IsLocationAvailable = true,
+                    Latitude = latitude,
+                    Longitude = longitude
                 };
             }
             
@@ -620,6 +623,79 @@ namespace WeatherApp.Service
             }
             
             return (0, 0, false, string.Empty);
+        }
+
+        public async Task<List<DailyForecast>> GetWeatherForecast(double latitude, double longitude)
+        {
+            try
+            {
+                // Create cache key for forecast
+                string cacheKey = $"forecast_{latitude}_{longitude}";
+                
+                // Check cache first
+                var cachedForecast = await _cacheService.GetAsync<List<DailyForecast>>(cacheKey);
+                if (cachedForecast != null)
+                {
+                    _logger.LogInformation("Cached forecast data available for coordinates: {lat}, {lon}", latitude, longitude);
+                    return cachedForecast;
+                }
+                
+                var client = _httpClientFactory.CreateClient("weatherClient");
+                // Use 5-day forecast API (free tier)
+                string url = $"data/2.5/forecast?lat={latitude}&lon={longitude}&appid=8c3a7a1fedef1ca1d1261de353d2698f&units=metric";
+
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var forecastData = System.Text.Json.JsonSerializer.Deserialize<FiveDayForecastResponse>(json);
+                    
+                    if (forecastData?.List != null && forecastData.List.Count > 0)
+                    {
+                        // Group forecast items by date and calculate daily max/min
+                        var dailyForecasts = forecastData.List
+                            .GroupBy(item => DateTimeOffset.FromUnixTimeSeconds(item.Dt).DateTime.Date)
+                            .Select(group => new DailyForecast
+                            {
+                                Dt = new DateTimeOffset(group.Key).ToUnixTimeSeconds(),
+                                Temp = new DailyTemperature
+                                {
+                                    Day = group.Average(item => item.Main.Temp),
+                                    Min = group.Min(item => item.Main.TempMin),
+                                    Max = group.Max(item => item.Main.TempMax),
+                                    Night = group.Where(item => item.DtTxt.Contains("00:00:00") || item.DtTxt.Contains("03:00:00")).Select(item => item.Main.Temp).DefaultIfEmpty(group.Average(item => item.Main.Temp)).Average(),
+                                    Eve = group.Where(item => item.DtTxt.Contains("18:00:00")).Select(item => item.Main.Temp).DefaultIfEmpty(group.Average(item => item.Main.Temp)).Average(),
+                                    Morn = group.Where(item => item.DtTxt.Contains("09:00:00") || item.DtTxt.Contains("12:00:00")).Select(item => item.Main.Temp).DefaultIfEmpty(group.Average(item => item.Main.Temp)).Average()
+                                },
+                                FeelsLike = new DailyFeelsLike
+                                {
+                                    Day = group.Average(item => item.Main.FeelsLike),
+                                    Night = group.Where(item => item.DtTxt.Contains("00:00:00") || item.DtTxt.Contains("03:00:00")).Select(item => item.Main.FeelsLike).DefaultIfEmpty(group.Average(item => item.Main.FeelsLike)).Average(),
+                                    Eve = group.Where(item => item.DtTxt.Contains("18:00:00")).Select(item => item.Main.FeelsLike).DefaultIfEmpty(group.Average(item => item.Main.FeelsLike)).Average(),
+                                    Morn = group.Where(item => item.DtTxt.Contains("09:00:00") || item.DtTxt.Contains("12:00:00")).Select(item => item.Main.FeelsLike).DefaultIfEmpty(group.Average(item => item.Main.FeelsLike)).Average()
+                                },
+                                Humidity = (int)group.Average(item => item.Main.Humidity),
+                                WindSpeed = group.Average(item => item.Wind?.Speed ?? 0),
+                                Weather = group.First().Weather
+                            })
+                            .Take(5)
+                            .ToList();
+                        
+                        // Cache the forecast data for 2 hours (forecasts change less frequently)
+                        await _cacheService.SetAsync(cacheKey, dailyForecasts, TimeSpan.FromHours(2));
+                        _logger.LogInformation("Forecast data cached for coordinates: {lat}, {lon}", latitude, longitude);
+                        
+                        return dailyForecasts;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get weather forecast for coordinates: {lat}, {lon}", latitude, longitude);
+            }
+
+            return new List<DailyForecast>();
         }
     }
 }

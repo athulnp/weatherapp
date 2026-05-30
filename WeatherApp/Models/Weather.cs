@@ -14,5 +14,8 @@ namespace WeatherApp.Models
         public double WindSpeed { get; set; }
         public string Icon { get; set; }
         public bool IsLocationAvailable { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public List<DailyForecast> Forecast { get; set; }
     }
 }

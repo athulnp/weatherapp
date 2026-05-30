@@ -31,7 +31,7 @@
     }
 }
 
-<!-- JSON-LD Structured Data for Weather -->
+<!-- WeatherForecast Structured Data -->
 @if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
 {
     <script type="application/ld+json">
@@ -76,6 +76,64 @@
             "@@type": "Place",
             "name": "@Model.CityName"
         }
+    }
+    </script>
+}
+
+<!-- 7-Day Forecast Structured Data -->
+@if (Model != null && Model.Forecast != null && Model.Forecast.Count > 0)
+{
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WeatherForecast",
+        "name": "@Model.CityName 7-Day Forecast",
+        "description": "7-day weather forecast for @Model.CityName",
+        "location": {
+            "@@type": "Place",
+            "name": "@Model.CityName"
+        },
+        "forecast": [
+            @for (int i = 0; i < Model.Forecast.Count; i++)
+            {
+                var day = Model.Forecast[i];
+                var date = DateTimeOffset.FromUnixTimeSeconds(day.Dt).DateTime.ToString("o");
+                if (i > 0) { <text>,</text> }
+                <text>
+                {
+                    "@@type": "WeatherForecast",
+                    "name": "@date",
+                    "temperature": {
+                        "@@type": "QuantitativeValue",
+                        "value": "@day.Temp.Day",
+                        "unitCode": "CEL"
+                    },
+                    "tempMax": {
+                        "@@type": "QuantitativeValue",
+                        "value": "@day.Temp.Max",
+                        "unitCode": "CEL"
+                    },
+                    "tempMin": {
+                        "@@type": "QuantitativeValue",
+                        "value": "@day.Temp.Min",
+                        "unitCode": "CEL"
+                    },
+                    "humidity": {
+                        "@@type": "QuantitativeValue",
+                        "value": "@day.Humidity",
+                        "unitCode": "PCT"
+                    },
+                    "windSpeed": {
+                        "@@type": "QuantitativeValue",
+                        "value": "@day.WindSpeed",
+                        "unitCode": "KMH"
+                    },
+                    "weatherCondition": "@(day.Weather?.FirstOrDefault()?.Description ?? "")",
+                    "dateIssued": "@date"
+                }
+                </text>
+            }
+        ]
     }
     </script>
 }
@@ -226,8 +284,8 @@
     <section class="weather-display-section search-results-section">
         <div class="weather-display-container">
             <div class="section-header">
-                <h2 class="section-title">🔍 Search Results</h2>
-                <span class="section-subtitle">@Model.CityName</span>
+                <h2 class="section-title">@Model.CityName</h2>
+                <span class="section-subtitle">Weather Report</span>
             </div>
             
             @if (Model.IsLocationAvailable)
@@ -235,15 +293,11 @@
                 <div class="weather-card search-result-card">
                     <div class="weather-card-content">
                         <div class="weather-card-left">
-                            <div class="weather-main-info">
-                                <h3 class="weather-location">@Model.CityName</h3>
-                                <p class="weather-description">@Model.Description</p>
-                            </div>
-                            
                             <div class="weather-temperature">
                                 <span class="temperature-value">@Math.Round(Model.Temperature)</span>
                                 <span class="temperature-unit">°C</span>
                             </div>
+                            <p class="weather-description">@Model.Description</p>
                         </div>
                         
                         <div class="weather-card-right">
@@ -301,6 +355,39 @@
             }
         </div>
     </section>
+}
+
+<!-- 5-Day Forecast Section -->
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
+{
+    <section class="forecast-section">
+        <div class="forecast-container">
+            <div class="section-header">
+                <h2 class="section-title">@Model.CityName</h2>
+                <span class="section-subtitle">5-Day Forecast</span>
+                <button id="load-forecast-btn" class="load-forecast-button" onclick="loadForecast()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                        <path d="M16 21h5v-5"></path>
+                    </svg>
+                    Load Forecast
+                </button>
+            </div>
+            
+            <div id="forecast-loading" class="forecast-loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading forecast...</p>
+            </div>
+            
+            <div id="forecast-error" class="forecast-error" style="display: none;"></div>
+            
+            <div id="forecast-content" class="forecast-grid" style="display: none;">
+            </div>
+        </div>
+    </section>
+}
 }
 
 <!-- Current Location Weather Section (Secondary - Below search results) -->
@@ -645,6 +732,215 @@
         line-height: 1.6;
     }
 </style>
+
+<style>
+    .forecast-section {
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .forecast-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .forecast-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .forecast-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .forecast-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .forecast-date {
+        margin-bottom: 10px;
+    }
+    
+    .day-name {
+        display: block;
+        font-weight: 600;
+        color: #667eea;
+        font-size: 0.95rem;
+    }
+    
+    .date-text {
+        display: block;
+        font-size: 0.8rem;
+        color: #888;
+    }
+    
+    .forecast-icon {
+        margin: 10px 0;
+    }
+    
+    .forecast-icon img {
+        width: 64px;
+        height: 64px;
+    }
+    
+    .forecast-temp {
+        margin: 10px 0;
+    }
+    
+    .temp-max {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .temp-min {
+        display: block;
+        font-size: 0.9rem;
+        color: #888;
+    }
+    
+    .forecast-desc {
+        font-size: 0.85rem;
+        color: #555;
+        margin-bottom: 10px;
+        text-transform: capitalize;
+    }
+    
+    .forecast-details {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.75rem;
+        color: #777;
+    }
+    
+    .forecast-detail {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    
+    .load-forecast-button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 0.3s, transform 0.2s;
+        margin-left: auto;
+    }
+    
+    .load-forecast-button:hover {
+        background: #5568d3;
+        transform: translateY(-2px);
+    }
+    
+    .load-forecast-button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .forecast-loading {
+        text-align: center;
+        padding: 40px;
+    }
+    
+    .forecast-error {
+        background: #fee;
+        color: #c33;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<script>
+    function loadForecast() {
+        const lat = @(Model?.Latitude ?? 0);
+        const lon = @(Model?.Longitude ?? 0);
+        
+        if (lat === 0 || lon === 0) {
+            alert('Location coordinates not available');
+            return;
+        }
+        
+        const btn = document.getElementById('load-forecast-btn');
+        const loading = document.getElementById('forecast-loading');
+        const error = document.getElementById('forecast-error');
+        const content = document.getElementById('forecast-content');
+        
+        btn.disabled = true;
+        loading.style.display = 'block';
+        error.style.display = 'none';
+        content.style.display = 'none';
+        
+        fetch('/Home/GetForecast?lat=' + lat + '&lon=' + lon)
+            .then(response => response.json())
+            .then(data => {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                
+                if (data.success && data.data && data.data.length > 0) {
+                    content.innerHTML = data.data.map(day => {
+                        const date = new Date(day.dt * 1000);
+                        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+                        const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const icon = day.weather && day.weather[0] ? day.weather[0].icon : '01d';
+                        const iconUrl = 'https://openweathermap.org/img/wn/' + icon + '@@2x.png';
+                        const description = day.weather && day.weather[0] ? day.weather[0].description : '';
+                        
+                        return `
+                            <div class="forecast-card">
+                                <div class="forecast-date">
+                                    <span class="day-name">${dayName}</span>
+                                    <span class="date-text">${formattedDate}</span>
+                                </div>
+                                <div class="forecast-icon">
+                                    <img src="${iconUrl}" alt="${description}" loading="lazy" width="64" height="64" />
+                                </div>
+                                <div class="forecast-temp">
+                                    <span class="temp-max">${Math.round(day.temp.max)}°</span>
+                                    <span class="temp-min">${Math.round(day.temp.min)}°</span>
+                                </div>
+                                <div class="forecast-desc">${description}</div>
+                                <div class="forecast-details">
+                                    <span class="forecast-detail">💧 ${day.humidity}%</span>
+                                    <span class="forecast-detail">💨 ${Math.round(day.windSpeed)} km/h</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    content.style.display = 'grid';
+                } else {
+                    error.textContent = data.error || 'Failed to load forecast data';
+                    error.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                error.textContent = 'Error loading forecast. Please try again.';
+                error.style.display = 'block';
+                console.error('Error:', err);
+            });
+    }
+</script>
 
 
 

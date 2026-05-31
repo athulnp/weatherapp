@@ -1,0 +1,160 @@
+@model CityWeatherViewModel
+@{
+    ViewData["Title"] = Model.PageTitle;
+    ViewData["Description"] = Model.MetaDescription;
+    ViewData["Keywords"] = Model.MetaKeywords;
+    ViewData["Canonical"] = Model.CanonicalUrl;
+}
+
+<!-- Breadcrumb for SEO -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/weather">Weather</a></li>
+        <li class="breadcrumb-item"><a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")">@Model.CityName</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Forecast</li>
+    </ol>
+</nav>
+
+<div class="container mt-4">
+    <!-- SEO-friendly heading -->
+    <h1 class="text-center mb-4">5-Day Weather Forecast for @Model.CityName</h1>
+    <p class="lead text-center mb-5">@Model.MetaDescription</p>
+
+    @if (Model.WeatherData != null)
+    {
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <!-- Current Weather Summary -->
+                <div class="card weather-card mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title">Current Conditions</h3>
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="current-temp">@Model.WeatherData.Temperature°C</div>
+                                <div class="current-condition">@Model.WeatherData.Description</div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Feels Like:</strong> @Model.WeatherData.FeelsLike°C
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Humidity:</strong> @Model.WeatherData.Humidity%
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Wind:</strong> @Model.WeatherData.WindSpeed km/h
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Min Temp:</strong> @Model.WeatherData.TempMin°C
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5-Day Forecast -->
+                @if (Model.ForecastData != null)
+                {
+                    <div class="card forecast-card">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">5-Day Forecast</h3>
+                            <div class="alert alert-info">
+                                Forecast data is available. Check back for detailed forecast information.
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- SEO-friendly content section -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3>Weekly Weather Forecast for @Model.CityName</h3>
+                        <p>
+                            Plan your week with our detailed 5-day weather forecast for @Model.CityName. 
+                            Get accurate predictions for temperature, weather conditions, and more 
+                            to help you make informed decisions about your daily activities.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Internal linking for SEO -->
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3>Popular City Forecasts</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="/weather/kochi/forecast" class="btn btn-outline-primary w-100 mb-2">Kochi Forecast</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="/weather/mumbai/forecast" class="btn btn-outline-primary w-100 mb-2">Mumbai Forecast</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="/weather/delhi/forecast" class="btn btn-outline-primary w-100 mb-2">Delhi Forecast</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="/weather/bangalore/forecast" class="btn btn-outline-primary w-100 mb-2">Bangalore Forecast</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="/weather/chennai/forecast" class="btn btn-outline-primary w-100 mb-2">Chennai Forecast</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="/weather/hyderabad/forecast" class="btn btn-outline-primary w-100 mb-2">Hyderabad Forecast</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to current weather link -->
+                <div class="text-center mt-4">
+                    <a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")" class="btn btn-secondary">
+                        ← Back to Current Weather
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            Weather forecast data not available for @Model.CityName. Please try again later.
+        </div>
+    }
+</div>
+
+<style>
+    .breadcrumb {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    
+    .breadcrumb-item a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item a:hover {
+        text-decoration: underline;
+    }
+    
+    .weather-card, .forecast-card {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        border: none;
+    }
+    
+    .current-temp {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    
+    .current-condition {
+        font-size: 1.2rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+</style>

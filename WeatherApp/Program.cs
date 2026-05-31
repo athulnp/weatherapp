@@ -38,6 +38,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 // Register DI Services  
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
+builder.Services.AddSingleton<CitySearchService>();
+builder.Services.AddHttpClient<CountryCitiesService>();
 
 // Add Response Compression
 builder.Services.AddResponseCompression(options =>
@@ -151,6 +153,7 @@ if (!string.IsNullOrEmpty(auth0Domain) && !string.IsNullOrEmpty(auth0ClientId))
     app.UseAuthorization();
 }
 
+app.MapControllers(); // Enable attribute routing for CitiesController
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

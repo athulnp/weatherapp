@@ -294,57 +294,66 @@
 
             @if (Model.IsLocationAvailable) {
                 <div class="weather-card search-result-card">
-                    <div class="weather-card-content">
-                        <div class="weather-card-left">
-                            <div class="weather-temperature">
-                                <span class="temperature-value">@Math.Round(Model.Temperature)</span>
-                                <span class="temperature-unit">°C</span>
+                    <a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")" class="weather-card-link">
+                        <div class="weather-card-content">
+                            <div class="weather-card-left">
+                                <div class="weather-temperature">
+                                    <span class="temperature-value">@Math.Round(Model.Temperature)</span>
+                                    <span class="temperature-unit">°C</span>
+                                </div>
+                                <p class="weather-description">@Model.Description</p>
                             </div>
-                            <p class="weather-description">@Model.Description</p>
+
+                            <div class="weather-card-right">
+                                <img src="@Model.Icon" alt="@Model.Description weather icon" class="weather-icon" loading="lazy" width="100" height="100" />
+                            </div>
                         </div>
 
-                        <div class="weather-card-right">
-                            <img src="@Model.Icon" alt="@Model.Description weather icon" class="weather-icon" loading="lazy" width="100" height="100" />
-                        </div>
-                    </div>
-
-                    <div class="weather-details-grid">
-                        <div class="weather-detail-item">
-                            <span class="detail-icon">🌡️</span>
-                            <div class="detail-info">
-                                <span class="detail-label">Feels Like</span>
-                                <span class="detail-value">@Math.Round(Model.FeelsLike)°C</span>
+                        <div class="weather-details-grid">
+                            <div class="weather-detail-item">
+                                <span class="detail-icon">🌡️</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">Feels Like</span>
+                                    <span class="detail-value">@Math.Round(Model.FeelsLike)°C</span>
+                                </div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-icon">⬆️</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">High</span>
+                                    <span class="detail-value">@Math.Round(Model.TempMax)°C</span>
+                                </div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-icon">⬇️</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">Low</span>
+                                    <span class="detail-value">@Math.Round(Model.TempMin)°C</span>
+                                </div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-icon">💧</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">Humidity</span>
+                                    <span class="detail-value">@Model.Humidity%</span>
+                                </div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <span class="detail-icon">💨</span>
+                                <div class="detail-info">
+                                    <span class="detail-label">Wind</span>
+                                    <span class="detail-value">@Model.WindSpeed km/h</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="weather-detail-item">
-                            <span class="detail-icon">⬆️</span>
-                            <div class="detail-info">
-                                <span class="detail-label">High</span>
-                                <span class="detail-value">@Math.Round(Model.TempMax)°C</span>
-                            </div>
+                        <div class="view-details-link">
+                            <span>View Details</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="M12 5l7 7-7 7"></path>
+                            </svg>
                         </div>
-                        <div class="weather-detail-item">
-                            <span class="detail-icon">⬇️</span>
-                            <div class="detail-info">
-                                <span class="detail-label">Low</span>
-                                <span class="detail-value">@Math.Round(Model.TempMin)°C</span>
-                            </div>
-                        </div>
-                        <div class="weather-detail-item">
-                            <span class="detail-icon">💧</span>
-                            <div class="detail-info">
-                                <span class="detail-label">Humidity</span>
-                                <span class="detail-value">@Model.Humidity%</span>
-                            </div>
-                        </div>
-                        <div class="weather-detail-item">
-                            <span class="detail-icon">💨</span>
-                            <div class="detail-info">
-                                <span class="detail-label">Wind</span>
-                                <span class="detail-value">@Model.WindSpeed km/h</span>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             } else {
                 <div class="weather-error-card">
@@ -866,6 +875,36 @@
         border-radius: 8px;
         text-align: center;
         margin-top: 20px;
+    }
+    
+    .weather-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .weather-card-link:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .view-details-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        margin-top: 16px;
+        transition: background 0.3s;
+    }
+    
+    .weather-card-link:hover .view-details-link {
+        background: linear-gradient(135deg, #5568d3 0%, #6a3f91 100%);
     }
 </style>
 

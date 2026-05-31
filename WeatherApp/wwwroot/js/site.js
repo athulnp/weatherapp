@@ -197,62 +197,75 @@ function displayCurrentLocationWeather(weather) {
         emptyState.style.display = "none";
     }
     
+    const cityName = weather.cityName || "Current Location";
+    const urlFriendlyName = cityName.toLowerCase().replace(" ", "-");
+    
     const html = `
-        <div class="weather-card-content">
-            <div class="weather-card-left">
-                <div class="weather-main-info">
-                    <h3 class="weather-location">${weather.cityName || "Current Location"}</h3>
-                    <p class="weather-description">${weather.description}</p>
+        <a href="/weather/${urlFriendlyName}" class="weather-card-link">
+            <div class="weather-card-content">
+                <div class="weather-card-left">
+                    <div class="weather-main-info">
+                        <h3 class="weather-location">${cityName}</h3>
+                        <p class="weather-description">${weather.description}</p>
+                    </div>
+                    
+                    <div class="weather-temperature">
+                        <span class="temperature-value">${Math.round(weather.temperature)}</span>
+                        <span class="temperature-unit">°C</span>
+                    </div>
                 </div>
                 
-                <div class="weather-temperature">
-                    <span class="temperature-value">${Math.round(weather.temperature)}</span>
-                    <span class="temperature-unit">°C</span>
+                <div class="weather-card-right">
+                    <img src="${weather.icon}" alt="${weather.description}" class="weather-icon" />
                 </div>
             </div>
             
-            <div class="weather-card-right">
-                <img src="${weather.icon}" alt="${weather.description}" class="weather-icon" />
-            </div>
-        </div>
-        
-        <div class="weather-details-grid">
-            <div class="weather-detail-item">
-                <span class="detail-icon">🌡️</span>
-                <div class="detail-info">
-                    <span class="detail-label">Feels Like</span>
-                    <span class="detail-value">${Math.round(weather.feelsLike)}°C</span>
+            <div class="weather-details-grid">
+                <div class="weather-detail-item">
+                    <span class="detail-icon">🌡️</span>
+                    <div class="detail-info">
+                        <span class="detail-label">Feels Like</span>
+                        <span class="detail-value">${Math.round(weather.feelsLike)}°C</span>
+                    </div>
+                </div>
+                <div class="weather-detail-item">
+                    <span class="detail-icon">⬆️</span>
+                    <div class="detail-info">
+                        <span class="detail-label">High</span>
+                        <span class="detail-value">${Math.round(weather.tempMax)}°C</span>
+                    </div>
+                </div>
+                <div class="weather-detail-item">
+                    <span class="detail-icon">⬇️</span>
+                    <div class="detail-info">
+                        <span class="detail-label">Low</span>
+                        <span class="detail-value">${Math.round(weather.tempMin)}°C</span>
+                    </div>
+                </div>
+                <div class="weather-detail-item">
+                    <span class="detail-icon">💧</span>
+                    <div class="detail-info">
+                        <span class="detail-label">Humidity</span>
+                        <span class="detail-value">${weather.humidity}%</span>
+                    </div>
+                </div>
+                <div class="weather-detail-item">
+                    <span class="detail-icon">💨</span>
+                    <div class="detail-info">
+                        <span class="detail-label">Wind</span>
+                        <span class="detail-value">${weather.windSpeed} km/h</span>
+                    </div>
                 </div>
             </div>
-            <div class="weather-detail-item">
-                <span class="detail-icon">⬆️</span>
-                <div class="detail-info">
-                    <span class="detail-label">High</span>
-                    <span class="detail-value">${Math.round(weather.tempMax)}°C</span>
-                </div>
+            
+            <div class="view-details-link">
+                <span>View Details</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
             </div>
-            <div class="weather-detail-item">
-                <span class="detail-icon">⬇️</span>
-                <div class="detail-info">
-                    <span class="detail-label">Low</span>
-                    <span class="detail-value">${Math.round(weather.tempMin)}°C</span>
-                </div>
-            </div>
-            <div class="weather-detail-item">
-                <span class="detail-icon">💧</span>
-                <div class="detail-info">
-                    <span class="detail-label">Humidity</span>
-                    <span class="detail-value">${weather.humidity}%</span>
-                </div>
-            </div>
-            <div class="weather-detail-item">
-                <span class="detail-icon">💨</span>
-                <div class="detail-info">
-                    <span class="detail-label">Wind</span>
-                    <span class="detail-value">${weather.windSpeed} km/h</span>
-                </div>
-            </div>
-        </div>
+        </a>
         
         <p class="cache-info" style="text-align: center; padding: 16px 32px; color: #888; font-size: 0.85rem; margin: 0;">
             🕐 Last updated: ${new Date().toLocaleTimeString()}

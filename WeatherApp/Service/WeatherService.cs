@@ -199,6 +199,7 @@ namespace WeatherApp.Service
             {
                 var icon = currentWeather.Weather.FirstOrDefault()?.Icon ?? string.Empty;
                 var iconUrl = $"https://openweathermap.org/img/wn/{icon}@2x.png";
+                var countryCode = currentWeather.Sys?.Country ?? string.Empty;
                 
                 return new Weather
                 {
@@ -213,7 +214,8 @@ namespace WeatherApp.Service
                     Icon = iconUrl,
                     IsLocationAvailable = true,
                     Latitude = latitude,
-                    Longitude = longitude
+                    Longitude = longitude,
+                    CountryCode = countryCode
                 };
             }
             

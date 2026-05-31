@@ -16,6 +16,7 @@ namespace WeatherApp.Models
         public bool IsLocationAvailable { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string CountryCode { get; set; } = string.Empty;
         public List<DailyForecast> Forecast { get; set; }
     }
 }

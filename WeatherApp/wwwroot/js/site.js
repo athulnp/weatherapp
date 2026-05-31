@@ -83,6 +83,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
+    // Vertical Tabs Functionality
+    const verticalTabBtns = document.querySelectorAll('.vertical-tab-btn');
+    const verticalTabPanes = document.querySelectorAll('.vertical-tab-pane');
+    
+    verticalTabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons and panes
+            verticalTabBtns.forEach(b => b.classList.remove('active'));
+            verticalTabPanes.forEach(p => p.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Show corresponding tab pane
+            const tabId = this.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+    
     // Removed auto-fetch - now requires user to click the button
 });
 
@@ -90,6 +109,13 @@ function getCurrentLocationWeather() {
     const currentLocationSection = document.getElementById("current-location-weather");
     const locationError = document.getElementById("location-error");
     const loadingSpinner = document.getElementById("location-loading");
+    const emptyState = document.getElementById("current-location-empty");
+    
+    // Hide empty state immediately
+    if (emptyState) {
+        emptyState.classList.add("hidden");
+        emptyState.style.display = "none";
+    }
     
     // Show loading state
     if (loadingSpinner) {
@@ -192,8 +218,9 @@ function displayCurrentLocationWeather(weather) {
     
     if (!currentLocationSection || !weather) return;
     
-    // Hide empty state
+    // Hide empty state completely
     if (emptyState) {
+        emptyState.classList.add("hidden");
         emptyState.style.display = "none";
     }
     
@@ -202,77 +229,28 @@ function displayCurrentLocationWeather(weather) {
     
     const html = `
         <a href="/weather/${urlFriendlyName}" class="weather-card-link">
-            <div class="weather-card-content">
-                <div class="weather-card-left">
-                    <div class="weather-main-info">
-                        <h3 class="weather-location">${cityName}</h3>
-                        <p class="weather-description">${weather.description}</p>
-                    </div>
-                    
+            <div class="weather-left-column">
+                <div class="weather-info">
                     <div class="weather-temperature">
                         <span class="temperature-value">${Math.round(weather.temperature)}</span>
                         <span class="temperature-unit">°C</span>
                     </div>
+                    <p class="weather-description">${weather.description}</p>
                 </div>
-                
-                <div class="weather-card-right">
-                    <img src="${weather.icon}" alt="${weather.description}" class="weather-icon" />
-                </div>
+                <img src="${weather.icon}" alt="${weather.description}" class="weather-icon" loading="lazy" width="50" height="50">
             </div>
-            
-            <div class="weather-details-grid">
-                <div class="weather-detail-item">
-                    <span class="detail-icon">🌡️</span>
-                    <div class="detail-info">
-                        <span class="detail-label">Feels Like</span>
-                        <span class="detail-value">${Math.round(weather.feelsLike)}°C</span>
-                    </div>
-                </div>
-                <div class="weather-detail-item">
-                    <span class="detail-icon">⬆️</span>
-                    <div class="detail-info">
-                        <span class="detail-label">High</span>
-                        <span class="detail-value">${Math.round(weather.tempMax)}°C</span>
-                    </div>
-                </div>
-                <div class="weather-detail-item">
-                    <span class="detail-icon">⬇️</span>
-                    <div class="detail-info">
-                        <span class="detail-label">Low</span>
-                        <span class="detail-value">${Math.round(weather.tempMin)}°C</span>
-                    </div>
-                </div>
-                <div class="weather-detail-item">
-                    <span class="detail-icon">💧</span>
-                    <div class="detail-info">
-                        <span class="detail-label">Humidity</span>
-                        <span class="detail-value">${weather.humidity}%</span>
-                    </div>
-                </div>
-                <div class="weather-detail-item">
-                    <span class="detail-icon">💨</span>
-                    <div class="detail-info">
-                        <span class="detail-label">Wind</span>
-                        <span class="detail-value">${weather.windSpeed} km/h</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="view-details-link">
-                <span>View Details</span>
+            <div class="weather-right-column">
+                <span class="view-report-text">View Full Report</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14"></path>
                     <path d="M12 5l7 7-7 7"></path>
                 </svg>
             </div>
         </a>
-        
-        <p class="cache-info" style="text-align: center; padding: 16px 32px; color: #888; font-size: 0.85rem; margin: 0;">
-            🕐 Last updated: ${new Date().toLocaleTimeString()}
-        </p>
     `;
     
     currentLocationSection.innerHTML = html;
+    currentLocationSection.classList.add("show");
     currentLocationSection.style.display = "block";
 }
 

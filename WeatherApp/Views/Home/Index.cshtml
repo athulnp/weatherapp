@@ -293,7 +293,7 @@
             </div>
 
             @if (Model.IsLocationAvailable) {
-                <div class="weather-card search-result-card">
+                <div class="weather-card search-result-card simplified">
                     <a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")" class="weather-card-link">
                         <div class="weather-card-content">
                             <div class="weather-card-left">
@@ -308,46 +308,8 @@
                                 <img src="@Model.Icon" alt="@Model.Description weather icon" class="weather-icon" loading="lazy" width="100" height="100" />
                             </div>
                         </div>
-
-                        <div class="weather-details-grid">
-                            <div class="weather-detail-item">
-                                <span class="detail-icon">🌡️</span>
-                                <div class="detail-info">
-                                    <span class="detail-label">Feels Like</span>
-                                    <span class="detail-value">@Math.Round(Model.FeelsLike)°C</span>
-                                </div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span class="detail-icon">⬆️</span>
-                                <div class="detail-info">
-                                    <span class="detail-label">High</span>
-                                    <span class="detail-value">@Math.Round(Model.TempMax)°C</span>
-                                </div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span class="detail-icon">⬇️</span>
-                                <div class="detail-info">
-                                    <span class="detail-label">Low</span>
-                                    <span class="detail-value">@Math.Round(Model.TempMin)°C</span>
-                                </div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span class="detail-icon">💧</span>
-                                <div class="detail-info">
-                                    <span class="detail-label">Humidity</span>
-                                    <span class="detail-value">@Model.Humidity%</span>
-                                </div>
-                            </div>
-                            <div class="weather-detail-item">
-                                <span class="detail-icon">💨</span>
-                                <div class="detail-info">
-                                    <span class="detail-label">Wind</span>
-                                    <span class="detail-value">@Model.WindSpeed km/h</span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="view-details-link">
-                            <span>View Details</span>
+                            <span>View Full Report</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="M12 5l7 7-7 7"></path>
@@ -398,36 +360,137 @@
     </section>
 }
 
-<!-- Current Location Weather Section (Secondary - Below search results) -->
-<section class="weather-display-section current-location-section">
-    <div class="weather-display-container">
-        <div class="section-header">
-            <h2 class="section-title" data-i18n="YourLocation">📍 Your Location</h2>
-        </div>
-        
-        <!-- Location Loading -->
-        <div id="location-loading" class="weather-loading-card" style="display: none;">
-            <div class="spinner"></div>
-            <p data-i18n="GettingLocation">Getting your location...</p>
-        </div>
-        
-        <!-- Location Error -->
-        <div id="location-error" class="weather-error-card" style="display: none;"></div>
-        
-        <!-- Current Location Weather -->
-        <div id="current-location-weather" class="weather-card" style="display: none;"></div>
-        
-        <!-- Empty State -->
-        <div id="current-location-empty" class="weather-empty-card">
-            <div class="empty-icon">📍</div>
-            <p data-i18n="GetWeatherCurrentLocation">Get weather for your current location</p>
-            <button id="get-current-location" class="location-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- Vertical Tabs Section (Current Location & Popular Cities) -->
+<section class="vertical-tabs-section">
+    <div class="vertical-tabs-container">
+        <div class="vertical-tabs-nav">
+            <button class="vertical-tab-btn active" data-tab="popular-cities">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21V7l8-4 8 4v14"></path>
+                    <path d="M8 9a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v12H8V9z"></path>
+                </svg>
+                <span>Popular Cities</span>
+            </button>
+            <button class="vertical-tab-btn" data-tab="current-location">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                <span data-i18n="UseMyLocation">Use My Location</span>
+                <span>Current Location</span>
             </button>
+        </div>
+        
+        <div class="vertical-tabs-content">
+            <!-- Popular Cities Tab -->
+            <div class="vertical-tab-pane active" id="popular-cities">
+                <div class="popular-cities-grid">
+                    <a href="/weather/mumbai" class="city-card-mini">
+                        <span>Mumbai</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <a href="/weather/delhi" class="city-card-mini">
+                        <span>Delhi</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <a href="/weather/bangalore" class="city-card-mini">
+                        <span>Bangalore</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <a href="/weather/chennai" class="city-card-mini">
+                        <span>Chennai</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <a href="/weather/hyderabad" class="city-card-mini">
+                        <span>Hyderabad</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <a href="/weather/kochi" class="city-card-mini">
+                        <span>Kochi</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Current Location Tab -->
+            <div class="vertical-tab-pane" id="current-location">
+                <!-- Location Loading -->
+                <div id="location-loading" class="weather-loading-card" style="display: none;">
+                    <div class="spinner"></div>
+                    <p data-i18n="GettingLocation">Getting your location...</p>
+                </div>
+                
+                <!-- Location Error -->
+                <div id="location-error" class="weather-error-card" style="display: none;"></div>
+                
+                <!-- Current Location Weather -->
+                <div id="current-location-weather" class="weather-card" style="display: none;"></div>
+                
+                <!-- Empty State -->
+                <div class="empty-state-container" id="current-location-empty">
+                    <button id="get-current-location" class="empty-state-card-large">
+                        <div class="empty-state-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="location-icon">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="empty-state-title">Get Your Location</h3>
+                        <p class="empty-state-description">Click to enable location</p>
+                        <div class="empty-state-button-text">Enable</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Highlight Section -->
+<section class="features-highlight-section">
+    <div class="features-highlight-container">
+        <div class="features-header">
+            <h2 class="features-title">What's on the Details Page</h2>
+            <p class="features-subtitle">Explore comprehensive weather data and features</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-highlight-card">
+                <div class="feature-icon">📊</div>
+                <h3>5-Day Forecast</h3>
+                <p>Detailed daily weather predictions for the next 5 days</p>
+            </div>
+            <div class="feature-highlight-card">
+                <div class="feature-icon">🌡️</div>
+                <h3>Temperature Range</h3>
+                <p>Visual temperature scale with min, current, and max values</p>
+            </div>
+            <div class="feature-highlight-card">
+                <div class="feature-icon">🏙️</div>
+                <h3>Popular Cities</h3>
+                <p>Country-specific popular cities based on your search</p>
+            </div>
+            <div class="feature-highlight-card">
+                <div class="feature-icon">💨</div>
+                <h3>Detailed Metrics</h3>
+                <p>Humidity, wind speed, feels-like temperature, and more</p>
+            </div>
         </div>
     </div>
 </section>
@@ -905,6 +968,494 @@
     
     .weather-card-link:hover .view-details-link {
         background: linear-gradient(135deg, #5568d3 0%, #6a3f91 100%);
+    }
+    
+    .vertical-tabs-section {
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    
+    .vertical-tabs-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        gap: 30px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .vertical-tabs-nav {
+        width: 200px;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .vertical-tab-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        text-align: left;
+    }
+    
+    .vertical-tab-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        transform: translateX(5px);
+    }
+    
+    .vertical-tab-btn.active {
+        background: white;
+        color: #667eea;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .vertical-tabs-content {
+        flex: 1;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .vertical-tab-pane {
+        display: none;
+    }
+    
+    .vertical-tab-pane.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .popular-cities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px;
+        width: 100%;
+    }
+    
+    .city-card-mini {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .city-card-mini:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border-color: #667eea;
+    }
+    
+    .city-card-mini span {
+        font-size: 1rem;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+    
+    .city-card-mini:hover span {
+        color: #667eea;
+    }
+    
+    .city-card-mini svg {
+        color: #999;
+        transition: all 0.3s ease;
+    }
+    
+    .city-card-mini:hover svg {
+        color: #667eea;
+        transform: translateX(3px);
+    }
+    
+    .empty-state-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: stretch;
+        width: 100%;
+    }
+    
+    .empty-state-container.hidden {
+        display: none !important;
+    }
+    
+    .empty-state-card-large {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 24px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #f0f2f5 100%);
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 220px;
+        text-align: center;
+    }
+    
+    .empty-state-card-large:hover {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-color: #667eea;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.12);
+        transform: translateY(-2px);
+    }
+    
+    .empty-state-icon-wrapper {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .location-icon {
+        color: #667eea;
+        transition: all 0.3s ease;
+    }
+    
+    .empty-state-card-large:hover .location-icon {
+        color: #764ba2;
+        transform: scale(1.1);
+    }
+    
+    .empty-state-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 6px 0;
+        transition: color 0.3s ease;
+    }
+    
+    .empty-state-card-large:hover .empty-state-title {
+        color: #667eea;
+    }
+    
+    .empty-state-description {
+        font-size: 0.8rem;
+        color: #666;
+        margin: 0 0 10px 0;
+        line-height: 1.3;
+    }
+    
+    .empty-state-button-text {
+        display: inline-block;
+        padding: 6px 14px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+        font-size: 0.8rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+    }
+    
+    .empty-state-card-large:hover .empty-state-button-text {
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transform: scale(1.05);
+    }
+    
+    #current-location-weather {
+        max-width: 100%;
+        width: 100%;
+        display: none;
+    }
+    
+    #current-location-weather.show {
+        display: block;
+    }
+    
+    #current-location-weather .weather-card-link {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        width: 100%;
+        max-width: 100%;
+        padding: 16px 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        gap: 16px;
+    }
+    
+    #current-location-weather .weather-card-link:hover {
+        background: white;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        border-color: #667eea;
+    }
+    
+    #current-location-weather .weather-left-column {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    #current-location-weather .weather-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    #current-location-weather .weather-temperature {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #333;
+        transition: color 0.3s ease;
+        line-height: 1;
+    }
+    
+    #current-location-weather .weather-card-link:hover .weather-temperature {
+        color: #667eea;
+    }
+    
+    #current-location-weather .temperature-unit {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    #current-location-weather .weather-description {
+        font-size: 0.875rem;
+        color: #666;
+        margin: 0;
+        text-transform: capitalize;
+        font-style: italic;
+    }
+    
+    #current-location-weather .weather-icon {
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+    }
+    
+    #current-location-weather .weather-right-column {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    
+    #current-location-weather .view-report-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #667eea;
+        transition: color 0.3s ease;
+    }
+    
+    #current-location-weather .weather-card-link:hover .view-report-text {
+        color: #667eea;
+    }
+    
+    #current-location-weather svg {
+        width: 16px;
+        height: 16px;
+        color: #667eea;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+    
+    #current-location-weather .weather-card-link:hover svg {
+        color: #667eea;
+        transform: translateX(3px);
+    }
+    
+    /* Mobile Responsive */
+    @@media (max-width: 768px) {
+        #current-location-weather .weather-card-link {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 12px 16px;
+        }
+        
+        #current-location-weather .weather-left-column {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        #current-location-weather .weather-info {
+            flex: 1;
+        }
+        
+        #current-location-weather .weather-temperature {
+            font-size: 1.5rem;
+        }
+        
+        #current-location-weather .weather-description {
+            font-size: 0.8rem;
+        }
+        
+        #current-location-weather .weather-icon {
+            width: 45px;
+            height: 45px;
+        }
+        
+        #current-location-weather .weather-right-column {
+            width: 100%;
+            justify-content: flex-start;
+            padding-top: 8px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        #current-location-weather .view-report-text {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @@media (max-width: 480px) {
+        #current-location-weather .weather-card-link {
+            padding: 10px 12px;
+            gap: 10px;
+        }
+        
+        #current-location-weather .weather-temperature {
+            font-size: 1.25rem;
+        }
+        
+        #current-location-weather .temperature-unit {
+            font-size: 0.9rem;
+        }
+        
+        #current-location-weather .weather-description {
+            font-size: 0.75rem;
+        }
+        
+        #current-location-weather .weather-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        #current-location-weather .weather-left-column {
+            gap: 8px;
+        }
+        
+        #current-location-weather .view-report-text {
+            font-size: 0.8rem;
+        }
+        
+        #current-location-weather svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+    
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .weather-card.simplified {
+        padding: 30px;
+    }
+    
+    .weather-card-link.simplified .view-details-link {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    .features-highlight-section {
+        padding: 60px 20px;
+        background: white;
+    }
+    
+    .features-highlight-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    .features-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .features-title {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    .features-subtitle {
+        color: #666;
+        font-size: 1.1rem;
+    }
+    
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+    }
+    
+    .feature-highlight-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 30px;
+        border-radius: 16px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .feature-highlight-card:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        border-color: #667eea;
+    }
+    
+    .feature-highlight-card:hover h3,
+    .feature-highlight-card:hover p {
+        color: white;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 16px;
+    }
+    
+    .feature-highlight-card h3 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+    
+    .feature-highlight-card p {
+        color: #666;
+        line-height: 1.5;
     }
 </style>
 

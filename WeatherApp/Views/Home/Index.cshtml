@@ -1113,6 +1113,150 @@
         transform: translateX(3px);
     }
     
+    /* Responsive Design for Vertical Tabs */
+    @@media (max-width: 992px) {
+        .vertical-tabs-container {
+            flex-direction: column;
+        }
+        
+        .vertical-tabs-nav {
+            width: 100%;
+            flex-direction: row;
+            padding: 15px;
+            gap: 10px;
+        }
+        
+        .vertical-tab-btn {
+            flex: 1;
+            justify-content: center;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .vertical-tab-btn:hover {
+            transform: translateY(-2px);
+            transform: translateX(0);
+        }
+        
+        .vertical-tabs-content {
+            padding: 20px;
+        }
+        
+        .popular-cities-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .city-card-mini {
+            padding: 16px 20px;
+        }
+    }
+    
+    @@media (max-width: 768px) {
+        .vertical-tabs-section {
+            padding: 30px 16px;
+        }
+        
+        .vertical-tabs-container {
+            gap: 20px;
+            border-radius: 12px;
+        }
+        
+        .vertical-tabs-nav {
+            padding: 12px;
+            gap: 8px;
+        }
+        
+        .vertical-tab-btn {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            gap: 8px;
+        }
+        
+        .vertical-tab-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .vertical-tabs-content {
+            padding: 16px;
+        }
+        
+        .popular-cities-grid {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        
+        .city-card-mini {
+            padding: 14px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .city-card-mini span {
+            font-size: 0.9rem;
+        }
+        
+        .city-card-mini svg {
+            width: 12px;
+            height: 12px;
+        }
+    }
+    
+    @@media (max-width: 576px) {
+        .vertical-tabs-section {
+            padding: 24px 12px;
+        }
+        
+        .vertical-tabs-container {
+            gap: 15px;
+        }
+        
+        .vertical-tabs-nav {
+            padding: 10px;
+            gap: 6px;
+        }
+        
+        .vertical-tab-btn {
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            gap: 6px;
+            border-radius: 8px;
+        }
+        
+        .vertical-tab-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .vertical-tab-btn span {
+            font-size: 0.8rem;
+        }
+        
+        .vertical-tabs-content {
+            padding: 12px;
+        }
+        
+        .popular-cities-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        }
+        
+        .city-card-mini {
+            padding: 12px 14px;
+            border-radius: 10px;
+        }
+        
+        .city-card-mini span {
+            font-size: 0.85rem;
+        }
+        
+        .city-card-mini svg {
+            width: 10px;
+            height: 10px;
+        }
+    }
+    
     .empty-state-container {
         display: flex;
         justify-content: flex-start;
@@ -1376,7 +1520,28 @@
         transform: translateX(3px);
     }
     
-    /* Mobile Responsive */
+    /* Mobile Responsive for Current Location Weather */
+    @@media (max-width: 992px) {
+        #current-location-weather .weather-card-link {
+            padding: 10px;
+            gap: 8px;
+        }
+        
+        #current-location-weather .weather-header {
+            gap: 8px;
+            padding-bottom: 6px;
+        }
+        
+        #current-location-weather .temperature-value {
+            font-size: 1.3rem;
+        }
+        
+        #current-location-weather .weather-stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+        }
+    }
+    
     @@media (max-width: 768px) {
         #current-location-weather .weather-card-link {
             padding: 10px;
@@ -1435,9 +1600,9 @@
         }
     }
     
-    @@media (max-width: 480px) {
+    @@media (max-width: 576px) {
         #current-location-weather .weather-card-link {
-            padding: 10px;
+            padding: 8px;
             gap: 6px;
         }
         
@@ -1491,6 +1656,7 @@
         #current-location-weather .weather-action-btn {
             padding: 6px 10px;
             font-size: 0.65rem;
+            min-height: 44px;
         }
     }
     

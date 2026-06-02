@@ -71,11 +71,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// Store current location weather in session memory
+let currentWeatherData = null;
+
+// Function to restore weather data from session memory on page load
+function restoreWeatherDataFromSession() {
+    const currentLocationSection = document.getElementById("current-location-weather");
+    
+    if (!currentLocationSection || !currentWeatherData) return;
+    
+    console.log("Restoring weather data from session memory");
+    displayCurrentLocationWeather(currentWeatherData);
+}
+
 // Current Location Weather Functionality
 document.addEventListener("DOMContentLoaded", function () {
     const currentLocationBtn = document.getElementById("get-current-location");
     const currentLocationSection = document.getElementById("current-location-weather");
     const locationError = document.getElementById("location-error");
+    
+    // Restore weather data from session memory if available
+    restoreWeatherDataFromSession();
     
     if (currentLocationBtn) {
         currentLocationBtn.addEventListener("click", function() {
@@ -164,37 +180,15 @@ function getCurrentLocationWeather() {
 function fetchWeatherByCoordinates(lat, lon) {
     const loadingSpinner = document.getElementById("location-loading");
     
-    // Check cache first
-    const cacheKey = `weather_${lat}_${lon}`;
-    const cachedData = localStorage.getItem(cacheKey);
-    const cacheTime = localStorage.getItem(`${cacheKey}_time`);
-    
-    // Cache for 20 minutes (1200000 ms) - current weather can change relatively quickly
-    const CACHE_DURATION = 20 * 60 * 1000;
-    
-    if (cachedData && cacheTime) {
-        const cacheAge = Date.now() - parseInt(cacheTime);
-        if (cacheAge < CACHE_DURATION) {
-            console.log("Using cached weather data");
-            displayCurrentLocationWeather(JSON.parse(cachedData));
-            if (loadingSpinner) {
-                loadingSpinner.style.display = "none";
-            }
-            return;
-        }
-    }
-    
-    // Fetch from API if not cached or cache expired
+    // Fetch from API
     fetch(`/Home/GetWeatherByCoordinates?lat=${lat}&lon=${lon}`)
         .then(response => response.json())
         .then(data => {
             console.log("Backend response:", data);
             if (data.success && data.data) {
                 console.log("Weather data:", data.data);
-                // Cache the response
-                localStorage.setItem(cacheKey, JSON.stringify(data.data));
-                localStorage.setItem(`${cacheKey}_time`, Date.now().toString());
-                
+                // Store in session memory
+                currentWeatherData = data.data;
                 displayCurrentLocationWeather(data.data);
             } else {
                 console.log("Backend error:", data.error);
@@ -228,25 +222,51 @@ function displayCurrentLocationWeather(weather) {
     const urlFriendlyName = cityName.toLowerCase().replace(" ", "-");
     
     const html = `
-        <a href="/weather/${urlFriendlyName}" class="weather-card-link">
-            <div class="weather-left-column">
-                <div class="weather-info">
-                    <div class="weather-temperature">
+        <div class="weather-card-link">
+            <div class="weather-header">
+                <div class="weather-main-info">
+                    <div class="weather-temp">
                         <span class="temperature-value">${Math.round(weather.temperature)}</span>
                         <span class="temperature-unit">°C</span>
                     </div>
-                    <p class="weather-description">${weather.description}</p>
+                    <div class="weather-meta">
+                        <p class="weather-description">${weather.description}</p>
+                        <p class="weather-location">${cityName}</p>
+                    </div>
                 </div>
-                <img src="${weather.icon}" alt="${weather.description}" class="weather-icon" loading="lazy" width="50" height="50">
+                <img src="${weather.icon}" alt="${weather.description}" class="weather-icon-compact" loading="lazy" width="48" height="48" />
             </div>
-            <div class="weather-right-column">
-                <span class="view-report-text">View Full Report</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <div class="weather-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">🌡️</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Feels Like</span>
+                        <span class="stat-value">${Math.round(weather.feelsLike)}°C</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">💧</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Humidity</span>
+                        <span class="stat-value">${weather.humidity}%</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">💨</span>
+                    <div class="stat-info">
+                        <span class="stat-label">Wind</span>
+                        <span class="stat-value">${weather.windSpeed} km/h</span>
+                    </div>
+                </div>
+            </div>
+            <a href="/weather/${urlFriendlyName}" class="weather-action-btn">
+                <span>View Full Report</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14"></path>
                     <path d="M12 5l7 7-7 7"></path>
                 </svg>
-            </div>
-        </a>
+            </a>
+        </div>
     `;
     
     currentLocationSection.innerHTML = html;

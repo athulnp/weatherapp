@@ -13,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add Health Checks
+builder.Services.AddHealthChecks();
+
 // Add Localization
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
@@ -142,6 +145,9 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+
+// Map Health Check endpoint
+app.MapHealthChecks("/health");
 
 // Use Request Localization
 app.UseRequestLocalization();

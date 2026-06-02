@@ -61,6 +61,32 @@ namespace WeatherApp.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> SearchWeather(string cityName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(cityName))
+                {
+                    return Json(new { success = false, error = "City name is required" });
+                }
+
+                var weatherData = await _weatherService.GetWeatherAsync(cityName);
+                
+                if (weatherData == null || !weatherData.IsLocationAvailable)
+                {
+                    return Json(new { success = false, error = "Location not found. Please try another city." });
+                }
+
+                return Json(new { success = true, data = weatherData });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching weather");
+                return Json(new { success = false, error = "Failed to search weather data" });
+            }
+        }
+
         public IActionResult Privacy()
         {
             return View();

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using WeatherApp.Data;
 using WeatherApp.IService;
 using WeatherApp.Service;
 using System.IO.Compression;
@@ -38,8 +40,13 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
 });
 
+// Add Database Context
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=weatherapp.db"));
+
 // Register DI Services  
 builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 builder.Services.AddSingleton<CitySearchService>();
 builder.Services.AddHttpClient<CountryCitiesService>();
@@ -115,6 +122,14 @@ builder.Services.AddMemoryCache();
 
 
 var app = builder.Build();
+
+// Initialize database and seed data
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated();
+    ArticleSeeder.SeedArticles(context);
+}
 
 // Configure the HTTP request pipeline.  
 if (!app.Environment.IsDevelopment())

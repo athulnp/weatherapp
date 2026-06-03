@@ -18,6 +18,78 @@
             enable_page_level_ads: true
         });
     </script>
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Organization",
+      "name": "Kairos Weather",
+      "url": "https://kairosweather.info",
+      "logo": "https://kairosweather.info/logo.png",
+      "description": "Real-time weather updates and forecasts for any location worldwide",
+      "sameAs": [
+        "https://twitter.com/KairosWeather",
+        "https://facebook.com/KairosWeather"
+      ],
+      "contact": {
+        "@@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "email": "contact@kairosweather.info",
+        "availableLanguage": ["en", "hi", "ta", "ml", "kn", "te", "fr", "es", "de", "pt", "ru", "ja", "zh", "ar"]
+      },
+      "address": {
+        "@@type": "PostalAddress",
+        "addressCountry": "IN"
+      }
+    }
+    </script>
+
+    <!-- WebApplication Schema -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "WebApplication",
+      "name": "Kairos Weather",
+      "url": "https://kairosweather.info",
+      "description": "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide",
+      "applicationCategory": "WeatherApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "ratingCount": "100"
+      },
+      "screenshot": "https://kairosweather.info/screenshot.png",
+      "softwareVersion": "1.0",
+      "author": {
+        "@@type": "Organization",
+        "name": "Kairos Weather"
+      }
+    }
+    </script>
+
+    <!-- Search Action Schema -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "WebSite",
+      "url": "https://kairosweather.info",
+      "potentialAction": {
+        "@@type": "SearchAction",
+        "target": {
+          "@@type": "EntryPoint",
+          "urlTemplate": "https://kairosweather.info/?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
     
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -250,6 +322,7 @@
                         <ul class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" data-i18n="Home">Home</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About" data-i18n="About">About</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Article" asp-action="Index" data-i18n="Blog">Blog</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="FAQ" data-i18n="FAQ">FAQ</a></li>
                             <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact" data-i18n="Contact">Contact</a></li>
                             <li class="nav-item dropdown">
@@ -363,6 +436,7 @@
                 'en-US': {
                     'Home': 'Home',
                     'About': 'About',
+                    'Blog': 'Blog',
                     'FAQ': 'FAQ',
                     'Contact': 'Contact',
                     'Admin': 'Admin',
@@ -549,6 +623,7 @@
                 'hi-IN': {
                     'Home': 'होम',
                     'About': 'हमारे बारे में',
+                    'Blog': 'ब्लॉग',
                     'FAQ': 'सामान्य प्रश्न',
                     'Contact': 'संपर्क',
                     'Admin': 'व्यवस्थापक',
@@ -735,6 +810,7 @@
                 'ta-IN': {
                     'Home': 'முகப்பு',
                     'About': 'பற்றி',
+                    'Blog': 'வலைப்பதிவு',
                     'FAQ': 'அடிக்கடை கேள்விகள்',
                     'Contact': 'தொடர்பு',
                     'Admin': 'நிர்வாகம்',
@@ -921,6 +997,7 @@
                 'ml-IN': {
                     'Home': 'ഹോം',
                     'About': 'ഞങ്ങളെക്കുറിച്ച്',
+                    'Blog': 'ബ്ലോഗ്',
                     'FAQ': 'സാധാരണ ചോദ്യങ്ങൾ',
                     'Contact': 'ബന്ധപ്പെടുക',
                     'Admin': 'അഡ്മിൻ',

@@ -2,48 +2,705 @@
     ViewData["Title"] = "Contact Us";
 }
 
-<div class="container content-page">
-    <h1 data-i18n="ContactUsTitle">Contact Us</h1>
-    <p data-i18n="ContactUsDesc">We value your feedback and are here to help. If you have any questions, suggestions, or concerns about Kairos Weather, please don't hesitate to reach out to us.</p>
-    
-    <div class="contact-section">
-        <h2 data-i18n="GetInTouch">Get in Touch</h2>
-        <p data-i18n="GetInTouchDesc">We strive to respond to all inquiries within 24-48 hours during business days.</p>
-        
-        <h3 data-i18n="Email">Email</h3>
-        <p><strong data-i18n="PrimaryEmail">Primary Email:</strong> <a href="mailto:contact@kairosweather.info">contact@kairosweather.info</a></p>
-        <p><strong data-i18n="SupportEmail">Support Email:</strong> <a href="mailto:support@kairosweather.info">support@kairosweather.info</a></p>
-        
-        <h3 data-i18n="BusinessHours">Business Hours</h3>
-        <p data-i18n="BusinessHoursWeekdays">Monday - Friday: 9:00 AM - 6:00 PM (UTC)</p>
-        <p data-i18n="BusinessHoursWeekend">Saturday - Sunday: Closed</p>
-        
-        <h3 data-i18n="ResponseTime">Response Time</h3>
-        <p data-i18n="ResponseTimeDesc">We typically respond to inquiries within 1-2 business days. For urgent matters, please include "URGENT" in your subject line.</p>
-        
-        <h3 data-i18n="WhatWeCanHelpWith">What We Can Help With</h3>
-        <ul>
-            <li data-i18n="HelpTechnicalIssues">Technical issues and bug reports</li>
-            <li data-i18n="HelpFeatureRequests">Feature requests and suggestions</li>
-            <li data-i18n="HelpPrivacyQuestions">Privacy policy questions</li>
-            <li data-i18n="HelpDataRemoval">Data removal requests</li>
-            <li data-i18n="HelpBusinessInquiries">Business inquiries and partnerships</li>
-            <li data-i18n="HelpAdvertising">Advertising opportunities</li>
-            <li data-i18n="HelpFeedback">General feedback and comments</li>
-        </ul>
-        
-        <h3 data-i18n="BeforeContactingUs">Before Contacting Us</h3>
-        <p data-i18n="BeforeContactingUsDesc">Please check our <a href="/Static/FAQ" data-i18n="FAQ">FAQ</a> section for quick answers to common questions. Many inquiries can be resolved by reviewing our documentation.</p>
-        
-        <h3 data-i18n="PrivacyData">Privacy & Data</h3>
-        <p data-i18n="PrivacyDataDesc">For questions about your personal data or to exercise your privacy rights, please review our <a href="/Static/PrivacyPolicy" data-i18n="PrivacyPolicy">Privacy Policy</a> or contact us directly.</p>
-        
-        <h3 data-i18n="SocialMedia">Social Media</h3>
-        <p data-i18n="SocialMediaDesc">Follow us on social media for updates and weather tips:</p>
-        <ul>
-            <li><a href="https://twitter.com/KairosWeather" target="_blank" rel="noopener">Twitter: @@KairosWeather</a></li>
-            <li><a href="https://facebook.com/KairosWeather" target="_blank" rel="noopener">Facebook: Kairos Weather</a></li>
-        </ul>
+<div class="contact-page">
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="hero-content">
+                        <h1 class="hero-title" data-i18n="ContactUsTitle">Contact Us</h1>
+                        <p class="hero-subtitle" data-i18n="ContactUsDesc">
+                            We value your feedback and are here to help. Reach out with any questions, suggestions, or concerns.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Contact Methods -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="Email">Email</h2>
+                    </div>
+                    <div class="contact-cards">
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="contact-card-content">
+                                <h3 class="contact-card-label" data-i18n="PrimaryEmail">Primary Email</h3>
+                                <a href="mailto:contact@kairosweather.info" class="contact-card-value">contact@kairosweather.info</a>
+                            </div>
+                        </div>
+                        <div class="contact-card">
+                            <div class="contact-card-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="contact-card-content">
+                                <h3 class="contact-card-label" data-i18n="SupportEmail">Support Email</h3>
+                                <a href="mailto:support@kairosweather.info" class="contact-card-value">support@kairosweather.info</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Business Hours -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="BusinessHours">Business Hours</h2>
+                    </div>
+                    <div class="hours-card">
+                        <div class="hours-item">
+                            <span class="hours-day" data-i18n="BusinessHoursWeekdays">Monday - Friday</span>
+                            <span class="hours-time">9:00 AM - 6:00 PM (UTC)</span>
+                        </div>
+                        <div class="hours-item">
+                            <span class="hours-day" data-i18n="BusinessHoursWeekend">Saturday - Sunday</span>
+                            <span class="hours-time closed">Closed</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Response Time -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="ResponseTime">Response Time</h2>
+                    </div>
+                    <p class="section-content" data-i18n="ResponseTimeDesc">
+                        We typically respond to inquiries within 1-2 business days. For urgent matters, please include "URGENT" in your subject line.
+                    </p>
+                </section>
+
+                <!-- What We Help With -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="WhatWeCanHelpWith">What We Can Help With</h2>
+                    </div>
+                    <div class="help-grid">
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpTechnicalIssues">Technical issues</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpFeatureRequests">Feature requests</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpPrivacyQuestions">Privacy questions</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpDataRemoval">Data removal</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpBusinessInquiries">Business inquiries</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpAdvertising">Advertising</span>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
+                            <span data-i18n="HelpFeedback">General feedback</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Social Media -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="SocialMedia">Social Media</h2>
+                    </div>
+                    <p class="section-content" data-i18n="SocialMediaDesc">Follow us on social media for updates and weather tips:</p>
+                    <div class="social-links">
+                        <a href="https://twitter.com/KairosWeather" target="_blank" rel="noopener" class="social-link social-twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                            Twitter
+                        </a>
+                        <a href="https://facebook.com/KairosWeather" target="_blank" rel="noopener" class="social-link social-facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Facebook
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Quick Links -->
+                <section class="contact-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="BeforeContactingUs">Before Contacting Us</h2>
+                    </div>
+                    <p class="section-content" data-i18n="BeforeContactingUsDesc">
+                        Please check our <a href="/Static/FAQ" data-i18n="FAQ">FAQ</a> section for quick answers to common questions. Many inquiries can be resolved by reviewing our documentation.
+                    </p>
+                </section>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .contact-page {
+        background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-page::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Hero Section */
+    .contact-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 6rem 0 5rem;
+        margin-bottom: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
+    }
+
+    .hero-content {
+        color: white;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-subtitle {
+        font-size: 1.375rem;
+        opacity: 0.95;
+        margin: 0;
+        font-weight: 400;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Contact Section */
+    .contact-section {
+        background: white;
+        border-radius: 20px;
+        padding: 3.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .contact-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08), 0 20px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+        justify-content: flex-start;
+    }
+
+    .section-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .section-icon:hover {
+        transform: scale(1.05) rotate(5deg);
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        letter-spacing: -0.01em;
+    }
+
+    .section-content {
+        font-size: 1.125rem;
+        line-height: 1.9;
+        color: #1f2937;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .section-content a {
+        color: #4f46e5;
+        text-decoration: underline;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+
+    .section-content a:hover {
+        color: #4338ca;
+    }
+
+    /* Contact Cards */
+    .contact-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.75rem;
+    }
+
+    .contact-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.25rem;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .contact-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        border-color: #667eea;
+    }
+
+    .contact-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .contact-card-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        transition: transform 0.3s ease;
+    }
+
+    .contact-card:hover .contact-card-icon {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .contact-card-content {
+        flex: 1;
+    }
+
+    .contact-card-label {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .contact-card-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #111827;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        letter-spacing: -0.005em;
+        word-break: break-word;
+    }
+
+    .contact-card-value:hover {
+        color: #667eea;
+    }
+
+    /* Hours Card */
+    .hours-card {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        border: 1px solid #e5e7eb;
+    }
+
+    .hours-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 0;
+        border-bottom: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+
+    .hours-item:last-child {
+        border-bottom: none;
+    }
+
+    .hours-item:hover {
+        padding-left: 0.5rem;
+    }
+
+    .hours-day {
+        font-weight: 700;
+        color: #111827;
+        font-size: 1.125rem;
+    }
+
+    .hours-time {
+        color: #6b7280;
+        font-weight: 500;
+    }
+
+    .hours-time.closed {
+        color: #ef4444;
+        font-weight: 700;
+    }
+
+    /* Help Grid */
+    .help-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+
+    .help-item {
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 1.25rem;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 0.95rem;
+        color: #374151;
+        font-weight: 500;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .help-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #667eea, #764ba2);
+        transform: scaleY(0);
+        transition: transform 0.4s ease;
+    }
+
+    .help-item:hover {
+        background: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+        transform: translateY(-4px);
+    }
+
+    .help-item:hover::before {
+        transform: scaleY(1);
+    }
+
+    .help-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+        transition: transform 0.3s ease;
+    }
+
+    .help-item:hover .help-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Social Links */
+    .social-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .social-link {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .social-twitter {
+        background: #000000;
+        color: white;
+    }
+
+    .social-facebook {
+        background: #1877f2;
+        color: white;
+    }
+
+    .social-link:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.75rem;
+        }
+
+        .contact-section {
+            padding: 3rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .contact-hero {
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+        }
+
+        .contact-section {
+            padding: 2.5rem 2rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .contact-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .help-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .social-links {
+            flex-direction: column;
+        }
+
+        .social-link {
+            justify-content: center;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .contact-hero {
+            padding: 3rem 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 1.875rem;
+        }
+
+        .contact-section {
+            padding: 2rem 1.5rem;
+        }
+
+        .section-icon {
+            width: 56px;
+            height: 56px;
+        }
+
+        .section-title {
+            font-size: 1.375rem;
+        }
+
+        .section-content {
+            font-size: 1rem;
+        }
+
+        .contact-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .hours-item {
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .hours-item:hover {
+            padding-left: 0;
+        }
+    }
+</style>
 

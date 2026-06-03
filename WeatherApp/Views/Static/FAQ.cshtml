@@ -99,108 +99,398 @@
 }
 </script>
 
-<section class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title" data-i18n="FAQTitle">Frequently Asked Questions</h1>
-        <p class="hero-subtitle" data-i18n="FAQSubtitle">Find answers to common questions about Kairos Weather</p>
-    </div>
-</section>
+<div class="faq-page">
+    <!-- Hero Section -->
+    <section class="faq-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="hero-content">
+                        <h1 class="hero-title" data-i18n="FAQTitle">Frequently Asked Questions</h1>
+                        <p class="hero-subtitle" data-i18n="FAQSubtitle">
+                            Find answers to common questions about Kairos Weather
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="about-section">
+    <!-- FAQ Content -->
     <div class="container">
-        <div class="faq-container">
-            <h2 data-i18n="GeneralQuestions">General Questions</h2>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion1">How do I check the weather for my location?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer1">Simply enter your city name, postal code, or coordinates in the search box on our homepage. You can also use the 'Use My Location' button to automatically detect your current location using GPS.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion2">Is Kairos Weather free to use?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer2">Yes, Kairos Weather is completely free to use. We provide accurate real-time weather data without any subscription fees or hidden charges.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion3">How accurate is the weather data?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer3">Our weather data is sourced from OpenWeatherMap API, which provides highly accurate and up-to-date weather information from reliable meteorological sources worldwide. Data is updated in real-time for the most current conditions.</p>
-            </div>
-            
-            <h2 data-i18n="LocationSupport">Location Support</h2>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion4">Can I check weather for any location worldwide?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer4">Yes, Kairos Weather supports weather data for locations worldwide. You can search for cities, postal codes, or coordinates from any country. Our geocoding system supports Indian postal codes, US ZIP codes, and international locations.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion5">Why is my postal code not showing the exact location?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer5">For Indian postal codes, we use multiple geocoding APIs including Nominatim and PostalPincode API to provide the most accurate location data. If you're seeing incorrect results, try searching by city name or coordinates instead.</p>
-            </div>
-            
-            <h2 data-i18n="WeatherData">Weather Data</h2>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion6">What weather information is provided?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer6">We provide comprehensive weather data including current temperature, feels-like temperature, humidity percentage, wind speed, weather conditions, and other meteorological data for your selected location.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion7">How often is the weather data updated?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer7">Weather data is updated in real-time whenever you perform a search. Our data comes from OpenWeatherMap which updates their information every few minutes from thousands of weather stations worldwide.</p>
-            </div>
-            
-            <h2 data-i18n="FeaturesPrivacy">Features & Privacy</h2>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion8">Can I save my favorite locations?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer8">Currently, we don't have a favorites feature, but we're working on adding this functionality soon. You can bookmark your frequently searched locations using your browser's bookmark feature.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion9">Is my location data private?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer9">Yes, we respect your privacy. When you use the 'Use My Location' feature, your location data is only used to fetch weather information and is not stored or shared with third parties. Please review our Privacy Policy for more details.</p>
-            </div>
-            
-            <div class="faq-item">
-                <h3 class="faq-question" data-i18n="FAQQuestion10">Can I use Kairos Weather on mobile devices?</h3>
-                <p class="faq-answer" data-i18n="FAQAnswer10">Yes, Kairos Weather is fully responsive and works perfectly on mobile devices, tablets, and desktops. Our design is optimized for all screen sizes for the best user experience.</p>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- General Questions -->
+                <section class="faq-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="GeneralQuestions">General Questions</h2>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion1">How do I check the weather for my location?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer1">Simply enter your city name, postal code, or coordinates in the search box on our homepage. You can also use the 'Use My Location' button to automatically detect your current location using GPS.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion2">Is Kairos Weather free to use?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer2">Yes, Kairos Weather is completely free to use. We provide accurate real-time weather data without any subscription fees or hidden charges.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion3">How accurate is the weather data?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer3">Our weather data is sourced from OpenWeatherMap API, which provides highly accurate and up-to-date weather information from reliable meteorological sources worldwide. Data is updated in real-time for the most current conditions.</p>
+                    </div>
+                </section>
+                
+                <!-- Location Support -->
+                <section class="faq-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="LocationSupport">Location Support</h2>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion4">Can I check weather for any location worldwide?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer4">Yes, Kairos Weather supports weather data for locations worldwide. You can search for cities, postal codes, or coordinates from any country. Our geocoding system supports Indian postal codes, US ZIP codes, and international locations.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion5">Why is my postal code not showing the exact location?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer5">For Indian postal codes, we use multiple geocoding APIs including Nominatim and PostalPincode API to provide the most accurate location data. If you're seeing incorrect results, try searching by city name or coordinates instead.</p>
+                    </div>
+                </section>
+                
+                <!-- Weather Data -->
+                <section class="faq-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="WeatherData">Weather Data</h2>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion6">What weather information is provided?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer6">We provide comprehensive weather data including current temperature, feels-like temperature, humidity percentage, wind speed, weather conditions, and other meteorological data for your selected location.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion7">How often is the weather data updated?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer7">Weather data is updated in real-time whenever you perform a search. Our data comes from OpenWeatherMap which updates their information every few minutes from thousands of weather stations worldwide.</p>
+                    </div>
+                </section>
+                
+                <!-- Features & Privacy -->
+                <section class="faq-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <h2 class="section-title" data-i18n="FeaturesPrivacy">Features & Privacy</h2>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion8">Can I save my favorite locations?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer8">Currently, we don't have a favorites feature, but we're working on adding this functionality soon. You can bookmark your frequently searched locations using your browser's bookmark feature.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion9">Is my location data private?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer9">Yes, we respect your privacy. When you use the 'Use My Location' feature, your location data is only used to fetch weather information and is not stored or shared with third parties. Please review our Privacy Policy for more details.</p>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <h3 class="faq-question" data-i18n="FAQQuestion10">Can I use Kairos Weather on mobile devices?</h3>
+                        <p class="faq-answer" data-i18n="FAQAnswer10">Yes, Kairos Weather is fully responsive and works perfectly on mobile devices, tablets, and desktops. Our design is optimized for all screen sizes for the best user experience.</p>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <style>
-    .faq-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 40px 20px;
+    .faq-page {
+        background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
     }
-    
-    .faq-container h2 {
-        color: #667eea;
-        margin-top: 40px;
-        margin-bottom: 20px;
-        font-size: 1.5rem;
+
+    .faq-page::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.03) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
     }
-    
-    .faq-item {
-        background: white;
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    /* Hero Section */
+    .faq-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 6rem 0 5rem;
+        margin-bottom: 4rem;
+        position: relative;
+        overflow: hidden;
     }
-    
-    .faq-question {
-        color: #333;
-        font-size: 1.1rem;
-        margin-bottom: 12px;
-        font-weight: 600;
+
+    .faq-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        opacity: 0.5;
     }
-    
-    .faq-answer {
-        color: #666;
+
+    .hero-content {
+        color: white;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-subtitle {
+        font-size: 1.375rem;
+        opacity: 0.95;
+        margin: 0;
+        font-weight: 400;
         line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        background: white;
+        border-radius: 20px;
+        padding: 3.5rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .faq-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.08), 0 20px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+        justify-content: flex-start;
+    }
+
+    .section-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .section-icon:hover {
+        transform: scale(1.05) rotate(5deg);
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        letter-spacing: -0.01em;
+    }
+
+    /* FAQ Items */
+    .faq-item {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid #e5e7eb;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .faq-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #667eea, #764ba2);
+        transform: scaleY(0);
+        transition: transform 0.4s ease;
+    }
+
+    .faq-item:hover {
+        background: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-color: #667eea;
+        transform: translateX(8px);
+    }
+
+    .faq-item:hover::before {
+        transform: scaleY(1);
+    }
+
+    .faq-question {
+        color: #111827;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -0.005em;
+        line-height: 1.4;
+    }
+
+    .faq-answer {
+        color: #6b7280;
+        line-height: 1.7;
+        margin: 0;
+        font-size: 1.125rem;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.75rem;
+        }
+
+        .faq-section {
+            padding: 3rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .faq-hero {
+            padding: 4rem 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+        }
+
+        .faq-section {
+            padding: 2.5rem 2rem;
+        }
+
+        .section-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .faq-item {
+            padding: 1.5rem;
+        }
+
+        .faq-question {
+            font-size: 1.125rem;
+        }
+
+        .faq-answer {
+            font-size: 1rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .faq-hero {
+            padding: 3rem 0 2rem;
+        }
+
+        .hero-title {
+            font-size: 1.875rem;
+        }
+
+        .faq-section {
+            padding: 2rem 1.5rem;
+        }
+
+        .section-icon {
+            width: 56px;
+            height: 56px;
+        }
+
+        .section-title {
+            font-size: 1.375rem;
+        }
+
+        .faq-item {
+            padding: 1.25rem;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .faq-question {
+            font-size: 1.125rem;
+        }
     }
 </style>

@@ -6,6 +6,7 @@ namespace WeatherApp.Controllers
     {
         public IActionResult About() => View();
         public IActionResult PrivacyPolicy() => View();
+        public IActionResult Privacy() => RedirectToActionPermanent(nameof(PrivacyPolicy));
         public IActionResult Terms() => View();
         public IActionResult Contact() => View();
         public IActionResult AdDisclosure() => View();

@@ -1,15 +1,38 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Smooth scroll to weather result after page load
-window.addEventListener("load", function () {
-    const result = document.getElementById("weather-result");
-    if (result) {
-        result.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+// Smooth scroll to search results using MutationObserver
+document.addEventListener("DOMContentLoaded", function () {
+    // First, check if element already exists
+    const existingElement = document.getElementById("search-results-display");
+    if (existingElement) {
+        setTimeout(function() {
+            existingElement.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 100);
+        return;
     }
+    
+    // If not, watch for when it gets added to the DOM
+    const observer = new MutationObserver(function(mutations) {
+        const element = document.getElementById("search-results-display");
+        if (element) {
+            observer.disconnect();
+            setTimeout(function() {
+                element.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }, 100);
+        }
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 });
 
 // Add loading state to weather form

@@ -51,7 +51,7 @@
                         </p>
                         <div class="hero-stats">
                             <div class="stat-item">
-                                <span class="stat-number">5+</span>
+                                <span class="stat-number">@Model.Count()</span>
                                 <span class="stat-label">Articles</span>
                             </div>
                             <div class="stat-item">
@@ -148,16 +148,61 @@
                 else
                 {
                     <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
                             <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
-                        <h4>No articles yet</h4>
-                        <p class="text-muted">Check back soon for weather tips and insights!</p>
+                        <h4>Articles Coming Soon</h4>
+                        <p class="text-muted">We're working on in-depth weather guides, safety tips, and forecasting explainers. Subscribe below to be notified when new articles publish.</p>
                     </div>
+
+                    <!-- Interim content: link to rich on-site resources -->
+                    <div class="interim-resources mt-5">
+                        <h3 class="interim-title">While you wait — explore our weather guides</h3>
+                        <p class="text-muted mb-4">The following pages cover weather safety, seasonal planning, and live forecasting in depth.</p>
+                        <div class="resource-cards">
+                            <a href="/" class="resource-card">
+                                <div class="resource-icon">🌦️</div>
+                                <div class="resource-body">
+                                    <strong>Weather Tips & Seasonal Guide</strong>
+                                    <p>Hot weather, cold weather, storms, and rain — practical advice for every condition, plus a full seasonal planning guide on our homepage.</p>
+                                </div>
+                            </a>
+                            <a href="/Static/FAQ" class="resource-card">
+                                <div class="resource-icon">❓</div>
+                                <div class="resource-body">
+                                    <strong>Frequently Asked Questions</strong>
+                                    <p>Answers to common questions about weather data accuracy, how forecasts work, humidity vs. heat index, and how to read wind speed readings.</p>
+                                </div>
+                            </a>
+                            <a href="/Static/About" class="resource-card">
+                                <div class="resource-icon">🌍</div>
+                                <div class="resource-body">
+                                    <strong>About Kairos Weather</strong>
+                                    <p>Learn how our platform sources real-time data, what APIs power our forecasts, and how we ensure accuracy for locations worldwide.</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <style>
+                        .interim-resources { border-top: 1px solid #e9ecef; padding-top: 40px; }
+                        .interim-title { font-size: 1.4rem; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+                        .resource-cards { display: flex; flex-direction: column; gap: 16px; }
+                        .resource-card {
+                            display: flex; gap: 20px; align-items: flex-start;
+                            background: #f8f9ff; border: 1px solid rgba(102,126,234,0.15);
+                            border-radius: 14px; padding: 20px 24px;
+                            text-decoration: none; color: inherit;
+                            transition: box-shadow 0.2s, transform 0.2s;
+                        }
+                        .resource-card:hover { box-shadow: 0 6px 24px rgba(102,126,234,0.12); transform: translateY(-2px); color: inherit; }
+                        .resource-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+                        .resource-body strong { display: block; font-size: 1.05rem; color: #1a1a2e; margin-bottom: 6px; }
+                        .resource-body p { font-size: 0.92rem; color: #5a6a8a; margin: 0; line-height: 1.6; }
+                    </style>
                 }
             </div>
         </div>

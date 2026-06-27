@@ -12,12 +12,6 @@
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3262579139378205" crossorigin="anonymous"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-3262579139378205",
-            enable_page_level_ads: true
-        });
-    </script>
 
     <!-- Organization Schema -->
     <script type="application/ld+json">
@@ -169,9 +163,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/weather.css" asp-append-version="true" />
@@ -300,6 +293,8 @@
     <div class="page-container">
         <header>
             <!-- Top Ad Unit -->
+            <!-- Disabled due to AdSense errors -->
+            <!--
             <div class="ad-container ad-top">
                 <ins class="adsbygoogle"
                      style="display:block"
@@ -307,29 +302,33 @@
                      data-ad-slot="5641058694"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <script>try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}</script>
             </div>
+            -->
             
-            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-lg kairos-navbar">
                 <div class="container">
-                    <a class="navbar-brand fw-bold text-primary kairos-logo" href="/">
-                        <span class="kairos-logo"><span style="color:blueviolet">Kairos Weather</span></span>
+                    <a class="navbar-brand kairos-brand" href="/">
+                        <span class="brand-icon">🌤️</span>
+                        <span class="brand-name">Kairos <span class="brand-accent">Weather</span></span>
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
+                    <button class="navbar-toggler kairos-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                        <span class="toggler-bar"></span>
+                        <span class="toggler-bar"></span>
+                        <span class="toggler-bar"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" data-i18n="Home">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="About" data-i18n="About">About</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Article" asp-action="Index" data-i18n="Blog">Blog</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="FAQ" data-i18n="FAQ">FAQ</a></li>
-                            <li class="nav-item"><a class="nav-link" asp-controller="Static" asp-action="Contact" data-i18n="Contact">Contact</a></li>
+                        <ul class="navbar-nav align-items-lg-center gap-lg-1">
+                            <li class="nav-item"><a class="nav-link kairos-nav-link" asp-controller="Home" asp-action="Index" data-i18n="Home">Home</a></li>
+                            <li class="nav-item"><a class="nav-link kairos-nav-link" asp-controller="Static" asp-action="About" data-i18n="About">About</a></li>
+                            <li class="nav-item"><a class="nav-link kairos-nav-link" asp-controller="Article" asp-action="Index" data-i18n="Blog">Blog</a></li>
+                            <li class="nav-item"><a class="nav-link kairos-nav-link" asp-controller="Static" asp-action="FAQ" data-i18n="FAQ">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link kairos-nav-link" asp-controller="Static" asp-action="Contact" data-i18n="Contact">Contact</a></li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link kairos-nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     🌐 Language
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                <ul class="dropdown-menu kairos-dropdown dropdown-menu-end" aria-labelledby="languageDropdown">
                                     <li><a class="dropdown-item language-switcher" href="#" data-lang="en-US">🇺🇸 English</a></li>
                                     <li><a class="dropdown-item language-switcher" href="#" data-lang="hi-IN">🇮🇳 हिंदी</a></li>
                                     <li><a class="dropdown-item language-switcher" href="#" data-lang="ta-IN">🇮🇳 தமிழ்</a></li>
@@ -339,10 +338,10 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <a class="nav-link kairos-nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <span data-i18n="Admin">Admin</span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                                    <ul class="dropdown-menu kairos-dropdown dropdown-menu-end" aria-labelledby="adminDropdown">
                                         <li><a class="dropdown-item" href="/admin/dashboard" data-i18n="Dashboard">Dashboard</a></li>
                                         <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item text-danger" href="/admin/logout" data-i18n="Logout">Logout</a></li>
@@ -355,62 +354,51 @@
             </nav>
         </header>
 
-        <div class="container content-wrap">
-            <!-- Content Ad Unit -->
-            <div class="ad-container ad-content">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-3262579139378205"
-                     data-ad-slot="5641058694"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-            
-            <main role="main" class="pb-3">
+        <div class="content-wrap-full">
+            <main role="main">
                 @RenderBody()
             </main>
         </div>
 
-        <footer class="border-top footer text-muted site-footer">
-            <!-- Footer Ad Unit -->
-            <div class="ad-container ad-footer">
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-3262579139378205"
-                     data-ad-slot="5641058694"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-            
+        <footer class="site-footer">
+            <div class="footer-glow"></div>
             <div class="container">
                 <div class="footer-content">
-                    <div class="footer-section">
-                        <h4>Kairos Weather</h4>
-                        <p>Accurate weather information for locations worldwide.</p>
+                    <div class="footer-section footer-brand-section">
+                        <div class="footer-logo">
+                            <span class="footer-logo-icon">🌤️</span>
+                            <span class="footer-logo-text">Kairos Weather</span>
+                        </div>
+                        <p class="footer-tagline">Accurate, real-time weather information for locations worldwide. Your trusted companion for every forecast.</p>
+                        <div class="footer-badge">
+                            <span>🌍 Global Coverage</span>
+                            <span>⚡ Real-Time Data</span>
+                        </div>
                     </div>
                     <div class="footer-section">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/Static/About">About</a></li>
-                            <li><a href="/Static/FAQ">FAQ</a></li>
-                            <li><a href="/Static/Contact">Contact</a></li>
+                        <h4 class="footer-heading">Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="/">🏠 Home</a></li>
+                            <li><a href="/Static/About">ℹ️ About</a></li>
+                            <li><a href="/Static/FAQ">❓ FAQ</a></li>
+                            <li><a href="/Static/Contact">📧 Contact</a></li>
+                            <li><a href="/Article">📰 Blog</a></li>
                         </ul>
                     </div>
                     <div class="footer-section">
-                        <h4>Legal</h4>
-                        <ul>
-                            <li><a href="/Static/PrivacyPolicy">Privacy Policy</a></li>
-                            <li><a href="/Static/Terms">Terms of Service</a></li>
-                            <li><a href="/Static/PrivacyPolicy#cookies">Cookie Policy</a></li>
-                            <li><a href="/Static/AdDisclosure">Ad Disclosure</a></li>
+                        <h4 class="footer-heading">Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="/Static/PrivacyPolicy">🔒 Privacy Policy</a></li>
+                            <li><a href="/Static/Terms">📋 Terms of Service</a></li>
+                            <li><a href="/Static/PrivacyPolicy#cookies">🍪 Cookie Policy</a></li>
+                            <li><a href="/Static/AdDisclosure">📢 Ad Disclosure</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="footer-bottom">
                     <span data-i18n="FooterCopyright">&copy; 2025 Kairos Weather. All rights reserved.</span>
+                    <span class="footer-divider">•</span>
+                    <span>Made with ❤️ for weather enthusiasts</span>
                 </div>
             </div>
         </footer>

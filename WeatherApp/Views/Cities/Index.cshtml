@@ -274,29 +274,107 @@
             </div>
         </div>
 
-        <!-- About Section -->
+        <!-- About Section - Rich Editorial Content -->
         <div class="row mt-4">
             <div class="col-12">
                 <div class="modern-card">
                     <div class="card-header-modern">
-                        <h3><i class="fas fa-book-open"></i> About @Model.CityName Weather</h3>
+                        <h3><i class="fas fa-book-open"></i> Understanding Today's Weather in @Model.CityName</h3>
                     </div>
                     <div class="card-body-modern">
                         <div class="about-content">
+                            @{
+                                var temp = Model.WeatherData.Temperature;
+                                var humidity = Model.WeatherData.Humidity;
+                                var windSpeed = Model.WeatherData.WindSpeed;
+                                var desc = Model.WeatherData.Description;
+
+                                // Temperature feel interpretation
+                                string tempFeel, tempAdvice;
+                                if (temp >= 40) { tempFeel = "dangerously hot"; tempAdvice = "Avoid outdoor activities during peak hours (10 AM–4 PM). Stay hydrated and seek air-conditioned spaces. This level of heat poses serious health risks, especially for the elderly, children, and those with medical conditions."; }
+                                else if (temp >= 35) { tempFeel = "very hot"; tempAdvice = "Limit prolonged outdoor exposure. Wear light, loose-fitting clothing and apply SPF 30+ sunscreen. Drink water regularly even if you don't feel thirsty, as dehydration can set in quickly at these temperatures."; }
+                                else if (temp >= 28) { tempFeel = "warm and humid"; tempAdvice = "Comfortable for most outdoor activities in the morning or evening. Carry water and take shade breaks if you're active outdoors during the afternoon. Light breathable fabrics will keep you comfortable."; }
+                                else if (temp >= 20) { tempFeel = "pleasantly mild"; tempAdvice = "Ideal conditions for most outdoor activities. The temperature is in a comfortable range for walking, cycling, or spending time outside. A light jacket may be useful in shaded or breezy areas."; }
+                                else if (temp >= 10) { tempFeel = "cool"; tempAdvice = "Layer up with a jacket or sweater. The cooler air is refreshing for outdoor exercise but sustained exposure without adequate clothing may cause discomfort, especially if wind is present."; }
+                                else if (temp >= 0) { tempFeel = "cold"; tempAdvice = "Dress warmly in layers and protect extremities — hands, ears, and neck lose heat quickly. Indoor heating is advisable for vulnerable individuals. Roads may be slippery if temperatures drop further."; }
+                                else { tempFeel = "freezing"; tempAdvice = "Sub-zero temperatures present a risk of frostbite on exposed skin within minutes. Minimize time outdoors. Pipes and vehicles may be affected. Keep emergency supplies on hand in case of weather-related disruptions."; }
+
+                                // Humidity interpretation
+                                string humidityFeel, humidityAdvice;
+                                if (humidity >= 80) { humidityFeel = "very high"; humidityAdvice = "The air feels thick and muggy. High humidity slows sweat evaporation, making temperatures feel significantly hotter than the thermometer reads — known as the 'heat index.' Those with respiratory conditions such as asthma may experience increased symptoms."; }
+                                else if (humidity >= 60) { humidityFeel = "moderate to high"; humidityAdvice = "Humidity is noticeable but manageable. Outdoor activities are fine, though you may perspire more than usual. Keep hydrated and wear moisture-wicking fabrics if exercising."; }
+                                else if (humidity >= 40) { humidityFeel = "comfortable"; humidityAdvice = "This is the optimal humidity range for human comfort and respiratory health. Air quality is generally good and the atmosphere feels fresh without being dry."; }
+                                else if (humidity >= 20) { humidityFeel = "low"; humidityAdvice = "Dry air can irritate the throat, nose, and skin. Stay hydrated, use a moisturiser if needed, and consider a humidifier indoors. Contact lens wearers may experience discomfort."; }
+                                else { humidityFeel = "very dry"; humidityAdvice = "Extremely low humidity increases the risk of static electricity and can dry out mucous membranes quickly. Wildfire risk may be elevated in dry regions. Drink extra water and protect indoor plants."; }
+
+                                // Wind interpretation
+                                string windFeel, windAdvice;
+                                if (windSpeed >= 62) { windFeel = "storm-force"; windAdvice = "Dangerous conditions. Avoid all unnecessary outdoor travel. Secure loose objects, stay away from trees and structures, and follow any local weather alerts or emergency guidance."; }
+                                else if (windSpeed >= 39) { windFeel = "strong"; windAdvice = "Walking is difficult in open areas. Driving may be affected, especially for high-sided vehicles. Outdoor events, construction, and elevated work should be postponed or suspended."; }
+                                else if (windSpeed >= 20) { windFeel = "moderate"; windAdvice = "Wind is noticeable and will affect umbrellas and lightweight items. Cycling against the wind requires more effort. Outdoor fires and barbecues should be used with extra caution."; }
+                                else if (windSpeed >= 6) { windFeel = "light breeze"; windAdvice = "A gentle breeze makes outdoor conditions comfortable, especially on warmer days. Wind chill is minimal but may be noticeable in shaded areas during cooler temperatures."; }
+                                else { windFeel = "calm"; windAdvice = "Still air conditions. Pollution and pollen may accumulate at ground level without wind to disperse it. Those with allergies or respiratory sensitivities should check local air quality indexes."; }
+                            }
+
                             <p class="lead">
-                                Get accurate and real-time weather information for <strong>@Model.CityName</strong>.
+                                Current conditions in <strong>@Model.CityName</strong> are <strong>@desc</strong> at <strong>@temp°C</strong> —
+                                that's @tempFeel for this time of day.
+                            </p>
+
+                            <h4>🌡️ What This Temperature Means</h4>
+                            <p>@tempAdvice</p>
+
+                            <h4>💧 Humidity: @humidity% — @(humidityFeel.First().ToString().ToUpper() + humidityFeel.Substring(1))</h4>
+                            <p>@humidityAdvice</p>
+
+                            <h4>💨 Wind: @windSpeed km/h — @(windFeel.First().ToString().ToUpper() + windFeel.Substring(1))</h4>
+                            <p>@windAdvice</p>
+
+                            <h4>📋 Planning Your Day in @Model.CityName</h4>
+                            @if (temp >= 35 || humidity >= 80)
+                            {
+                                <ul>
+                                    <li>Schedule outdoor errands before 10 AM or after 5 PM to avoid peak heat.</li>
+                                    <li>Carry at least 2 litres of water if spending time outdoors.</li>
+                                    <li>Check on elderly neighbours or relatives — heat-related illness can develop rapidly.</li>
+                                    <li>Never leave children or pets in parked vehicles, even for a few minutes.</li>
+                                    <li>Wear UV-protective clothing or SPF 50+ sunscreen if outdoors for extended periods.</li>
+                                </ul>
+                            }
+                            else if (temp <= 5)
+                            {
+                                <ul>
+                                    <li>Wear thermal layers and waterproof outer clothing before heading out.</li>
+                                    <li>Allow extra time for travel — road conditions may be affected by cold.</li>
+                                    <li>Keep a warm drink and emergency blanket in your vehicle.</li>
+                                    <li>Check that heating systems at home are working correctly.</li>
+                                    <li>Monitor local frost or ice warnings before driving or walking.</li>
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul>
+                                    <li>Conditions are broadly suitable for outdoor plans — check the 5-day forecast above for the week ahead.</li>
+                                    <li>If humidity is above 60%, carry water and take shade breaks during physical activity.</li>
+                                    <li>Wind of @windSpeed km/h may affect cycling routes — factor in headwind on return journeys.</li>
+                                    <li>Check the UV index for your area if spending more than 30 minutes outdoors.</li>
+                                    <li>Evening temperatures may differ significantly — bring a light layer if going out after dark.</li>
+                                </ul>
+                            }
+
+                            <h4>📡 About This Weather Data</h4>
+                            <p>
+                                The weather readings shown for @Model.CityName are sourced in real time from the OpenWeatherMap API,
+                                which aggregates data from thousands of weather stations, satellite observations, and meteorological
+                                models worldwide. Temperature values are reported in Celsius at 2 metres above ground level — the
+                                standard measurement height used by meteorologists globally. Wind speed is measured at 10 metres
+                                above ground and expressed in kilometres per hour. Humidity reflects relative humidity as a percentage
+                                of the maximum moisture air can hold at the current temperature.
                             </p>
                             <p>
-                                Our weather data includes current temperature, humidity, wind speed, 
-                                atmospheric pressure, and visibility conditions. Stay updated with the 
-                                latest weather forecasts to plan your day effectively.
-                            </p>
-                            <h4>Current Weather Conditions</h4>
-                            <p>
-                                The current weather in @Model.CityName shows <strong>@Model.WeatherData.Description</strong> 
-                                with a temperature of <strong>@Model.WeatherData.Temperature°C</strong>. 
-                                The humidity level is <strong>@Model.WeatherData.Humidity%</strong> and wind speeds are 
-                                reaching <strong>@Model.WeatherData.WindSpeed km/h</strong>.
+                                Weather conditions can change rapidly. The 5-day forecast above is updated every 3 hours and uses
+                                ensemble modelling to provide the most accurate outlook available. For severe weather events, always
+                                follow guidance from your local national meteorological service.
                             </p>
                         </div>
                     </div>

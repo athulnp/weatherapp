@@ -1918,7 +1918,10 @@ function performSearch(cityName) {
     loadingDiv.style.display = "flex";
     errorDiv.style.display = "none";
     contentDiv.innerHTML = "";
-    
+
+    // Scroll to the search results section
+    searchResultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
     // Fetch search results
     fetch(`/Home/SearchWeather?cityName=${encodeURIComponent(cityName)}`)
         .then(response => response.json())

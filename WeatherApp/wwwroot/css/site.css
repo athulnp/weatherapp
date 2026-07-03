@@ -21,6 +21,31 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* guard against accidental horizontal scroll on small screens */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Media & embeds never exceed the viewport width.
+   SVGs are excluded because they are used as fixed-size inline icons
+   whose width/height attributes must be preserved. */
+img,
+video,
+iframe,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Long words / URLs wrap instead of forcing horizontal scroll */
+p,
+h1, h2, h3, h4, h5, h6,
+li, a, span, td {
+  overflow-wrap: break-word;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {

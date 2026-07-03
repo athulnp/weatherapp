@@ -69,27 +69,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     
-    // Handle accept button
+    // Handle accept button — grant consent via Google Consent Mode v2
     if (acceptButton) {
         acceptButton.addEventListener("click", function() {
             localStorage.setItem("cookieConsent", "accepted");
             if (cookieConsent) {
                 cookieConsent.style.display = "none";
             }
-            // Here you can enable Google Analytics or other tracking
-            console.log("Cookies accepted");
+            if (typeof gtag === "function") {
+                gtag("consent", "update", {
+                    "ad_storage": "granted",
+                    "ad_user_data": "granted",
+                    "ad_personalization": "granted",
+                    "analytics_storage": "granted"
+                });
+            }
         });
     }
-    
-    // Handle decline button
+
+    // Handle decline button — keep consent denied (the default)
     if (declineButton) {
         declineButton.addEventListener("click", function() {
             localStorage.setItem("cookieConsent", "declined");
             if (cookieConsent) {
                 cookieConsent.style.display = "none";
             }
-            // Here you can disable Google Analytics or other tracking
-            console.log("Cookies declined");
+            if (typeof gtag === "function") {
+                gtag("consent", "update", {
+                    "ad_storage": "denied",
+                    "ad_user_data": "denied",
+                    "ad_personalization": "denied",
+                    "analytics_storage": "denied"
+                });
+            }
         });
     }
 });

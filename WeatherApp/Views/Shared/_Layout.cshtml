@@ -1,13 +1,47 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WCBGDMDM96"></script>
+    <!-- AdSense account verification -->
+    <meta name="google-adsense-account" content="ca-pub-3262579139378205" />
+
+    <!--
+        Google Consent Mode v2 — MUST run before gtag.js and the AdSense loader.
+        Consent defaults to "denied" so no personalised ads / analytics storage
+        is used until the visitor accepts. If the visitor previously accepted,
+        we upgrade the signals to "granted" immediately so returning users keep
+        a full experience. This is Google's approved approach for GDPR/AdSense.
+    -->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+
+        // Safe default for every visitor: deny until we know otherwise.
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500
+        });
+
+        // Honour a previously stored decision (set by the consent banner).
+        try {
+            if (localStorage.getItem('cookieConsent') === 'accepted') {
+                gtag('consent', 'update', {
+                    'ad_storage': 'granted',
+                    'ad_user_data': 'granted',
+                    'ad_personalization': 'granted',
+                    'analytics_storage': 'granted'
+                });
+            }
+        } catch (e) { /* localStorage unavailable */ }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WCBGDMDM96"></script>
+    <script>
         gtag('js', new Date());
-        gtag('config', 'G-WCBGDMDM96');
+        gtag('config', 'G-WCBGDMDM96', { 'anonymize_ip': true });
     </script>
 
     <!-- Google AdSense -->

@@ -99,20 +99,21 @@
     }
 }
 
-<!-- Breadcrumb Navigation -->
-<nav aria-label="Breadcrumb" class="breadcrumb-nav">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="/">Home</a>
-        </li>
-        @if (Model != null && !string.IsNullOrEmpty(Model.CityName))
-        {
+@* Breadcrumb only shown when viewing a specific city — a lone "Home"
+   crumb on the landing page is visual clutter. *@
+@if (Model != null && !string.IsNullOrEmpty(Model.CityName))
+{
+    <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Home</a>
+            </li>
             <li class="breadcrumb-item active" aria-current="page">
                 @Model.CityName Weather
             </li>
-        }
-    </ol>
-</nav>
+        </ol>
+    </nav>
+}
 
 <!-- Breadcrumb Structured Data -->
 @if (Model != null && !string.IsNullOrEmpty(Model.CityName))

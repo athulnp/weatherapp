@@ -19,6 +19,8 @@ namespace WeatherApp.Controllers
         // GET: /Article or /blog
         [Route("Article")]
         [Route("blog")]
+        [Route("{culture:regex(^(hi|ta|ml)$)}/Article")]
+        [Route("{culture:regex(^(hi|ta|ml)$)}/blog")]
         public IActionResult Index()
         {
             var articles = _context.Articles.OrderByDescending(a => a.PublishDate).ToList();
@@ -28,6 +30,7 @@ namespace WeatherApp.Controllers
         // GET: /Article/{slug}
         [HttpGet]
         [Route("Article/{slug}")]
+        [Route("{culture:regex(^(hi|ta|ml)$)}/Article/{slug}")]
         public IActionResult Details(string slug)
         {
             var article = _context.Articles.FirstOrDefault(a => a.Slug == slug);

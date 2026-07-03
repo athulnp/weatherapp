@@ -24,7 +24,12 @@
     }
     else
     {
-        ViewData["Canonical"] = "https://kairosweather.info/";
+        // Self-canonicalise per language (/, /hi, /ta, /ml) and opt this page in
+        // to hreflang alternates so each localized homepage is indexed on its own.
+        var homeCulture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        var homePrefix = homeCulture switch { "hi" => "/hi", "ta" => "/ta", "ml" => "/ml", _ => "" };
+        ViewData["Canonical"] = "https://kairosweather.info" + (homePrefix == "" ? "/" : homePrefix);
+        ViewData["Hreflang"] = "home";
     }
 }
 

@@ -21,6 +21,9 @@ Disallow: /health
 Disallow: /*?search=
 
 # Explicitly welcome the content sections and assets
+Allow: /hi
+Allow: /ta
+Allow: /ml
 Allow: /blog
 Allow: /Article/
 Allow: /weather/

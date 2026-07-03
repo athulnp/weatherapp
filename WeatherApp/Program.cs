@@ -1,6 +1,7 @@
 ﻿using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -13,7 +14,8 @@ using System.Globalization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization();
 
 // Add Health Checks
 builder.Services.AddHealthChecks();
@@ -22,11 +24,18 @@ builder.Services.AddHealthChecks();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 // Configure supported cultures
+// Both the region-specific cultures (used by the .resx files) and the short
+// neutral codes that appear in the URL prefix (/hi, /ta, /ml) are supported so
+// the RouteDataRequestCultureProvider can resolve either form.
 var supportedCultures = new[]
 {
+    new CultureInfo("en"),
     new CultureInfo("en-US"),
+    new CultureInfo("hi"),
     new CultureInfo("hi-IN"),
+    new CultureInfo("ta"),
     new CultureInfo("ta-IN"),
+    new CultureInfo("ml"),
     new CultureInfo("ml-IN")
 };
 
@@ -36,6 +45,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
     options.RequestCultureProviders.Clear();
+    // 1. URL path prefix (/hi, /ta, /ml) -> the {culture} route value. This is the
+    //    authoritative signal so each language has its own crawlable URL.
+    options.RequestCultureProviders.Add(new RouteDataRequestCultureProvider { RouteDataStringKey = "culture", UIRouteDataStringKey = "culture" });
+    // 2. Fallbacks for non-prefixed requests.
     options.RequestCultureProviders.Add(new QueryStringRequestCultureProvider());
     options.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
 });
@@ -186,6 +199,14 @@ if (!string.IsNullOrEmpty(auth0Domain) && !string.IsNullOrEmpty(auth0ClientId))
 }
 
 app.MapControllers(); // Enable attribute routing for CitiesController
+
+// Language-prefixed routes (/hi, /ta, /ml). The {culture} segment is constrained
+// to the supported non-English codes so it never swallows normal paths, and it
+// feeds RouteDataRequestCultureProvider so each language is a distinct URL.
+app.MapControllerRoute(
+    name: "localized",
+    pattern: "{culture:regex(^(hi|ta|ml)$)}/{controller=Home}/{action=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

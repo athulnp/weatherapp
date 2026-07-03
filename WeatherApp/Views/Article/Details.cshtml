@@ -81,8 +81,8 @@
                 <!-- Breadcrumb Navigation -->
                 <nav aria-label="Breadcrumb" class="article-breadcrumb">
                     <ol>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/" data-i18n="Home">Home</a></li>
+                        <li><a href="/blog" data-i18n="Blog">Blog</a></li>
                         <li aria-current="page">@Model.Title</li>
                     </ol>
                 </nav>
@@ -92,7 +92,7 @@
                     <!-- Article Header -->
                     <header class="article-header">
                         <div class="article-category">
-                            <span class="category-badge">Weather Guide</span>
+                            <span class="category-badge" data-i18n="WeatherGuide">Weather Guide</span>
                         </div>
                         <h1 class="article-title">@Model.Title</h1>
                         <div class="article-meta">
@@ -110,7 +110,7 @@
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                @readMinutes min read
+                                @readMinutes <span data-i18n="MinRead">min read</span>
                             </div>
                         </div>
                     </header>
@@ -128,12 +128,12 @@
                             </div>
                             <div class="author-info">
                                 <h4 class="author-name">Kairos Weather</h4>
-                                <p class="author-bio">Providing accurate weather forecasts and safety information worldwide</p>
+                                <p class="author-bio" data-i18n="AuthorBio">Providing accurate weather forecasts and safety information worldwide</p>
                             </div>
                         </div>
 
                         <div class="share-section">
-                            <h4 class="share-title">Share this article</h4>
+                            <h4 class="share-title" data-i18n="ShareArticle">Share this article</h4>
                             <div class="share-buttons">
                                 <a href="https://twitter.com/intent/tweet?url=https://kairosweather.info/Article/@Model.Slug&text=@Model.Title" 
                                    class="share-button share-twitter" target="_blank" rel="noopener noreferrer">
@@ -161,7 +161,7 @@
                                         <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                                         <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
                                     </svg>
-                                    Copy Link
+                                    <span data-i18n="CopyLink">Copy Link</span>
                                 </button>
                             </div>
                         </div>
@@ -170,7 +170,7 @@
 
                 <!-- Related Articles -->
                 <section class="related-articles">
-                    <h3 class="related-title">More articles</h3>
+                    <h3 class="related-title" data-i18n="MoreArticles">More articles</h3>
                     <div class="related-grid">
                         <a href="/Article/weather-safety-tips" class="related-card">
                             <div class="related-card-icon">
@@ -178,8 +178,8 @@
                                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                                 </svg>
                             </div>
-                            <h4 class="related-card-title">Weather Safety Tips</h4>
-                            <p class="related-card-excerpt">Learn how to stay safe during extreme weather conditions</p>
+                            <h4 class="related-card-title" data-i18n="WeatherSafetyTips">Weather Safety Tips</h4>
+                            <p class="related-card-excerpt" data-i18n="WeatherSafetyTipsDesc">Learn how to stay safe during extreme weather conditions</p>
                         </a>
                         <a href="/Article/weather-patterns" class="related-card">
                             <div class="related-card-icon">
@@ -187,8 +187,8 @@
                                     <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
                                 </svg>
                             </div>
-                            <h4 class="related-card-title">Understanding Weather Patterns</h4>
-                            <p class="related-card-excerpt">A beginner's guide to meteorology and weather systems</p>
+                            <h4 class="related-card-title" data-i18n="UnderstandingWeatherPatterns">Understanding Weather Patterns</h4>
+                            <p class="related-card-excerpt" data-i18n="WeatherPatternsDesc">A beginner's guide to meteorology and weather systems</p>
                         </a>
                     </div>
                 </section>

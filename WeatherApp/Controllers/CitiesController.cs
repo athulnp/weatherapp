@@ -23,6 +23,7 @@ namespace WeatherApp.Controllers
 
         [HttpGet]
         [Route("weather/{cityName}")]
+        [Route("{culture:regex(^(hi|ta|ml)$)}/weather/{cityName}")]
         public async Task<IActionResult> Index(string cityName)
         {
             if (string.IsNullOrWhiteSpace(cityName))
@@ -107,6 +108,7 @@ namespace WeatherApp.Controllers
 
         [HttpGet]
         [Route("weather/{cityName}/forecast")]
+        [Route("{culture:regex(^(hi|ta|ml)$)}/weather/{cityName}/forecast")]
         public async Task<IActionResult> Forecast(string cityName)
         {
             if (string.IsNullOrWhiteSpace(cityName))

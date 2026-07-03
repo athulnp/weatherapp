@@ -9,16 +9,16 @@
 <!-- Breadcrumb for SEO -->
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/weather">Weather</a></li>
+        <li class="breadcrumb-item"><a href="/" data-i18n="Home">Home</a></li>
+        <li class="breadcrumb-item"><a href="/weather" data-i18n="Weather">Weather</a></li>
         <li class="breadcrumb-item"><a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")">@Model.CityName</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Forecast</li>
+        <li class="breadcrumb-item active" aria-current="page" data-i18n="Forecast">Forecast</li>
     </ol>
 </nav>
 
 <div class="container mt-4">
     <!-- SEO-friendly heading -->
-    <h1 class="text-center mb-4">5-Day Weather Forecast for @Model.CityName</h1>
+    <h1 class="text-center mb-4"><span data-i18n="FiveDayForecastFor">5-Day Weather Forecast for</span> @Model.CityName</h1>
     <p class="lead text-center mb-5">@Model.MetaDescription</p>
 
     @if (Model.WeatherData != null)
@@ -28,7 +28,7 @@
                 <!-- Current Weather Summary -->
                 <div class="card weather-card mb-4">
                     <div class="card-body">
-                        <h3 class="card-title">Current Conditions</h3>
+                        <h3 class="card-title" data-i18n="CurrentConditions">Current Conditions</h3>
                         <div class="row">
                             <div class="col-md-4 text-center">
                                 <div class="current-temp">@Model.WeatherData.Temperature°C</div>
@@ -37,16 +37,16 @@
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-6">
-                                        <strong>Feels Like:</strong> @Model.WeatherData.FeelsLike°C
+                                        <strong data-i18n="FeelsLikeLabel">Feels Like:</strong> @Model.WeatherData.FeelsLike°C
                                     </div>
                                     <div class="col-6">
-                                        <strong>Humidity:</strong> @Model.WeatherData.Humidity%
+                                        <strong data-i18n="HumidityLabel">Humidity:</strong> @Model.WeatherData.Humidity%
                                     </div>
                                     <div class="col-6">
-                                        <strong>Wind:</strong> @Model.WeatherData.WindSpeed km/h
+                                        <strong data-i18n="WindLabel">Wind:</strong> @Model.WeatherData.WindSpeed km/h
                                     </div>
                                     <div class="col-6">
-                                        <strong>Min Temp:</strong> @Model.WeatherData.TempMin°C
+                                        <strong data-i18n="MinTempLabel">Min Temp:</strong> @Model.WeatherData.TempMin°C
                                     </div>
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
                 {
                     <div class="card forecast-card">
                         <div class="card-body">
-                            <h3 class="card-title mb-4">5-Day Forecast</h3>
-                            <div class="alert alert-info">
+                            <h3 class="card-title mb-4" data-i18n="FiveDayForecast">5-Day Forecast</h3>
+                            <div class="alert alert-info" data-i18n="ForecastAvailableNote">
                                 Forecast data is available. Check back for detailed forecast information.
                             </div>
                         </div>
@@ -70,11 +70,10 @@
                 <!-- SEO-friendly content section -->
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h3>Weekly Weather Forecast for @Model.CityName</h3>
+                        <h3><span data-i18n="WeeklyForecastFor">Weekly Weather Forecast for</span> @Model.CityName</h3>
                         <p>
-                            Plan your week with our detailed 5-day weather forecast for @Model.CityName. 
-                            Get accurate predictions for temperature, weather conditions, and more 
-                            to help you make informed decisions about your daily activities.
+                            <span data-i18n="WeeklyForecastIntro1">Plan your week with our detailed 5-day weather forecast for</span> @Model.CityName.
+                            <span data-i18n="WeeklyForecastIntro2">Get accurate predictions for temperature, weather conditions, and more to help you make informed decisions about your daily activities.</span>
                         </p>
                     </div>
                 </div>
@@ -82,25 +81,25 @@
                 <!-- Internal linking for SEO -->
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h3>Popular City Forecasts</h3>
+                        <h3 data-i18n="PopularCityForecasts">Popular City Forecasts</h3>
                         <div class="row">
                             <div class="col-md-4">
-                                <a href="/weather/kochi/forecast" class="btn btn-outline-primary w-100 mb-2">Kochi Forecast</a>
+                                <a href="/weather/kochi/forecast" class="btn btn-outline-primary w-100 mb-2">Kochi <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                             <div class="col-md-4">
-                                <a href="/weather/mumbai/forecast" class="btn btn-outline-primary w-100 mb-2">Mumbai Forecast</a>
+                                <a href="/weather/mumbai/forecast" class="btn btn-outline-primary w-100 mb-2">Mumbai <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                             <div class="col-md-4">
-                                <a href="/weather/delhi/forecast" class="btn btn-outline-primary w-100 mb-2">Delhi Forecast</a>
+                                <a href="/weather/delhi/forecast" class="btn btn-outline-primary w-100 mb-2">Delhi <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                             <div class="col-md-4">
-                                <a href="/weather/bangalore/forecast" class="btn btn-outline-primary w-100 mb-2">Bangalore Forecast</a>
+                                <a href="/weather/bangalore/forecast" class="btn btn-outline-primary w-100 mb-2">Bangalore <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                             <div class="col-md-4">
-                                <a href="/weather/chennai/forecast" class="btn btn-outline-primary w-100 mb-2">Chennai Forecast</a>
+                                <a href="/weather/chennai/forecast" class="btn btn-outline-primary w-100 mb-2">Chennai <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                             <div class="col-md-4">
-                                <a href="/weather/hyderabad/forecast" class="btn btn-outline-primary w-100 mb-2">Hyderabad Forecast</a>
+                                <a href="/weather/hyderabad/forecast" class="btn btn-outline-primary w-100 mb-2">Hyderabad <span data-i18n="Forecast">Forecast</span></a>
                             </div>
                         </div>
                     </div>
@@ -109,7 +108,7 @@
                 <!-- Back to current weather link -->
                 <div class="text-center mt-4">
                     <a href="/weather/@Model.CityName.ToLower().Replace(" ", "-")" class="btn btn-secondary">
-                        ← Back to Current Weather
+                        <span data-i18n="BackToCurrentWeather">← Back to Current Weather</span>
                     </a>
                 </div>
             </div>
@@ -118,7 +117,7 @@
     else
     {
         <div class="alert alert-warning">
-            Weather forecast data not available for @Model.CityName. Please try again later.
+            <span data-i18n="ForecastNotAvailable">Weather forecast data not available for</span> @Model.CityName. <span data-i18n="TryAgainLater">Please try again later.</span>
         </div>
     }
 </div>

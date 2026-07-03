@@ -44,23 +44,23 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <div class="hero-content">
-                        <span class="hero-badge">Expert Insights</span>
-                        <h1 class="hero-title">Weather Blog</h1>
-                        <p class="hero-subtitle">
+                        <span class="hero-badge" data-i18n="ExpertInsights">Expert Insights</span>
+                        <h1 class="hero-title" data-i18n="WeatherBlog">Weather Blog</h1>
+                        <p class="hero-subtitle" data-i18n="BlogHeroSubtitle">
                             Expert articles on weather forecasting, safety tips, climate information, and seasonal weather guides
                         </p>
                         <div class="hero-stats">
                             <div class="stat-item">
                                 <span class="stat-number">@Model.Count()</span>
-                                <span class="stat-label">Articles</span>
+                                <span class="stat-label" data-i18n="Articles">Articles</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">24/7</span>
-                                <span class="stat-label">Updates</span>
+                                <span class="stat-label" data-i18n="Updates">Updates</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number">Free</span>
-                                <span class="stat-label">Access</span>
+                                <span class="stat-number" data-i18n="Free">Free</span>
+                                <span class="stat-label" data-i18n="Access">Access</span>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                         </svg>
                         <input type="search" 
                                id="blogSearch" 
-                               placeholder="Search articles..." 
+                               placeholder="Search articles..." data-i18n-placeholder="SearchArticles" 
                                aria-label="Search articles"
                                class="search-input">
                     </div>
@@ -105,7 +105,7 @@
 
                         <article class="blog-card mb-4">
                             <div class="blog-card-header">
-                                <span class="article-category">Weather Guide</span>
+                                <span class="article-category" data-i18n="WeatherGuide">Weather Guide</span>
                                 <h2 class="blog-card-title">
                                     <a href="/Article/@article.Slug" class="text-decoration-none">@article.Title</a>
                                 </h2>
@@ -126,7 +126,7 @@
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <polyline points="12 6 12 12 16 14"></polyline>
                                         </svg>
-                                        @cardMinutes min read
+                                        @cardMinutes <span data-i18n="MinRead">min read</span>
                                     </span>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
 
                             <div class="blog-card-footer">
                                 <a href="/Article/@article.Slug" class="btn btn-primary">
-                                    Read Article
+                                    <span data-i18n="ReadArticle">Read Article</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ms-2">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
@@ -156,34 +156,34 @@
                             <line x1="16" y1="13" x2="8" y2="13"></line>
                             <line x1="16" y1="17" x2="8" y2="17"></line>
                         </svg>
-                        <h4>Articles Coming Soon</h4>
-                        <p class="text-muted">We're working on in-depth weather guides, safety tips, and forecasting explainers. Subscribe below to be notified when new articles publish.</p>
+                        <h4 data-i18n="ArticlesComingSoon">Articles Coming Soon</h4>
+                        <p class="text-muted" data-i18n="ArticlesComingSoonDesc">We're working on in-depth weather guides, safety tips, and forecasting explainers. Subscribe below to be notified when new articles publish.</p>
                     </div>
 
                     <!-- Interim content: link to rich on-site resources -->
                     <div class="interim-resources mt-5">
-                        <h3 class="interim-title">While you wait — explore our weather guides</h3>
-                        <p class="text-muted mb-4">The following pages cover weather safety, seasonal planning, and live forecasting in depth.</p>
+                        <h3 class="interim-title" data-i18n="WhileYouWait">While you wait — explore our weather guides</h3>
+                        <p class="text-muted mb-4" data-i18n="InterimDesc">The following pages cover weather safety, seasonal planning, and live forecasting in depth.</p>
                         <div class="resource-cards">
                             <a href="/" class="resource-card">
                                 <div class="resource-icon">🌦️</div>
                                 <div class="resource-body">
-                                    <strong>Weather Tips & Seasonal Guide</strong>
-                                    <p>Hot weather, cold weather, storms, and rain — practical advice for every condition, plus a full seasonal planning guide on our homepage.</p>
+                                    <strong data-i18n="WeatherTipsSeasonalGuide">Weather Tips & Seasonal Guide</strong>
+                                    <p data-i18n="WeatherTipsSeasonalGuideDesc">Hot weather, cold weather, storms, and rain — practical advice for every condition, plus a full seasonal planning guide on our homepage.</p>
                                 </div>
                             </a>
                             <a href="/Static/FAQ" class="resource-card">
                                 <div class="resource-icon">❓</div>
                                 <div class="resource-body">
-                                    <strong>Frequently Asked Questions</strong>
-                                    <p>Answers to common questions about weather data accuracy, how forecasts work, humidity vs. heat index, and how to read wind speed readings.</p>
+                                    <strong data-i18n="FAQ">Frequently Asked Questions</strong>
+                                    <p data-i18n="FAQGuideDesc">Answers to common questions about weather data accuracy, how forecasts work, humidity vs. heat index, and how to read wind speed readings.</p>
                                 </div>
                             </a>
                             <a href="/Static/About" class="resource-card">
                                 <div class="resource-icon">🌍</div>
                                 <div class="resource-body">
-                                    <strong>About Kairos Weather</strong>
-                                    <p>Learn how our platform sources real-time data, what APIs power our forecasts, and how we ensure accuracy for locations worldwide.</p>
+                                    <strong data-i18n="AboutKairosWeather">About Kairos Weather</strong>
+                                    <p data-i18n="AboutGuideDesc">Learn how our platform sources real-time data, what APIs power our forecasts, and how we ensure accuracy for locations worldwide.</p>
                                 </div>
                             </a>
                         </div>
@@ -213,14 +213,14 @@
     <div class="row mt-5">
         <div class="col-lg-8 mx-auto">
             <div class="newsletter-section bg-light p-5 rounded">
-                <h3 class="mb-3">Subscribe to Our Newsletter</h3>
+                <h3 class="mb-3" data-i18n="SubscribeNewsletter">Subscribe to Our Newsletter</h3>
                 <p class="text-muted mb-4">
                     Get the latest weather tips, safety guides, and forecasting insights delivered to your inbox.
                 </p>
                 <form class="newsletter-form">
                     <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email address" required>
-                        <button class="btn btn-primary" type="submit">Subscribe</button>
+                        <input type="email" class="form-control" placeholder="Enter your email address" data-i18n-placeholder="EnterEmail" required>
+                        <button class="btn btn-primary" type="submit" data-i18n="Subscribe">Subscribe</button>
                     </div>
                     <small class="text-muted d-block mt-2">
                         We respect your privacy. Unsubscribe at any time.

@@ -2,17 +2,39 @@
 @{ Layout = null; }
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    
-    <!-- Homepage -->
+
+    <!-- Homepage (with language alternates) -->
     <url>
         <loc>https://kairosweather.info/</loc>
+        <xhtml:link rel="alternate" hreflang="en" href="https://kairosweather.info/" />
+        <xhtml:link rel="alternate" hreflang="hi" href="https://kairosweather.info/hi" />
+        <xhtml:link rel="alternate" hreflang="ta" href="https://kairosweather.info/ta" />
+        <xhtml:link rel="alternate" hreflang="ml" href="https://kairosweather.info/ml" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://kairosweather.info/" />
         <lastmod>@DateTime.UtcNow.ToString("yyyy-MM-dd")</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
+
+    <!-- Localized homepages -->
+    @foreach (var lang in new[] { "hi", "ta", "ml" })
+    {
+        <url>
+            <loc>https://kairosweather.info/@lang</loc>
+            <xhtml:link rel="alternate" hreflang="en" href="https://kairosweather.info/" />
+            <xhtml:link rel="alternate" hreflang="hi" href="https://kairosweather.info/hi" />
+            <xhtml:link rel="alternate" hreflang="ta" href="https://kairosweather.info/ta" />
+            <xhtml:link rel="alternate" hreflang="ml" href="https://kairosweather.info/ml" />
+            <xhtml:link rel="alternate" hreflang="x-default" href="https://kairosweather.info/" />
+            <lastmod>@DateTime.UtcNow.ToString("yyyy-MM-dd")</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.9</priority>
+        </url>
+    }
     
     <!-- Blog Index -->
     <url>
@@ -85,16 +107,7 @@
     </url>
 
     <!-- Popular City Weather Pages -->
-    @{
-        var citySlugs = new[]
-        {
-            "mumbai", "delhi", "bangalore", "chennai", "hyderabad", "kolkata",
-            "kochi", "pune", "ahmedabad", "jaipur", "lucknow", "chandigarh",
-            "london", "new-york", "tokyo", "paris", "dubai", "singapore",
-            "sydney", "toronto", "los-angeles", "berlin", "moscow", "beijing"
-        };
-    }
-    @foreach (var city in citySlugs)
+    @foreach (var city in WeatherApp.Data.PopularCities.Slugs)
     {
         <url>
             <loc>https://kairosweather.info/weather/@city</loc>

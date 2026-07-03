@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:5162/)",
+      "Bash(curl -s http://localhost:5162/sitemap.xml)",
+      "Bash(taskkill //F //IM dotnet.exe //T)",
+      "Skill(run)",
+      "Skill(run:*)"
+    ]
+  }
+}

@@ -1,13 +1,9 @@
 ﻿
 @{
-    ViewData["Title"] = "About Us";
+    ViewData["Title"] = "About Us - Kairos Weather";
     ViewData["MetaDescription"] = "Learn about Kairos Weather - your reliable source for accurate, real-time weather information worldwide. Our mission, technology, and commitment to quality.";
     ViewData["MetaKeywords"] = "Kairos Weather about, weather service mission, weather technology, weather accuracy, global weather coverage";
-}
-
-@section Head {
-    <meta name="description" content="@ViewData["MetaDescription"]" />
-    <meta name="keywords" content="@ViewData["MetaKeywords"]" />
+    ViewData["Canonical"] = "https://kairosweather.info/Static/About";
 }
 
 <!-- Article Structured Data -->
@@ -77,6 +73,12 @@
                     </div>
                     <p class="section-content" data-i18n="OurMissionDesc">
                         At Kairos Weather, our mission is simple: to make weather information accessible, accurate, and easy to understand for everyone. We believe that weather plays a crucial role in daily life — from planning outdoor activities to ensuring safety during severe weather conditions.
+                    </p>
+                    <p class="section-content">
+                        Weather touches almost every decision we make. Whether you are deciding what to wear, planning a journey, scheduling a harvest, organising an outdoor event, or simply wondering whether to carry an umbrella, reliable weather information helps you make better choices. Yet a lot of weather websites are cluttered, slow, or overloaded with jargon. We built Kairos Weather to be the opposite: a clean, fast, and genuinely helpful place to check conditions and forecasts for anywhere in the world.
+                    </p>
+                    <p class="section-content">
+                        Beyond raw numbers, we also want to help people <em>understand</em> the weather. That is why we publish in-depth, easy-to-read guides on our <a href="/blog">weather blog</a> — covering how forecasting works, how to stay safe in extreme conditions, what humidity and wind chill really mean, how to read the clouds, and more. Our goal is not just to tell you today's temperature, but to help you become more weather-aware every day.
                     </p>
                 </section>
 
@@ -159,6 +161,27 @@
                     </div>
                     <p class="section-content" data-i18n="OurTechnologyDesc">
                         We leverage cutting-edge technology and partnerships with leading weather data providers to ensure the accuracy and reliability of our information. Our platform is built using modern web technologies to deliver fast, responsive, and accessible weather information.
+                    </p>
+                    <p class="section-content">
+                        Our live weather and forecast data is sourced from established meteorological data providers, including the OpenWeatherMap service, which aggregates observations from weather stations, satellites, and radar around the globe. When you search for a location, we resolve it using trusted geocoding services so that a city name, postal code, or set of coordinates all point to the right place on the map. We then present current conditions — temperature, feels-like temperature, humidity, wind speed, and more — alongside a multi-day forecast.
+                    </p>
+                    <p class="section-content">
+                        Because weather changes constantly, we refresh data frequently and cache it responsibly to keep the site fast without serving stale information. The interface is fully responsive, so it works just as well on a phone as on a desktop, and we optimise aggressively for page speed and Core Web Vitals so that checking the weather never feels like a chore.
+                    </p>
+                </section>
+
+                <!-- Data & Accuracy Section -->
+                <section class="about-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <h2 class="section-title">A Note on Accuracy</h2>
+                    </div>
+                    <p class="section-content">
+                        We work hard to provide the most accurate weather information possible, but it is important to be transparent: no weather forecast is ever perfect. Forecasting is a probabilistic science, and accuracy naturally decreases the further into the future a prediction reaches. Short-range forecasts of one to three days are highly reliable, while longer-range outlooks are best treated as general guidance. For critical decisions and during severe weather, we always encourage you to also consult your official national or regional meteorological service. You can read more about how this works in our guide on <a href="/Article/weather-forecasting">how weather forecasting works</a>.
                     </p>
                 </section>
 

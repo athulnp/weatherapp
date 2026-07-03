@@ -141,6 +141,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Security & SEO-friendly response headers
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["X-Frame-Options"] = "SAMEORIGIN";
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    headers["Permissions-Policy"] = "geolocation=(self), camera=(), microphone=()";
+    await next();
+});
+
 // Add Response Compression
 app.UseResponseCompression();
 

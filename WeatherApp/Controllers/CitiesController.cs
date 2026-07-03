@@ -34,7 +34,11 @@ namespace WeatherApp.Controllers
             {
                 // Normalize city name (e.g., convert to title case)
                 var normalizedCityName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(cityName.ToLower().Replace("-", " "));
-                
+
+                // Stable, lowercase-hyphenated slug for canonical URLs so that
+                // /weather/Mumbai and /weather/mumbai resolve to one canonical.
+                var citySlug = normalizedCityName.ToLower().Replace(" ", "-");
+
                 // Record the search
                 _citySearchService.RecordSearch(normalizedCityName);
                 
@@ -88,7 +92,7 @@ namespace WeatherApp.Controllers
                     PageTitle = $"Weather in {normalizedCityName} - Current Conditions & Forecast | Kairos Weather",
                     MetaDescription = $"Get current weather conditions and forecast for {normalizedCityName}. Check temperature, humidity, wind speed, and more with Kairos Weather's accurate real-time updates.",
                     MetaKeywords = $"{normalizedCityName} weather, weather in {normalizedCityName}, {normalizedCityName} forecast, current weather {normalizedCityName}, {normalizedCityName} temperature",
-                    CanonicalUrl = $"{Request.Scheme}://{Request.Host}/weather/{cityName}",
+                    CanonicalUrl = $"https://kairosweather.info/weather/{citySlug}",
                     PopularCities = popularCities
                 };
 
@@ -113,8 +117,9 @@ namespace WeatherApp.Controllers
             try
             {
                 var normalizedCityName = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(cityName.ToLower().Replace("-", " "));
+                var citySlug = normalizedCityName.ToLower().Replace(" ", "-");
                 var weatherData = await _weatherService.GetWeatherAsync(normalizedCityName);
-                
+
                 if (weatherData == null)
                 {
                     return RedirectToAction("Index", "Home");
@@ -130,7 +135,7 @@ namespace WeatherApp.Controllers
                     PageTitle = $"5-Day Weather Forecast for {normalizedCityName} | Kairos Weather",
                     MetaDescription = $"View the 5-day weather forecast for {normalizedCityName}. Plan your week with accurate temperature, precipitation, and weather predictions.",
                     MetaKeywords = $"{normalizedCityName} forecast, 5-day weather {normalizedCityName}, weather prediction {normalizedCityName}, weekly forecast {normalizedCityName}",
-                    CanonicalUrl = $"{Request.Scheme}://{Request.Host}/weather/{cityName}/forecast"
+                    CanonicalUrl = $"https://kairosweather.info/weather/{citySlug}/forecast"
                 };
 
                 return View(viewModel);

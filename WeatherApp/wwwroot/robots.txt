@@ -4,26 +4,32 @@
 User-agent: *
 Allow: /
 
-# Disallow admin areas
+# Disallow admin and auth areas
 Disallow: /admin/
 Disallow: /Account/
 Disallow: /Identity/
+Disallow: /callback
+Disallow: /access-denied
 
-# Disallow development files
-Disallow: /bin/
-Disallow: /obj/
-Disallow: /Properties/
-Disallow: /.vs/
-Disallow: /.github/
+# Disallow non-content endpoints (avoid indexing JSON API responses)
+Disallow: /Home/GetWeatherByCoordinates
+Disallow: /Home/GetForecast
+Disallow: /Home/SearchWeather
+Disallow: /health
 
-# Allow specific important files
+# Avoid indexing search-parameter URL variants (canonical points to clean URLs)
+Disallow: /*?search=
+
+# Explicitly welcome the content sections and assets
+Allow: /blog
+Allow: /Article/
+Allow: /weather/
+Allow: /Static/
 Allow: /css/
 Allow: /js/
 Allow: /lib/
 Allow: /images/
+Allow: /assets/
 
 # Sitemap location
 Sitemap: https://kairosweather.info/sitemap.xml
-
-# Crawl delay (optional, adjust based on server capacity)
-Crawl-delay: 1

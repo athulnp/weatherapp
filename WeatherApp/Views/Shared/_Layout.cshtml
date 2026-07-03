@@ -54,12 +54,7 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "aggregateRating": {
-        "@@type": "AggregateRating",
-        "ratingValue": "4.5",
-        "ratingCount": "100"
-      },
-      "screenshot": "https://kairosweather.info/screenshot.png",
+      "screenshot": "https://kairosweather.info/images/weather-preview.jpg",
       "softwareVersion": "1.0",
       "author": {
         "@@type": "Organization",
@@ -89,74 +84,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- Primary Meta Tags -->
-    <title>@ViewData["Title"]</title>
-    <meta name="title" content="@ViewData["Title"]" />
-    <meta name="description" content="@(ViewData["Description"] ?? ViewData["MetaDescription"] ?? "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with clean, user-friendly interface.")" />
-    <meta name="keywords" content="@(ViewData["Keywords"] ?? ViewData["MetaKeywords"] ?? "weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data")" />
-    <meta name="author" content="Kairos Weather" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="language" content="English" />
-    <meta name="theme-color" content="#667eea" />
-    
-    <!-- Canonical URL -->
-    @if (!string.IsNullOrEmpty(ViewData["Canonical"]?.ToString()))
-    {
-        <link rel="canonical" href="@ViewData["Canonical"]" />
+    @{
+        // ---- Centralised SEO values (single source of truth) ----
+        const string siteName = "Kairos Weather";
+        const string baseUrl = "https://kairosweather.info";
+        const string defaultDescription = "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with a clean, fast, user-friendly interface.";
+        const string defaultKeywords = "weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data";
+        const string defaultOgImage = baseUrl + "/assets/og-image.png";
+
+        var seoTitle = (ViewData["Title"]?.ToString()) ?? siteName;
+        var seoDescription = (ViewData["Description"]?.ToString()) ?? (ViewData["MetaDescription"]?.ToString()) ?? defaultDescription;
+        var seoKeywords = (ViewData["Keywords"]?.ToString()) ?? (ViewData["MetaKeywords"]?.ToString()) ?? defaultKeywords;
+        var seoImage = (ViewData["OgImage"]?.ToString()) ?? defaultOgImage;
+        var seoType = (ViewData["OgType"]?.ToString()) ?? "website";
+        var seoRobots = (ViewData["Robots"]?.ToString()) ?? "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1";
+
+        // Canonical: explicit value from the view wins; otherwise build from the
+        // request path (without query string, so ?search= variants don't fork the URL).
+        var canonicalUrl = (ViewData["Canonical"]?.ToString());
+        if (string.IsNullOrEmpty(canonicalUrl))
+        {
+            canonicalUrl = baseUrl + Context.Request.Path.Value;
+        }
     }
-    
-    <!-- Dynamic meta tags from views -->
+
+    <!-- Primary Meta Tags -->
+    <title>@seoTitle</title>
+    <meta name="title" content="@seoTitle" />
+    <meta name="description" content="@seoDescription" />
+    <meta name="keywords" content="@seoKeywords" />
+    <meta name="author" content="Kairos Weather" />
+    <meta name="robots" content="@seoRobots" />
+    <meta name="theme-color" content="#667eea" />
+    <meta name="content-language" content="en" />
+
+    <!-- Canonical URL (single, authoritative) -->
+    <link rel="canonical" href="@canonicalUrl" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@seoType" />
+    <meta property="og:url" content="@canonicalUrl" />
+    <meta property="og:title" content="@seoTitle" />
+    <meta property="og:description" content="@seoDescription" />
+    <meta property="og:image" content="@seoImage" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Kairos Weather - Live Weather Updates" />
+    <meta property="og:site_name" content="@siteName" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="@canonicalUrl" />
+    <meta name="twitter:title" content="@seoTitle" />
+    <meta name="twitter:description" content="@seoDescription" />
+    <meta name="twitter:image" content="@seoImage" />
+    <meta name="twitter:site" content="@@KairosWeather" />
+    <meta name="twitter:creator" content="@@KairosWeather" />
+
+    <!-- Dynamic per-page structured data / extra tags from views -->
     @await RenderSectionAsync("Head", required: false)
-    
+
     <!-- Performance Optimization -->
     <link rel="dns-prefetch" href="https://api.openweathermap.org" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-    
+
     <!-- Preconnect for critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.openweathermap.org" />
-    
+
     <!-- Preload critical CSS -->
     <link rel="preload" href="~/css/site.css" as="style" />
     <link rel="preload" href="~/css/weather.css" as="style" />
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    
-    <!-- Alternate Language Links -->
-    <link rel="alternate" hreflang="en" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <link rel="alternate" hreflang="hi" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <link rel="alternate" hreflang="ta" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <link rel="alternate" hreflang="ml" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <link rel="alternate" hreflang="x-default" href="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    
-    <!-- Language meta tags -->
-    <meta name="content-language" content="en" />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <meta property="og:title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates" />
-    <meta property="og:description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide." />
-    <meta property="og:image" content="https://kairosweather.info/assets/og-image.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Kairos Weather App - Live Weather Updates" />
-    <meta property="og:site_name" content="Kairos Weather" />
-    <meta property="og:locale" content="en_US" />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="@("https://kairosweather.info" + Context.Request.Path.Value)" />
-    <meta property="twitter:title" content="@ViewData["Title"] - Kairos Weather | Live Weather Updates" />
-    <meta property="twitter:description" content="Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide." />
-    <meta property="twitter:image" content="https://kairosweather.info/assets/twitter-image.png" />
-    <meta property="twitter:site" content="@@KairosWeather" />
-    <meta property="twitter:creator" content="@@KairosWeather" />
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -232,7 +235,6 @@
         "name": "Kairos Weather",
         "description": "Providing accurate and reliable weather information worldwide through our online weather service.",
         "url": "https://kairosweather.info",
-        "telephone": "+1-XXX-XXX-XXXX",
         "email": "contact@kairosweather.info",
         "priceRange": "Free",
         "openingHoursSpecification": [
@@ -243,13 +245,6 @@
                 "closes": "23:59"
             }
         ],
-        "aggregateRating": {
-            "@@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "1250",
-            "bestRating": "5",
-            "worstRating": "1"
-        },
         "sameAs": [
             "https://twitter.com/KairosWeather",
             "https://facebook.com/KairosWeather",

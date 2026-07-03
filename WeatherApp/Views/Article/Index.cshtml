@@ -4,7 +4,7 @@
     ViewData["Title"] = "Weather Blog - Kairos Weather";
     ViewData["Description"] = "Read expert articles on weather forecasting, safety tips, climate information, and seasonal weather guides from Kairos Weather.";
     ViewData["Keywords"] = "weather blog, weather articles, weather tips, climate information, forecasting";
-    ViewData["Canonical"] = "https://kairosweather.info/Article";
+    ViewData["Canonical"] = "https://kairosweather.info/blog";
 }
 
 @section Head {
@@ -19,17 +19,17 @@
       "mainEntity": {
         "@@type": "ItemList",
         "itemListElement": [
+          @{ var pos = 1; }
+          @foreach (var a in Model.OrderByDescending(a => a.PublishDate))
           {
-            "@@type": "ListItem",
-            "position": 1,
-            "name": "Weather Forecasting Guide",
-            "url": "https://kairosweather.info/Article/weather-forecasting"
-          },
-          {
-            "@@type": "ListItem",
-            "position": 2,
-            "name": "Weather Safety Tips",
-            "url": "https://kairosweather.info/Article/weather-safety-tips"
+            @Html.Raw(pos > 1 ? "," : "")
+            <text>{
+              "@@type": "ListItem",
+              "position": @pos,
+              "name": "@Html.Raw(a.Title.Replace("\"", "\\\""))",
+              "url": "https://kairosweather.info/Article/@a.Slug"
+            }</text>
+            pos++;
           }
         ]
       }
@@ -97,6 +97,12 @@
                 {
                     @foreach (var article in Model.OrderByDescending(a => a.PublishDate))
                     {
+                        var plain = System.Text.RegularExpressions.Regex.Replace(article.Content ?? "", "<[^>]*>", " ");
+                        plain = System.Text.RegularExpressions.Regex.Replace(plain, "\\s+", " ").Trim();
+                        var cardExcerpt = plain.Length > 180 ? plain.Substring(0, 180).TrimEnd() + "…" : plain;
+                        var cardWords = plain.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+                        var cardMinutes = Math.Max(1, (int)Math.Round(cardWords / 200.0));
+
                         <article class="blog-card mb-4">
                             <div class="blog-card-header">
                                 <span class="article-category">Weather Guide</span>
@@ -120,17 +126,13 @@
                                             <circle cx="12" cy="12" r="10"></circle>
                                             <polyline points="12 6 12 12 16 14"></polyline>
                                         </svg>
-                                        5 min read
+                                        @cardMinutes min read
                                     </span>
                                 </div>
                             </div>
 
                             <div class="blog-card-excerpt">
-                                <p class="text-secondary">
-                                    @Html.Raw(System.Text.RegularExpressions.Regex.Replace(article.Content, "<[^>]*>", "").Length > 150 
-                                        ? System.Text.RegularExpressions.Regex.Replace(article.Content, "<[^>]*>", "").Substring(0, 150) + "..." 
-                                        : System.Text.RegularExpressions.Regex.Replace(article.Content, "<[^>]*>", ""))
-                                </p>
+                                <p class="text-secondary">@cardExcerpt</p>
                             </div>
 
                             <div class="blog-card-footer">

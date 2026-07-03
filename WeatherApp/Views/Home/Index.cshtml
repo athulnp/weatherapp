@@ -14,27 +14,23 @@
         ViewData["MetaDescription"] = "Get accurate live weather updates, temperature, humidity, wind speed, and forecasts for any city worldwide. Real-time weather data with clean, user-friendly interface.";
         ViewData["MetaKeywords"] = "weather, forecast, live weather, temperature, humidity, wind speed, weather app, real-time weather, global weather, weather conditions, climate data";
     }
+
+    // The homepage is served for both "/" and "/?search=...". Point the
+    // canonical at the clean homepage (or the dedicated city page when a
+    // location is resolved) so search variants don't create duplicate URLs.
+    if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
+    {
+        ViewData["Canonical"] = "https://kairosweather.info/weather/" + Model.CityName.ToLower().Replace(" ", "-");
+    }
+    else
+    {
+        ViewData["Canonical"] = "https://kairosweather.info/";
+    }
 }
 
 @section Head {
     @if (Model != null && !string.IsNullOrEmpty(Model.CityName) && Model.IsLocationAvailable)
     {
-        <meta name="description" content="@ViewData["MetaDescription"]" />
-        <meta name="keywords" content="@ViewData["MetaKeywords"]" />
-
-        <!-- Dynamic Open Graph tags -->
-        <meta property="og:title" content="@ViewData["Title"]" />
-        <meta property="og:description" content="@ViewData["MetaDescription"]" />
-        <meta property="og:url" content="@("https://kairosweather.info/?search=" + System.Web.HttpUtility.UrlEncode(Model.CityName))" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="@Model.Icon" />
-
-        <!-- Dynamic Twitter tags -->
-        <meta property="twitter:title" content="@ViewData["Title"]" />
-        <meta property="twitter:description" content="@ViewData["MetaDescription"]" />
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:image" content="@Model.Icon" />
-
         <!-- Structured Data (Schema.org) JSON-LD for Weather -->
         <script type="application/ld+json">
         {
@@ -85,20 +81,6 @@
     }
     else
     {
-        <meta name="description" content="@ViewData["MetaDescription"]" />
-        <meta name="keywords" content="@ViewData["MetaKeywords"]" />
-
-        <!-- Default Open Graph tags -->
-        <meta property="og:title" content="@ViewData["Title"]" />
-        <meta property="og:description" content="@ViewData["MetaDescription"]" />
-        <meta property="og:url" content="https://kairosweather.info/" />
-        <meta property="og:type" content="website" />
-
-        <!-- Default Twitter tags -->
-        <meta property="twitter:title" content="@ViewData["Title"]" />
-        <meta property="twitter:description" content="@ViewData["MetaDescription"]" />
-        <meta property="twitter:card" content="summary_large_image" />
-
         <!-- Structured Data (Schema.org) JSON-LD for WebSite -->
         <script type="application/ld+json">
         {

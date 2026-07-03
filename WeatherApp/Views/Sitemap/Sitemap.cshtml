@@ -1,3 +1,4 @@
+@model IEnumerable<WeatherApp.Models.Article>
 @{ Layout = null; }
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -13,6 +14,28 @@
         <priority>1.0</priority>
     </url>
     
+    <!-- Blog Index -->
+    <url>
+        <loc>https://kairosweather.info/blog</loc>
+        <lastmod>@(Model != null && Model.Any() ? Model.Max(a => a.PublishDate).ToString("yyyy-MM-dd") : DateTime.UtcNow.ToString("yyyy-MM-dd"))</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Blog Articles -->
+    @if (Model != null)
+    {
+        foreach (var article in Model)
+        {
+            <url>
+                <loc>https://kairosweather.info/Article/@article.Slug</loc>
+                <lastmod>@article.PublishDate.ToString("yyyy-MM-dd")</lastmod>
+                <changefreq>monthly</changefreq>
+                <priority>0.8</priority>
+            </url>
+        }
+    }
+
     <!-- About Page -->
     <url>
         <loc>https://kairosweather.info/Static/About</loc>
@@ -60,5 +83,25 @@
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
-    
+
+    <!-- Popular City Weather Pages -->
+    @{
+        var citySlugs = new[]
+        {
+            "mumbai", "delhi", "bangalore", "chennai", "hyderabad", "kolkata",
+            "kochi", "pune", "ahmedabad", "jaipur", "lucknow", "chandigarh",
+            "london", "new-york", "tokyo", "paris", "dubai", "singapore",
+            "sydney", "toronto", "los-angeles", "berlin", "moscow", "beijing"
+        };
+    }
+    @foreach (var city in citySlugs)
+    {
+        <url>
+            <loc>https://kairosweather.info/weather/@city</loc>
+            <lastmod>@DateTime.UtcNow.ToString("yyyy-MM-dd")</lastmod>
+            <changefreq>daily</changefreq>
+            <priority>0.7</priority>
+        </url>
+    }
+
 </urlset>
